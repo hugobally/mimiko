@@ -21,18 +21,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('map', ['knots', 'focused', 'load']),
+    ...mapState('map', ['knots', 'focused', 'load', 'freshCreated']),
     ...mapState({
       manualZoomQueue: state => state.ui.manualZoomQueue,
     }),
 
     transformStr() {
       return `translate(${this.transform.x} ${this.transform.y}) scale(${this.transform.k})`
-    },
-    focusTarget() {
-      if (this.focused === null || this.focused === 'ALL') return null
-
-      return { x: this.knots[this.focused].x, y: this.knots[this.focused].y }
     },
   },
   watch: {
@@ -44,20 +39,16 @@ export default {
         .zoom()
         .scaleExtent([0.1, 20])
         .on('zoom', this.transformCallback)
-        .on('end', () => {
-          // this.$store.commit('map/SET_FOCUSED', null)
-        })
       this.d3Viewport.call(this.d3ZoomObj)
     },
     load: function(loadValue) {
       if (loadValue === 100) {
-        this.refocus(0)
+        this.fit(0)
       }
     },
-    // TODO please clean this
     focused: function(newFocus) {
       if (newFocus === 'ALL') {
-        this.refocus(500)
+        this.fit(500)
       } else {
         this.translateZoom(1000)
       }
@@ -71,50 +62,23 @@ export default {
     },
   },
   methods: {
-    setZoomingFlag(flag) {
-      this.$store.commit('SET_ZOOMING', flag)
-    },
     transformCallback() {
       this.transform = d3event.transform
     },
-    setZoomConfig(config) {
-      this.d3Viewport.call(this.d3ZoomObj)
-
-      if (config.noDrag) {
-        this.d3Viewport.on('mousedown.zoom', null)
-      }
-      if (config.noDoubleClick) {
-        this.d3Viewport.on('dblclick.zoom', null)
-      }
-      if (config.noWheel) {
-        this.d3Viewport.on('wheel.zoom', null)
-      }
-      if (config.disabled) {
-        this.d3Viewport.on('.zoom', null)
-      }
-    },
-    async refocus(transitionTime = null) {
-      let target
-
-      let padding = 0.8
-
-      if (this.focusTarget) {
-        target = { x: this.focusTarget.x - 20, y: this.focusTarget.y - 20 }
-      } else {
-        target = this.graph.$refs.graphGroup.getBBox()
-        if (Object.keys(this.$store.state.map.knots).length === 1) {
-          padding = 0.05
-        } else {
-          padding = 0.8
-        }
-      }
+    async fit(transitionTime = null) {
+      const target = this.graph.$refs.graphGroup.getBBox()
+      console.log('debug', this.freshCreated)
+      const padding = this.freshCreated ? 0.03 : 0.8
 
       const width = this.viewport.clientWidth
       const height = this.viewport.clientHeight
+
       const tgtWidth = target.width || 40
       const tgtHeight = target.height || 40
+
       const centerX = target.x + tgtWidth / 2
       const centerY = target.y + tgtHeight / 2
+
       const scale = padding / Math.max(tgtWidth / width, tgtHeight / height)
       const translateX = width / 2 - scale * centerX
       const translateY = height / 2 - scale * centerY
@@ -125,39 +89,30 @@ export default {
 
       let base = this.d3Viewport
 
-      if (transitionTime === null) {
-        transitionTime = this.transitionTime
-      }
-      if (transitionTime > 0) {
-        base = base
-          .transition()
-          .duration(transitionTime)
-          .on('start', () => {
-            this.setZoomingFlag(true)
-          })
-          .on('end', async () => {
-            this.setZoomingFlag(false)
-          })
-      }
+      if (transitionTime === null) transitionTime = this.transitionTime
+      if (transitionTime > 0) base = base.transition().duration(transitionTime)
 
       base.call(this.d3ZoomObj.transform, newTransform)
+    },
+    getZoomTarget() {
+      if (!this.focused || this.focus === 'ALL') return null
+
+      return { x: this.knots[this.focused].x, y: this.knots[this.focused].y }
+    },
+    translateZoom(transition) {
+      const target = this.getZoomTarget()
+
+      this.d3ZoomObj.translateTo(
+        this.d3Viewport.transition().duration(transition),
+        target.x,
+        target.y,
+      )
     },
     manualZoom(diff, transition) {
       const scale = diff > 0 ? 1.5 : 1 / 1.5
       this.d3ZoomObj.scaleBy(
         this.d3Viewport.transition().duration(transition),
         scale,
-      )
-    },
-    translateZoom(transition) {
-      if (!this.focusTarget) return
-
-      const target = { x: this.focusTarget.x, y: this.focusTarget.y }
-      // const transform = d3zoom.zoomIdentity.translate(target.x, target.y)
-      this.d3ZoomObj.translateTo(
-        this.d3Viewport.transition().duration(transition),
-        target.x,
-        target.y,
       )
     },
   },

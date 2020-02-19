@@ -13,7 +13,9 @@ function initialState() {
         username: '',
       },
     },
+
     load: 0,
+    freshCreated: false,
 
     readOnly: true,
     editMode: false,
@@ -47,6 +49,9 @@ export default {
     },
     MAP_SET_LOAD(state, val) {
       state.load = val
+    },
+    MAP_SET_FRESH_CREATED(state, val) {
+      state.freshCreated = val
     },
     MAP_RESET(state) {
       Object.assign(state, initialState())

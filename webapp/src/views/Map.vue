@@ -29,9 +29,6 @@ export default {
     loaded() {
       return this.load === 100
     },
-    showOverlay() {
-      return this.$store.state.map.focused && !this.$store.state.ui.zooming
-    },
     id() {
       return this.$route.params.id
     },
@@ -51,21 +48,39 @@ export default {
       localStorage.setItem('last_visited', this.id)
 
       const keys = Object.keys(this.knots)
-      if (keys.length === 1) {
-        const id = keys[0]
-        const track = this.knots[id].track
+      let startKnotId = null
+
+      for (const key of keys) {
+        if (this.knots[key].level === 0) {
+          startKnotId = key
+          break
+        }
+      }
+
+      const freshCreated = keys.length === 1
+      if (freshCreated) this.$store.commit('map/MAP_SET_FRESH_CREATED', true)
+
+      this.$store.commit('map/MAP_SET_LOAD', 100)
+
+      if (freshCreated) {
+        await new Promise(r => setTimeout(r, 2000))
         await this.$store.dispatch('map/createKnotsWithReco', {
-          sourceId: id,
+          sourceId: startKnotId,
           number: 1,
         })
-        this.$store.dispatch('player/playKnot', { track, knot: id })
+        await this.$store.dispatch('map/createKnotsWithReco', {
+          sourceId: startKnotId,
+          number: 1,
+        })
       }
+
+      const track = this.knots[startKnotId].track
+      this.$store.dispatch('player/playKnot', { track, knot: startKnotId })
     } catch (error) {
       this.mapError(error)
-      this.$store.commit('map/MAP_SET_LOAD', 0)
+      if (this.load !== 100) this.$store.commit('map/MAP_SET_LOAD', 0)
       return
     }
-    this.$store.commit('map/MAP_SET_LOAD', 100)
   },
   destroyed() {
     const sdk = this.$store.state.player.sdk

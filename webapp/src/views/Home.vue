@@ -1,14 +1,11 @@
 <template>
   <div class="home-container disable-scrollbar">
     <div ref="welcome-header" class="welcome-header-container">
-      <h1 class="header noselect">Welcome to mimu</h1>
+      <!-- <h1 class="main-header header noselect">Welcome to mimiko</h1> -->
+      <div class="text-logo">
+        <img src="@/assets/svg/text-logo.svg" />
+      </div>
       <div class="quick-links-container">
-        <router-link
-          v-if="lastVisited"
-          class="quick-link link"
-          :to="{ path: `/map/${lastVisited}` }"
-          >Go to last visited map</router-link
-        >
         <router-link
           class="quick-link link"
           :to="{ path: currentPath, hash: '#explore' }"
@@ -19,6 +16,12 @@
           :to="{ path: currentPath, hash: '#create' }"
           >Create a new music map
         </router-link>
+        <router-link
+          v-if="lastVisited"
+          class="quick-link link"
+          :to="{ path: `/map/${lastVisited}` }"
+          >Go to our last visited map</router-link
+        >
       </div>
     </div>
     <h1 class="header noselect">
@@ -63,20 +66,30 @@ export default {
   background-color: #121212;
 }
 
+.text-logo {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .quick-link {
   width: 100%;
-  font-size: 25px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
   margin-left: 5px;
 }
 
 .quick-link:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .quick-links-container {
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
 .quick-links-container > .quick-link {
@@ -85,11 +98,11 @@ export default {
 }
 
 .header {
-  padding: 0px 0px 5px 5px;
+  padding: 20px 10px;
   background-color: rgba(255, 255, 255, 0.05);
   border-bottom: solid rgba(255, 255, 255, 0.1) 1px;
   font-size: 32px;
-  text-align: left;
+  text-align: center;
 }
 
 .user-maps-header {

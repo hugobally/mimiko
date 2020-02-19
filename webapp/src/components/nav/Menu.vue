@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <router-link to="/home" class="logo-container" tag="div">
-      <img class="logo" src="@/assets/svg/mimu-logo.svg" alt="logo-link-home" />
+      <img class="logo" src="@/assets/svg/logo.svg" alt="logo-link-home" />
     </router-link>
     <div class="menu-buttons">
       <div @click="toggleExplorer" class="menu-item menu-button noselect">

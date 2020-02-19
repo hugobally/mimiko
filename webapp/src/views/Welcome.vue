@@ -1,11 +1,7 @@
 <template>
   <div class="welcome-inherited-container">
     <div class="welcome-container">
-      <img
-        class="logo-big"
-        src="@/assets/svg/mimu-logo.svg"
-        alt="mimu-hero-logo"
-      />
+      <img class="logo-big" src="@/assets/svg/logo.svg" alt="hero-logo" />
       <h1 class="welcome-header">Welcome ! &#x1F3B8;</h1>
       <LoginButton class="login-button">
         <span>Login with Spotify</span>

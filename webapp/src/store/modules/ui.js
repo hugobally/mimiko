@@ -1,7 +1,6 @@
 export default {
   state: {
     flashQueue: [],
-    zooming: false,
     manualZoomQueue: [],
   },
   mutations: {
@@ -16,9 +15,6 @@ export default {
     },
     SHIFT_ZOOM_QUEUE(state) {
       state.manualZoomQueue.shift()
-    },
-    SET_ZOOMING(state, flag) {
-      state.zooming = flag
     },
   },
   actions: {

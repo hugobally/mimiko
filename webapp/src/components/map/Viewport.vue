@@ -54,6 +54,9 @@ export default {
     playing() {
       return this.$store.state.player.knot
     },
+    mapId() {
+      return this.$store.state.map.id
+    },
   },
 }
 </script>

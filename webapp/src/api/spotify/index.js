@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
-const LIKED_PLAYLIST_NAME = 'Liked from Mimu'
+const LIKED_PLAYLIST_NAME = 'Liked from mimiko'
 
 // PERFORM REQUEST
 

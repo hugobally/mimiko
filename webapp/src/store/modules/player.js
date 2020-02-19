@@ -157,7 +157,7 @@ export default {
       window.onSpotifyWebPlaybackSDKReady = () => {
         // eslint-disable-next-line no-undef
         const player = new Spotify.Player({
-          name: 'Mimu WebApp',
+          name: 'Mimiko WebApp',
           getOAuthToken: async callback => {
             try {
               const token = await getToken()
