@@ -142,8 +142,8 @@ func (h *Handler) SetLoginCookie(w http.ResponseWriter, user *prisma.User) error
 		Expires:  exp,
 		Path:     "/",
 		HttpOnly: true,
-
-		Secure: false, //TODO
+		Secure: true,
+		SameSite: http.SameSiteStrictMode,
 	})
 	return nil
 }

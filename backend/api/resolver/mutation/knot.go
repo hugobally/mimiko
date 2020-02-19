@@ -8,10 +8,6 @@ import (
 	"github.com/hugobally/mimiko/backend/prisma"
 )
 
-// TODO Create methods : factorize
-
-// TODO Handle errors properly
-// Map id empty
 func (r *Resolver) CreateKnots(ctx context.Context, mapId string, inputs []models.KnotInput) ([]prisma.Knot, error) {
 	err := r.Permission.ModifyMap(ctx, mapId)
 	if err != nil {
@@ -66,8 +62,6 @@ func (r *Resolver) UpdateKnot(ctx context.Context, knotId string, input models.K
 		},
 	}).Exec(ctx)
 }
-
-// TODO Delete : factorize with function generator
 
 func (r *Resolver) DeleteKnots(ctx context.Context, mapId string, knotIds []string) (*models.MutationResult, error) {
 

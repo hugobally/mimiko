@@ -40,7 +40,6 @@ func initSharedServices() *shared.Services {
 	return svcs
 }
 
-// TODO Implement TLS and ListenAndServeTLS > Switch JWT cookie to secure
 func main() {
 	svcs := initSharedServices()
 
@@ -59,8 +58,11 @@ func main() {
 	srv := server.New(muxWithMiddleware, addr)
 
 	svcs.Logger.Printf("server starting at %v", addr)
-	err := srv.ListenAndServe()
-	if err != nil {
-		svcs.Logger.Fatalf("server failed to start: %v", err)
-	}
+
+	// TODO Read cert files
+	// TODO ListenAndServeTLS
+	//err := srv.ListenAndServe()
+	//if err != nil {
+	//	svcs.Logger.Fatalf("server failed to start: %v", err)
+	//}
 }

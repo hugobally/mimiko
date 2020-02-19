@@ -10,8 +10,6 @@ type Input struct {
 
 }
 
-// TODO Factorize using proper regexp package logic
-
 func AlphaNumSpace(input string) error {
 	if !regexp.MustCompile(`^[\w ]`).MatchString(input) {
 		return errors.New("forbidden characters")

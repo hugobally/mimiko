@@ -18,7 +18,7 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Unix(0, 0),
 		Path:     "/",
 		HttpOnly: true,
-
-		Secure: false, //TODO
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
 	})
 }

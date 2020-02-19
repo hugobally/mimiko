@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// TODO The URL can be built once when starting the app
+// TODO Build once when starting the app
 func (h *Handler) SpotifyRedirect(w http.ResponseWriter, r *http.Request) {
 	u, err := url.Parse("https://accounts.spotify.com")
 	if err != nil {

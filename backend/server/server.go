@@ -18,7 +18,6 @@ func New(handler http.Handler, serverAddress string) *http.Server {
 			tls.CurveP256,
 			tls.X25519, // Go 1.8 only
 		},
-
 		MinVersion: tls.VersionTLS12,
 		CipherSuites: []uint16{
 			tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
@@ -34,7 +33,7 @@ func New(handler http.Handler, serverAddress string) *http.Server {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		TLSConfig:    tlsConfig,
+		TLSConfig:     tlsConfig,
 		Handler:      handler,
 	}
 	return srv
