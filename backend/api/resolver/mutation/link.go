@@ -6,14 +6,18 @@ import (
 	"github.com/hugobally/mimiko/backend/prisma"
 )
 
-// TODO Handle errors properly
-func (r *Resolver) CreateLinks(ctx context.Context, mapID string, sourceID string, targetIds []string) ([]prisma.Link, error) {
+func (r *Resolver) CreateLinks(ctx context.Context, mapId string, sourceID string, targetIds []string) ([]prisma.Link, error) {
+	err := r.Permission.ModifyMap(ctx, mapId)
+	if err != nil {
+		return nil, err
+	}
+
 	var newLinks []prisma.Link
 	for _, targetId := range targetIds {
 		link, err := r.Prisma.CreateLink(prisma.LinkCreateInput{
 			Map: prisma.MapCreateOneWithoutLinksInput{
 				Connect: &prisma.MapWhereUniqueInput{
-					ID: &mapID,
+					ID: &mapId,
 				},
 			},
 			Source: sourceID,
@@ -28,6 +32,11 @@ func (r *Resolver) CreateLinks(ctx context.Context, mapID string, sourceID strin
 }
 
 func (r *Resolver) DeleteLinks(ctx context.Context, mapId string, linkIds []string) (*models.MutationResult, error) {
+	err := r.Permission.ModifyMap(ctx, mapId)
+	if err != nil {
+		return nil, err
+	}
+
 	res, err := r.Prisma.DeleteManyLinks(&prisma.LinkWhereInput{
 		IDIn: linkIds,
 		Map:  &prisma.MapWhereInput{ID: &mapId},
@@ -40,29 +49,3 @@ func (r *Resolver) DeleteLinks(ctx context.Context, mapId string, linkIds []stri
 	return &models.MutationResult{Success: true, Count: int(res.Count)}, nil
 }
 
-//func (r *Resolver) ConnectKnots(ctx context.Context, mapID string, knotIds []string) ([]prisma.Link, error) {
-//	var newLinks []prisma.Link
-//	var previous string
-//
-//	for i, id := range knotIds {
-//		if i != 0 {
-//			link, err := r.Prisma.CreateLink(prisma.LinkCreateInput{
-//				Map: prisma.MapCreateOneWithoutLinksInput{
-//					Connect: &prisma.MapWhereUniqueInput{
-//						ID: &mapID,
-//					},
-//				},
-//				Source: previous,
-//				Target: id,
-//			}).Exec(ctx)
-//			if err != nil {
-//				return newLinks, err
-//			}
-//
-//			newLinks = append(newLinks, *link)
-//		}
-//
-//		previous = id
-//	}
-//	return newLinks, nil
-//}

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/hugobally/mimiko/backend/api/permission"
 	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/shared"
 	"net/http"
@@ -14,19 +15,11 @@ import (
 type Handler struct{ *shared.Services }
 
 func (h *Handler) SetupRoutes(mux *http.ServeMux) {
-	r := resolver.New(h.Services)
+	r := resolver.New(h.Services, permission.NewClient(h.Services.Prisma))
 
 	gqlHandler := handler.GraphQL(gqlgen.NewExecutableSchema(gqlgen.Config{Resolvers: r}))
 
 	mux.Handle("/graphql", auth.NewMiddleware(gqlHandler, h.Services))
-
-	//TODO Do not use in production as-is
-	// It has no restricted access
-	mux.HandleFunc("/",
-		handler.Playground(
-			"GraphQL Playground",
-			"/query"),
-	)
 }
 
 func NewHandler(s *shared.Services) *Handler {

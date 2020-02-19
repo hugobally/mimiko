@@ -2,12 +2,15 @@ package query
 
 import (
 	"context"
+	"github.com/hugobally/mimiko/backend/api/permission"
 	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/prisma"
+	"github.com/hugobally/mimiko/backend/shared"
 )
 
 type Resolver struct {
-	Prisma *prisma.Client
+	*shared.Services
+	Permission *permission.Client
 }
 
 func (r *Resolver) Me(ctx context.Context) (*prisma.User, error) {
@@ -21,6 +24,6 @@ func (r *Resolver) Me(ctx context.Context) (*prisma.User, error) {
 	}).Exec(ctx)
 }
 
-func NewResolver(p *prisma.Client) *Resolver {
-	return &Resolver{Prisma: p}
+func NewResolver(s *shared.Services, perm *permission.Client) *Resolver {
+	return &Resolver{s, perm}
 }

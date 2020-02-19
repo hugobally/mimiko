@@ -8,24 +8,21 @@ import (
 )
 
 func (r *Resolver) Map(ctx context.Context, mapID string) (*prisma.Map, error) {
-	return r.Prisma.Map(prisma.MapWhereUniqueInput{
+	fetchedMap, err := r.Prisma.Map(prisma.MapWhereUniqueInput{
 		ID: &mapID,
 	}).Exec(ctx)
-}
 
-func MapsDefaultFilter(userId string) *prisma.MapsParams {
-	onlyPublic := true
-	defaultPageLength := int32(100)
-
-	return &prisma.MapsParams{
-		Where:   &prisma.MapWhereInput{
-			Public: &onlyPublic,
-			Author: &prisma.UserWhereInput{
-				IDNot: &userId,
-			},
-		},
-		First: &defaultPageLength,
+	if err != nil {
+		return nil, err
 	}
+
+	err = r.Permission.ReadMapData(ctx, fetchedMap)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return fetchedMap, nil
 }
 
 func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prisma.Map, error) {
@@ -62,5 +59,20 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 	}
 
 	return r.Prisma.Maps(params).Exec(ctx)
+}
+
+func MapsDefaultFilter(userId string) *prisma.MapsParams {
+	onlyPublic := true
+	defaultPageLength := int32(100)
+
+	return &prisma.MapsParams{
+		Where:   &prisma.MapWhereInput{
+			Public: &onlyPublic,
+			Author: &prisma.UserWhereInput{
+				IDNot: &userId,
+			},
+		},
+		First: &defaultPageLength,
+	}
 }
 

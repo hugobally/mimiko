@@ -8,10 +8,7 @@ import (
 	"time"
 )
 
-//TODO If Username has changed on the remote app, update it here
 func (r *Resolver) GetToken(ctx context.Context, appType prisma.AppType) (*prisma.LinkedApp, error) {
-	// TODO Authorization
-
 	user, err := auth.GetUserFromContext(ctx)
 	if err != nil {
 		return nil, err

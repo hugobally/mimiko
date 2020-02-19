@@ -47,7 +47,9 @@ type Knot {
   trackId: String!
   level: Int!
   visited: Boolean! @default(value: true)
+
   map: Map! @relation(link: INLINE)
+
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

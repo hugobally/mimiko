@@ -64,7 +64,12 @@ func (r *Resolver) CreateMap(ctx context.Context, mapInput models.MapInput) (*pr
 }
 
 func (r *Resolver) UpdateMap(ctx context.Context, mapId string, mapInput models.MapInput) (*prisma.Map, error) {
-	err := validateMapTitle(mapInput.Title)
+	err := r.Permission.ModifyMap(ctx, mapId)
+	if err != nil {
+		return nil, err
+	}
+
+	err = validateMapTitle(mapInput.Title)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +87,12 @@ func (r *Resolver) UpdateMap(ctx context.Context, mapId string, mapInput models.
 }
 
 func (r *Resolver) DeleteMap(ctx context.Context, mapId string) (*models.MutationResult, error) {
-	_, err := r.Prisma.DeleteMap(prisma.MapWhereUniqueInput{
+	err := r.Permission.ModifyMap(ctx, mapId)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = r.Prisma.DeleteMap(prisma.MapWhereUniqueInput{
 		ID: &mapId,
 	}).Exec(ctx)
 
