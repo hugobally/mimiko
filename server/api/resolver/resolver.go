@@ -1,9 +1,9 @@
 package resolver
 
 import (
-	"github.com/hugobally/mimiko/server/gql/gqlgen"
-	"github.com/hugobally/mimiko/server/gql/resolver/mutation"
-	"github.com/hugobally/mimiko/server/gql/resolver/query"
+	"github.com/hugobally/mimiko/server/api/gqlgen"
+	"github.com/hugobally/mimiko/server/api/resolver/mutation"
+	"github.com/hugobally/mimiko/server/api/resolver/query"
 	"github.com/hugobally/mimiko/server/shared"
 )
 

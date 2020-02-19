@@ -2,7 +2,7 @@ package mutation
 
 import (
 	"context"
-	"github.com/hugobally/mimiko/server/gql/models"
+	"github.com/hugobally/mimiko/server/api/models"
 	"github.com/hugobally/mimiko/server/prisma"
 )
 

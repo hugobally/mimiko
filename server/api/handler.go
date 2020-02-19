@@ -1,12 +1,12 @@
-package gql
+package api
 
 import (
 	"github.com/hugobally/mimiko/server/auth"
 	"github.com/hugobally/mimiko/server/shared"
 	"net/http"
 
-	"github.com/hugobally/mimiko/server/gql/gqlgen"
-	"github.com/hugobally/mimiko/server/gql/resolver"
+	"github.com/hugobally/mimiko/server/api/gqlgen"
+	"github.com/hugobally/mimiko/server/api/resolver"
 
 	"github.com/99designs/gqlgen/handler"
 )

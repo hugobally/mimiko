@@ -12,7 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/hugobally/mimiko/server/gql/models"
+	"github.com/hugobally/mimiko/server/api/models"
 	"github.com/hugobally/mimiko/server/prisma"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
@@ -545,7 +545,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "gql/schema.graphql", Input: `# Models
+	&ast.Source{Name: "api/schema.graphql", Input: `# Models
 type User {
     id: ID!
     username: String
@@ -661,7 +661,7 @@ func (ec *executionContext) field_Mutation_createKnots_args(ctx context.Context,
 	args["mapId"] = arg0
 	var arg1 []models.KnotInput
 	if tmp, ok := rawArgs["newKnots"]; ok {
-		arg1, err = ec.unmarshalNKnotInput2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐKnotInputᚄ(ctx, tmp)
+		arg1, err = ec.unmarshalNKnotInput2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐKnotInputᚄ(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -705,7 +705,7 @@ func (ec *executionContext) field_Mutation_createMap_args(ctx context.Context, r
 	args := map[string]interface{}{}
 	var arg0 models.MapInput
 	if tmp, ok := rawArgs["mapInput"]; ok {
-		arg0, err = ec.unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapInput(ctx, tmp)
+		arg0, err = ec.unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -799,7 +799,7 @@ func (ec *executionContext) field_Mutation_updateKnot_args(ctx context.Context, 
 	args["knotId"] = arg0
 	var arg1 models.KnotInput
 	if tmp, ok := rawArgs["knotInput"]; ok {
-		arg1, err = ec.unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐKnotInput(ctx, tmp)
+		arg1, err = ec.unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐKnotInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -821,7 +821,7 @@ func (ec *executionContext) field_Mutation_updateMap_args(ctx context.Context, r
 	args["mapId"] = arg0
 	var arg1 models.MapInput
 	if tmp, ok := rawArgs["mapInput"]; ok {
-		arg1, err = ec.unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapInput(ctx, tmp)
+		arg1, err = ec.unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -877,7 +877,7 @@ func (ec *executionContext) field_Query_maps_args(ctx context.Context, rawArgs m
 	args := map[string]interface{}{}
 	var arg0 *models.MapsFilter
 	if tmp, ok := rawArgs["filter"]; ok {
-		arg0, err = ec.unmarshalOMapsFilter2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapsFilter(ctx, tmp)
+		arg0, err = ec.unmarshalOMapsFilter2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapsFilter(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1823,7 +1823,7 @@ func (ec *executionContext) _Mutation_deleteMap(ctx context.Context, field graph
 	res := resTmp.(*models.MutationResult)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMutationResult(ctx, field.Selections, res)
+	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMutationResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createKnots(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1946,7 +1946,7 @@ func (ec *executionContext) _Mutation_deleteKnots(ctx context.Context, field gra
 	res := resTmp.(*models.MutationResult)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMutationResult(ctx, field.Selections, res)
+	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMutationResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createLinks(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2028,7 +2028,7 @@ func (ec *executionContext) _Mutation_deleteLinks(ctx context.Context, field gra
 	res := resTmp.(*models.MutationResult)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMutationResult(ctx, field.Selections, res)
+	return ec.marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMutationResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _MutationResult_success(ctx context.Context, field graphql.CollectedField, obj *models.MutationResult) (ret graphql.Marshaler) {
@@ -4450,11 +4450,11 @@ func (ec *executionContext) marshalNKnot2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋ
 	return ret
 }
 
-func (ec *executionContext) unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐKnotInput(ctx context.Context, v interface{}) (models.KnotInput, error) {
+func (ec *executionContext) unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐKnotInput(ctx context.Context, v interface{}) (models.KnotInput, error) {
 	return ec.unmarshalInputKnotInput(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNKnotInput2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐKnotInputᚄ(ctx context.Context, v interface{}) ([]models.KnotInput, error) {
+func (ec *executionContext) unmarshalNKnotInput2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐKnotInputᚄ(ctx context.Context, v interface{}) ([]models.KnotInput, error) {
 	var vSlice []interface{}
 	if v != nil {
 		if tmp1, ok := v.([]interface{}); ok {
@@ -4466,7 +4466,7 @@ func (ec *executionContext) unmarshalNKnotInput2ᚕgithubᚗcomᚋhugoballyᚋmi
 	var err error
 	res := make([]models.KnotInput, len(vSlice))
 	for i := range vSlice {
-		res[i], err = ec.unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐKnotInput(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNKnotInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐKnotInput(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -4597,7 +4597,7 @@ func (ec *executionContext) marshalNMap2ᚕgithubᚗcomᚋhugoballyᚋmimikoᚋs
 	return ret
 }
 
-func (ec *executionContext) unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapInput(ctx context.Context, v interface{}) (models.MapInput, error) {
+func (ec *executionContext) unmarshalNMapInput2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapInput(ctx context.Context, v interface{}) (models.MapInput, error) {
 	return ec.unmarshalInputMapInput(ctx, v)
 }
 
@@ -5090,23 +5090,23 @@ func (ec *executionContext) marshalOMap2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋs
 	return ec._Map(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOMapsFilter2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapsFilter(ctx context.Context, v interface{}) (models.MapsFilter, error) {
+func (ec *executionContext) unmarshalOMapsFilter2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapsFilter(ctx context.Context, v interface{}) (models.MapsFilter, error) {
 	return ec.unmarshalInputMapsFilter(ctx, v)
 }
 
-func (ec *executionContext) unmarshalOMapsFilter2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapsFilter(ctx context.Context, v interface{}) (*models.MapsFilter, error) {
+func (ec *executionContext) unmarshalOMapsFilter2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapsFilter(ctx context.Context, v interface{}) (*models.MapsFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := ec.unmarshalOMapsFilter2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMapsFilter(ctx, v)
+	res, err := ec.unmarshalOMapsFilter2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMapsFilter(ctx, v)
 	return &res, err
 }
 
-func (ec *executionContext) marshalOMutationResult2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMutationResult(ctx context.Context, sel ast.SelectionSet, v models.MutationResult) graphql.Marshaler {
+func (ec *executionContext) marshalOMutationResult2githubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMutationResult(ctx context.Context, sel ast.SelectionSet, v models.MutationResult) graphql.Marshaler {
 	return ec._MutationResult(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋgqlᚋmodelsᚐMutationResult(ctx context.Context, sel ast.SelectionSet, v *models.MutationResult) graphql.Marshaler {
+func (ec *executionContext) marshalOMutationResult2ᚖgithubᚗcomᚋhugoballyᚋmimikoᚋserverᚋapiᚋmodelsᚐMutationResult(ctx context.Context, sel ast.SelectionSet, v *models.MutationResult) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

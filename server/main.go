@@ -15,7 +15,7 @@ import (
 	"github.com/hugobally/mimiko/server/spotify"
 
 	"github.com/gorilla/handlers"
-	"github.com/hugobally/mimiko/server/gql"
+	"github.com/hugobally/mimiko/server/api"
 	"github.com/hugobally/mimiko/server/server"
 )
 
@@ -49,7 +49,7 @@ func main() {
 	loginHandler := login.NewHandler(svcs)
 	loginHandler.SetupRoutes(mux)
 
-	gqlHandler := gql.NewHandler(svcs)
+	gqlHandler := api.NewHandler(svcs)
 	gqlHandler.SetupRoutes(mux)
 
 	cfg := svcs.Config
