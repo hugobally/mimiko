@@ -64,12 +64,14 @@ export default {
         } else {
           if (!endUnvisited) {
             unvisitedSteps.push(id)
-            if (obj.parent) unvisitedSteps.push(obj.parent)
             endUnvisited = true
           }
           steps.push(id)
         }
 
+        // if (!obj.parent && steps.length < 2 && unvisitedSteps.length < 2) {
+        //   unvisitedSteps.push(id)
+        // }
         id = obj.parent
         console.log(steps.unvisitedSteps)
       }
