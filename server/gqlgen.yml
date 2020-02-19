@@ -1,9 +1,0 @@
-schema: api/schema.graphql
-exec:
-  filename: api/gqlgen/generated.go
-autobind:
-  - github.com/hugobally/mimiko/server/prisma
-  - github.com/hugobally/mimiko/server/api/models
-# see https://github.com/prisma/prisma/issues/4667
-omit_slice_element_pointers: true
-
