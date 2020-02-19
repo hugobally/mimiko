@@ -70,7 +70,7 @@ export default {
 }
 
 .animated-circle {
-  animation-duration: 4s;
+  animation-duration: 3s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-name: circle-animation;

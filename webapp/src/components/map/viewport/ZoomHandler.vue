@@ -67,7 +67,7 @@ export default {
     },
     async fit(transitionTime = null) {
       const target = this.graph.$refs.graphGroup.getBBox()
-      console.log('debug', this.freshCreated)
+
       const padding = this.freshCreated ? 0.03 : 0.8
 
       const width = this.viewport.clientWidth
@@ -101,6 +101,7 @@ export default {
     },
     translateZoom(transition) {
       const target = this.getZoomTarget()
+      if (!target) return
 
       this.d3ZoomObj.translateTo(
         this.d3Viewport.transition().duration(transition),
