@@ -116,10 +116,8 @@ export default {
     },
     isLiked() {
       if (!this.track) return false
-      if (this.readOnly)
-        return this.likedPlaylist.tracks.includes(this.track.id)
 
-      return this.likeCount > 0
+      return this.likedPlaylist.tracks.includes(this.track.id)
     },
   },
   methods: {
