@@ -1043,8 +1043,18 @@ const (
 	MutationTypeDeleted MutationType = "DELETED"
 )
 
+type LinkUpdateWithWhereUniqueWithoutMapInput struct {
+	Where LinkWhereUniqueInput          `json:"where"`
+	Data  LinkUpdateWithoutMapDataInput `json:"data"`
+}
+
 type KnotWhereUniqueInput struct {
 	ID *string `json:"id,omitempty"`
+}
+
+type LinkUpdateManyWithWhereNestedInput struct {
+	Where LinkScalarWhereInput    `json:"where"`
+	Data  LinkUpdateManyDataInput `json:"data"`
 }
 
 type MapWhereInput struct {
@@ -1120,60 +1130,9 @@ type MapWhereInput struct {
 	Not                     []MapWhereInput `json:"NOT,omitempty"`
 }
 
-type UserWhereInput struct {
-	ID                    *string              `json:"id,omitempty"`
-	IDNot                 *string              `json:"id_not,omitempty"`
-	IDIn                  []string             `json:"id_in,omitempty"`
-	IDNotIn               []string             `json:"id_not_in,omitempty"`
-	IDLt                  *string              `json:"id_lt,omitempty"`
-	IDLte                 *string              `json:"id_lte,omitempty"`
-	IDGt                  *string              `json:"id_gt,omitempty"`
-	IDGte                 *string              `json:"id_gte,omitempty"`
-	IDContains            *string              `json:"id_contains,omitempty"`
-	IDNotContains         *string              `json:"id_not_contains,omitempty"`
-	IDStartsWith          *string              `json:"id_starts_with,omitempty"`
-	IDNotStartsWith       *string              `json:"id_not_starts_with,omitempty"`
-	IDEndsWith            *string              `json:"id_ends_with,omitempty"`
-	IDNotEndsWith         *string              `json:"id_not_ends_with,omitempty"`
-	Username              *string              `json:"username,omitempty"`
-	UsernameNot           *string              `json:"username_not,omitempty"`
-	UsernameIn            []string             `json:"username_in,omitempty"`
-	UsernameNotIn         []string             `json:"username_not_in,omitempty"`
-	UsernameLt            *string              `json:"username_lt,omitempty"`
-	UsernameLte           *string              `json:"username_lte,omitempty"`
-	UsernameGt            *string              `json:"username_gt,omitempty"`
-	UsernameGte           *string              `json:"username_gte,omitempty"`
-	UsernameContains      *string              `json:"username_contains,omitempty"`
-	UsernameNotContains   *string              `json:"username_not_contains,omitempty"`
-	UsernameStartsWith    *string              `json:"username_starts_with,omitempty"`
-	UsernameNotStartsWith *string              `json:"username_not_starts_with,omitempty"`
-	UsernameEndsWith      *string              `json:"username_ends_with,omitempty"`
-	UsernameNotEndsWith   *string              `json:"username_not_ends_with,omitempty"`
-	CreatedAt             *string              `json:"createdAt,omitempty"`
-	CreatedAtNot          *string              `json:"createdAt_not,omitempty"`
-	CreatedAtIn           []string             `json:"createdAt_in,omitempty"`
-	CreatedAtNotIn        []string             `json:"createdAt_not_in,omitempty"`
-	CreatedAtLt           *string              `json:"createdAt_lt,omitempty"`
-	CreatedAtLte          *string              `json:"createdAt_lte,omitempty"`
-	CreatedAtGt           *string              `json:"createdAt_gt,omitempty"`
-	CreatedAtGte          *string              `json:"createdAt_gte,omitempty"`
-	UpdatedAt             *string              `json:"updatedAt,omitempty"`
-	UpdatedAtNot          *string              `json:"updatedAt_not,omitempty"`
-	UpdatedAtIn           []string             `json:"updatedAt_in,omitempty"`
-	UpdatedAtNotIn        []string             `json:"updatedAt_not_in,omitempty"`
-	UpdatedAtLt           *string              `json:"updatedAt_lt,omitempty"`
-	UpdatedAtLte          *string              `json:"updatedAt_lte,omitempty"`
-	UpdatedAtGt           *string              `json:"updatedAt_gt,omitempty"`
-	UpdatedAtGte          *string              `json:"updatedAt_gte,omitempty"`
-	MapsEvery             *MapWhereInput       `json:"maps_every,omitempty"`
-	MapsSome              *MapWhereInput       `json:"maps_some,omitempty"`
-	MapsNone              *MapWhereInput       `json:"maps_none,omitempty"`
-	LinkedAppsEvery       *LinkedAppWhereInput `json:"linkedApps_every,omitempty"`
-	LinkedAppsSome        *LinkedAppWhereInput `json:"linkedApps_some,omitempty"`
-	LinkedAppsNone        *LinkedAppWhereInput `json:"linkedApps_none,omitempty"`
-	And                   []UserWhereInput     `json:"AND,omitempty"`
-	Or                    []UserWhereInput     `json:"OR,omitempty"`
-	Not                   []UserWhereInput     `json:"NOT,omitempty"`
+type LinkUpdateManyDataInput struct {
+	Source *string `json:"source,omitempty"`
+	Target *string `json:"target,omitempty"`
 }
 
 type LinkedAppWhereInput struct {
@@ -1265,6 +1224,11 @@ type LinkedAppWhereInput struct {
 	Not                       []LinkedAppWhereInput `json:"NOT,omitempty"`
 }
 
+type MapUpsertWithoutKnotsInput struct {
+	Update MapUpdateWithoutKnotsDataInput `json:"update"`
+	Create MapCreateWithoutKnotsInput     `json:"create"`
+}
+
 type KnotWhereInput struct {
 	ID                   *string          `json:"id,omitempty"`
 	IDNot                *string          `json:"id_not,omitempty"`
@@ -1326,152 +1290,6 @@ type KnotWhereInput struct {
 	Not                  []KnotWhereInput `json:"NOT,omitempty"`
 }
 
-type LinkWhereInput struct {
-	ID                  *string          `json:"id,omitempty"`
-	IDNot               *string          `json:"id_not,omitempty"`
-	IDIn                []string         `json:"id_in,omitempty"`
-	IDNotIn             []string         `json:"id_not_in,omitempty"`
-	IDLt                *string          `json:"id_lt,omitempty"`
-	IDLte               *string          `json:"id_lte,omitempty"`
-	IDGt                *string          `json:"id_gt,omitempty"`
-	IDGte               *string          `json:"id_gte,omitempty"`
-	IDContains          *string          `json:"id_contains,omitempty"`
-	IDNotContains       *string          `json:"id_not_contains,omitempty"`
-	IDStartsWith        *string          `json:"id_starts_with,omitempty"`
-	IDNotStartsWith     *string          `json:"id_not_starts_with,omitempty"`
-	IDEndsWith          *string          `json:"id_ends_with,omitempty"`
-	IDNotEndsWith       *string          `json:"id_not_ends_with,omitempty"`
-	Map                 *MapWhereInput   `json:"map,omitempty"`
-	Source              *string          `json:"source,omitempty"`
-	SourceNot           *string          `json:"source_not,omitempty"`
-	SourceIn            []string         `json:"source_in,omitempty"`
-	SourceNotIn         []string         `json:"source_not_in,omitempty"`
-	SourceLt            *string          `json:"source_lt,omitempty"`
-	SourceLte           *string          `json:"source_lte,omitempty"`
-	SourceGt            *string          `json:"source_gt,omitempty"`
-	SourceGte           *string          `json:"source_gte,omitempty"`
-	SourceContains      *string          `json:"source_contains,omitempty"`
-	SourceNotContains   *string          `json:"source_not_contains,omitempty"`
-	SourceStartsWith    *string          `json:"source_starts_with,omitempty"`
-	SourceNotStartsWith *string          `json:"source_not_starts_with,omitempty"`
-	SourceEndsWith      *string          `json:"source_ends_with,omitempty"`
-	SourceNotEndsWith   *string          `json:"source_not_ends_with,omitempty"`
-	Target              *string          `json:"target,omitempty"`
-	TargetNot           *string          `json:"target_not,omitempty"`
-	TargetIn            []string         `json:"target_in,omitempty"`
-	TargetNotIn         []string         `json:"target_not_in,omitempty"`
-	TargetLt            *string          `json:"target_lt,omitempty"`
-	TargetLte           *string          `json:"target_lte,omitempty"`
-	TargetGt            *string          `json:"target_gt,omitempty"`
-	TargetGte           *string          `json:"target_gte,omitempty"`
-	TargetContains      *string          `json:"target_contains,omitempty"`
-	TargetNotContains   *string          `json:"target_not_contains,omitempty"`
-	TargetStartsWith    *string          `json:"target_starts_with,omitempty"`
-	TargetNotStartsWith *string          `json:"target_not_starts_with,omitempty"`
-	TargetEndsWith      *string          `json:"target_ends_with,omitempty"`
-	TargetNotEndsWith   *string          `json:"target_not_ends_with,omitempty"`
-	And                 []LinkWhereInput `json:"AND,omitempty"`
-	Or                  []LinkWhereInput `json:"OR,omitempty"`
-	Not                 []LinkWhereInput `json:"NOT,omitempty"`
-}
-
-type LinkWhereUniqueInput struct {
-	ID *string `json:"id,omitempty"`
-}
-
-type LinkedAppWhereUniqueInput struct {
-	ID *string `json:"id,omitempty"`
-}
-
-type MapWhereUniqueInput struct {
-	ID *string `json:"id,omitempty"`
-}
-
-type UserWhereUniqueInput struct {
-	ID *string `json:"id,omitempty"`
-}
-
-type KnotCreateInput struct {
-	ID      *string                       `json:"id,omitempty"`
-	TrackId string                        `json:"trackId"`
-	Level   int32                         `json:"level"`
-	Visited *bool                         `json:"visited,omitempty"`
-	Map     MapCreateOneWithoutKnotsInput `json:"map"`
-}
-
-type MapCreateOneWithoutKnotsInput struct {
-	Create  *MapCreateWithoutKnotsInput `json:"create,omitempty"`
-	Connect *MapWhereUniqueInput        `json:"connect,omitempty"`
-}
-
-type MapCreateWithoutKnotsInput struct {
-	ID         *string                        `json:"id,omitempty"`
-	Title      *string                        `json:"title,omitempty"`
-	Author     UserCreateOneWithoutMapsInput  `json:"author"`
-	FlagshipId *string                        `json:"flagshipId,omitempty"`
-	Public     *bool                          `json:"public,omitempty"`
-	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
-}
-
-type UserCreateOneWithoutMapsInput struct {
-	Create  *UserCreateWithoutMapsInput `json:"create,omitempty"`
-	Connect *UserWhereUniqueInput       `json:"connect,omitempty"`
-}
-
-type UserCreateWithoutMapsInput struct {
-	ID         *string                              `json:"id,omitempty"`
-	Username   *string                              `json:"username,omitempty"`
-	LinkedApps *LinkedAppCreateManyWithoutUserInput `json:"linkedApps,omitempty"`
-}
-
-type LinkedAppCreateManyWithoutUserInput struct {
-	Create  []LinkedAppCreateWithoutUserInput `json:"create,omitempty"`
-	Connect []LinkedAppWhereUniqueInput       `json:"connect,omitempty"`
-}
-
-type LinkedAppCreateWithoutUserInput struct {
-	ID           *string `json:"id,omitempty"`
-	Type         AppType `json:"type"`
-	AccessToken  *string `json:"accessToken,omitempty"`
-	TokenExpiry  *string `json:"tokenExpiry,omitempty"`
-	RefreshToken *string `json:"refreshToken,omitempty"`
-	UserId       string  `json:"userId"`
-	Username     *string `json:"username,omitempty"`
-}
-
-type LinkCreateManyWithoutMapInput struct {
-	Create  []LinkCreateWithoutMapInput `json:"create,omitempty"`
-	Connect []LinkWhereUniqueInput      `json:"connect,omitempty"`
-}
-
-type LinkCreateWithoutMapInput struct {
-	ID     *string `json:"id,omitempty"`
-	Source string  `json:"source"`
-	Target string  `json:"target"`
-}
-
-type KnotUpdateInput struct {
-	TrackId *string                                `json:"trackId,omitempty"`
-	Level   *int32                                 `json:"level,omitempty"`
-	Visited *bool                                  `json:"visited,omitempty"`
-	Map     *MapUpdateOneRequiredWithoutKnotsInput `json:"map,omitempty"`
-}
-
-type MapUpdateOneRequiredWithoutKnotsInput struct {
-	Create  *MapCreateWithoutKnotsInput     `json:"create,omitempty"`
-	Update  *MapUpdateWithoutKnotsDataInput `json:"update,omitempty"`
-	Upsert  *MapUpsertWithoutKnotsInput     `json:"upsert,omitempty"`
-	Connect *MapWhereUniqueInput            `json:"connect,omitempty"`
-}
-
-type MapUpdateWithoutKnotsDataInput struct {
-	Title      *string                                `json:"title,omitempty"`
-	Author     *UserUpdateOneRequiredWithoutMapsInput `json:"author,omitempty"`
-	FlagshipId *string                                `json:"flagshipId,omitempty"`
-	Public     *bool                                  `json:"public,omitempty"`
-	Links      *LinkUpdateManyWithoutMapInput         `json:"links,omitempty"`
-}
-
 type UserUpdateOneRequiredWithoutMapsInput struct {
 	Create  *UserCreateWithoutMapsInput     `json:"create,omitempty"`
 	Update  *UserUpdateWithoutMapsDataInput `json:"update,omitempty"`
@@ -1479,9 +1297,20 @@ type UserUpdateOneRequiredWithoutMapsInput struct {
 	Connect *UserWhereUniqueInput           `json:"connect,omitempty"`
 }
 
+type UserCreateOneWithoutLinkedAppsInput struct {
+	Create  *UserCreateWithoutLinkedAppsInput `json:"create,omitempty"`
+	Connect *UserWhereUniqueInput             `json:"connect,omitempty"`
+}
+
 type UserUpdateWithoutMapsDataInput struct {
 	Username   *string                              `json:"username,omitempty"`
 	LinkedApps *LinkedAppUpdateManyWithoutUserInput `json:"linkedApps,omitempty"`
+}
+
+type KnotUpdateManyMutationInput struct {
+	TrackId *string `json:"trackId,omitempty"`
+	Level   *int32  `json:"level,omitempty"`
+	Visited *bool   `json:"visited,omitempty"`
 }
 
 type LinkedAppUpdateManyWithoutUserInput struct {
@@ -1496,9 +1325,31 @@ type LinkedAppUpdateManyWithoutUserInput struct {
 	UpdateMany []LinkedAppUpdateManyWithWhereNestedInput        `json:"updateMany,omitempty"`
 }
 
+type MapSubscriptionWhereInput struct {
+	MutationIn                 []MutationType              `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                     `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                    `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                    `json:"updatedFields_contains_some,omitempty"`
+	Node                       *MapWhereInput              `json:"node,omitempty"`
+	And                        []MapSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []MapSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []MapSubscriptionWhereInput `json:"NOT,omitempty"`
+}
+
 type LinkedAppUpdateWithWhereUniqueWithoutUserInput struct {
 	Where LinkedAppWhereUniqueInput           `json:"where"`
 	Data  LinkedAppUpdateWithoutUserDataInput `json:"data"`
+}
+
+type LinkSubscriptionWhereInput struct {
+	MutationIn                 []MutationType               `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                      `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                     `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                     `json:"updatedFields_contains_some,omitempty"`
+	Node                       *LinkWhereInput              `json:"node,omitempty"`
+	And                        []LinkSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []LinkSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []LinkSubscriptionWhereInput `json:"NOT,omitempty"`
 }
 
 type LinkedAppUpdateWithoutUserDataInput struct {
@@ -1510,10 +1361,21 @@ type LinkedAppUpdateWithoutUserDataInput struct {
 	Username     *string  `json:"username,omitempty"`
 }
 
+type UserUpdateManyMutationInput struct {
+	Username *string `json:"username,omitempty"`
+}
+
 type LinkedAppUpsertWithWhereUniqueWithoutUserInput struct {
 	Where  LinkedAppWhereUniqueInput           `json:"where"`
 	Update LinkedAppUpdateWithoutUserDataInput `json:"update"`
 	Create LinkedAppCreateWithoutUserInput     `json:"create"`
+}
+
+type UserCreateInput struct {
+	ID         *string                              `json:"id,omitempty"`
+	Username   *string                              `json:"username,omitempty"`
+	Maps       *MapCreateManyWithoutAuthorInput     `json:"maps,omitempty"`
+	LinkedApps *LinkedAppCreateManyWithoutUserInput `json:"linkedApps,omitempty"`
 }
 
 type LinkedAppScalarWhereInput struct {
@@ -1604,9 +1466,25 @@ type LinkedAppScalarWhereInput struct {
 	Not                       []LinkedAppScalarWhereInput `json:"NOT,omitempty"`
 }
 
+type MapUpdateManyMutationInput struct {
+	Title      *string `json:"title,omitempty"`
+	FlagshipId *string `json:"flagshipId,omitempty"`
+	Public     *bool   `json:"public,omitempty"`
+}
+
 type LinkedAppUpdateManyWithWhereNestedInput struct {
 	Where LinkedAppScalarWhereInput    `json:"where"`
 	Data  LinkedAppUpdateManyDataInput `json:"data"`
+}
+
+type MapCreateInput struct {
+	ID         *string                        `json:"id,omitempty"`
+	Title      *string                        `json:"title,omitempty"`
+	Author     UserCreateOneWithoutMapsInput  `json:"author"`
+	FlagshipId *string                        `json:"flagshipId,omitempty"`
+	Public     *bool                          `json:"public,omitempty"`
+	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
+	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
 }
 
 type LinkedAppUpdateManyDataInput struct {
@@ -1618,9 +1496,24 @@ type LinkedAppUpdateManyDataInput struct {
 	Username     *string  `json:"username,omitempty"`
 }
 
+type LinkedAppUpdateManyMutationInput struct {
+	Type         *AppType `json:"type,omitempty"`
+	AccessToken  *string  `json:"accessToken,omitempty"`
+	TokenExpiry  *string  `json:"tokenExpiry,omitempty"`
+	RefreshToken *string  `json:"refreshToken,omitempty"`
+	UserId       *string  `json:"userId,omitempty"`
+	Username     *string  `json:"username,omitempty"`
+}
+
 type UserUpsertWithoutMapsInput struct {
 	Update UserUpdateWithoutMapsDataInput `json:"update"`
 	Create UserCreateWithoutMapsInput     `json:"create"`
+}
+
+type MapUpdateManyDataInput struct {
+	Title      *string `json:"title,omitempty"`
+	FlagshipId *string `json:"flagshipId,omitempty"`
+	Public     *bool   `json:"public,omitempty"`
 }
 
 type LinkUpdateManyWithoutMapInput struct {
@@ -1635,9 +1528,22 @@ type LinkUpdateManyWithoutMapInput struct {
 	UpdateMany []LinkUpdateManyWithWhereNestedInput       `json:"updateMany,omitempty"`
 }
 
-type LinkUpdateWithWhereUniqueWithoutMapInput struct {
-	Where LinkWhereUniqueInput          `json:"where"`
-	Data  LinkUpdateWithoutMapDataInput `json:"data"`
+type MapUpdateManyWithWhereNestedInput struct {
+	Where MapScalarWhereInput    `json:"where"`
+	Data  MapUpdateManyDataInput `json:"data"`
+}
+
+type UserUpdateOneRequiredWithoutLinkedAppsInput struct {
+	Create  *UserCreateWithoutLinkedAppsInput     `json:"create,omitempty"`
+	Update  *UserUpdateWithoutLinkedAppsDataInput `json:"update,omitempty"`
+	Upsert  *UserUpsertWithoutLinkedAppsInput     `json:"upsert,omitempty"`
+	Connect *UserWhereUniqueInput                 `json:"connect,omitempty"`
+}
+
+type MapUpsertWithWhereUniqueWithoutAuthorInput struct {
+	Where  MapWhereUniqueInput             `json:"where"`
+	Update MapUpdateWithoutAuthorDataInput `json:"update"`
+	Create MapCreateWithoutAuthorInput     `json:"create"`
 }
 
 type LinkUpdateWithoutMapDataInput struct {
@@ -1645,10 +1551,30 @@ type LinkUpdateWithoutMapDataInput struct {
 	Target *string `json:"target,omitempty"`
 }
 
+type MapUpdateWithoutAuthorDataInput struct {
+	Title      *string                        `json:"title,omitempty"`
+	FlagshipId *string                        `json:"flagshipId,omitempty"`
+	Public     *bool                          `json:"public,omitempty"`
+	Knots      *KnotUpdateManyWithoutMapInput `json:"knots,omitempty"`
+	Links      *LinkUpdateManyWithoutMapInput `json:"links,omitempty"`
+}
+
 type LinkUpsertWithWhereUniqueWithoutMapInput struct {
 	Where  LinkWhereUniqueInput          `json:"where"`
 	Update LinkUpdateWithoutMapDataInput `json:"update"`
 	Create LinkCreateWithoutMapInput     `json:"create"`
+}
+
+type MapUpdateManyWithoutAuthorInput struct {
+	Create     []MapCreateWithoutAuthorInput                `json:"create,omitempty"`
+	Delete     []MapWhereUniqueInput                        `json:"delete,omitempty"`
+	Connect    []MapWhereUniqueInput                        `json:"connect,omitempty"`
+	Set        []MapWhereUniqueInput                        `json:"set,omitempty"`
+	Disconnect []MapWhereUniqueInput                        `json:"disconnect,omitempty"`
+	Update     []MapUpdateWithWhereUniqueWithoutAuthorInput `json:"update,omitempty"`
+	Upsert     []MapUpsertWithWhereUniqueWithoutAuthorInput `json:"upsert,omitempty"`
+	DeleteMany []MapScalarWhereInput                        `json:"deleteMany,omitempty"`
+	UpdateMany []MapUpdateManyWithWhereNestedInput          `json:"updateMany,omitempty"`
 }
 
 type LinkScalarWhereInput struct {
@@ -1699,225 +1625,70 @@ type LinkScalarWhereInput struct {
 	Not                 []LinkScalarWhereInput `json:"NOT,omitempty"`
 }
 
-type LinkUpdateManyWithWhereNestedInput struct {
-	Where LinkScalarWhereInput    `json:"where"`
-	Data  LinkUpdateManyDataInput `json:"data"`
-}
-
-type LinkUpdateManyDataInput struct {
-	Source *string `json:"source,omitempty"`
-	Target *string `json:"target,omitempty"`
-}
-
-type MapUpsertWithoutKnotsInput struct {
-	Update MapUpdateWithoutKnotsDataInput `json:"update"`
-	Create MapCreateWithoutKnotsInput     `json:"create"`
-}
-
-type KnotUpdateManyMutationInput struct {
-	TrackId *string `json:"trackId,omitempty"`
-	Level   *int32  `json:"level,omitempty"`
-	Visited *bool   `json:"visited,omitempty"`
-}
-
-type LinkCreateInput struct {
-	ID     *string                       `json:"id,omitempty"`
-	Map    MapCreateOneWithoutLinksInput `json:"map"`
-	Source string                        `json:"source"`
-	Target string                        `json:"target"`
-}
-
-type MapCreateOneWithoutLinksInput struct {
-	Create  *MapCreateWithoutLinksInput `json:"create,omitempty"`
+type MapCreateOneWithoutKnotsInput struct {
+	Create  *MapCreateWithoutKnotsInput `json:"create,omitempty"`
 	Connect *MapWhereUniqueInput        `json:"connect,omitempty"`
 }
 
-type MapCreateWithoutLinksInput struct {
-	ID         *string                        `json:"id,omitempty"`
-	Title      *string                        `json:"title,omitempty"`
-	Author     UserCreateOneWithoutMapsInput  `json:"author"`
-	FlagshipId *string                        `json:"flagshipId,omitempty"`
-	Public     *bool                          `json:"public,omitempty"`
-	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
+type UserWhereInput struct {
+	ID                    *string              `json:"id,omitempty"`
+	IDNot                 *string              `json:"id_not,omitempty"`
+	IDIn                  []string             `json:"id_in,omitempty"`
+	IDNotIn               []string             `json:"id_not_in,omitempty"`
+	IDLt                  *string              `json:"id_lt,omitempty"`
+	IDLte                 *string              `json:"id_lte,omitempty"`
+	IDGt                  *string              `json:"id_gt,omitempty"`
+	IDGte                 *string              `json:"id_gte,omitempty"`
+	IDContains            *string              `json:"id_contains,omitempty"`
+	IDNotContains         *string              `json:"id_not_contains,omitempty"`
+	IDStartsWith          *string              `json:"id_starts_with,omitempty"`
+	IDNotStartsWith       *string              `json:"id_not_starts_with,omitempty"`
+	IDEndsWith            *string              `json:"id_ends_with,omitempty"`
+	IDNotEndsWith         *string              `json:"id_not_ends_with,omitempty"`
+	Username              *string              `json:"username,omitempty"`
+	UsernameNot           *string              `json:"username_not,omitempty"`
+	UsernameIn            []string             `json:"username_in,omitempty"`
+	UsernameNotIn         []string             `json:"username_not_in,omitempty"`
+	UsernameLt            *string              `json:"username_lt,omitempty"`
+	UsernameLte           *string              `json:"username_lte,omitempty"`
+	UsernameGt            *string              `json:"username_gt,omitempty"`
+	UsernameGte           *string              `json:"username_gte,omitempty"`
+	UsernameContains      *string              `json:"username_contains,omitempty"`
+	UsernameNotContains   *string              `json:"username_not_contains,omitempty"`
+	UsernameStartsWith    *string              `json:"username_starts_with,omitempty"`
+	UsernameNotStartsWith *string              `json:"username_not_starts_with,omitempty"`
+	UsernameEndsWith      *string              `json:"username_ends_with,omitempty"`
+	UsernameNotEndsWith   *string              `json:"username_not_ends_with,omitempty"`
+	CreatedAt             *string              `json:"createdAt,omitempty"`
+	CreatedAtNot          *string              `json:"createdAt_not,omitempty"`
+	CreatedAtIn           []string             `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn        []string             `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt           *string              `json:"createdAt_lt,omitempty"`
+	CreatedAtLte          *string              `json:"createdAt_lte,omitempty"`
+	CreatedAtGt           *string              `json:"createdAt_gt,omitempty"`
+	CreatedAtGte          *string              `json:"createdAt_gte,omitempty"`
+	UpdatedAt             *string              `json:"updatedAt,omitempty"`
+	UpdatedAtNot          *string              `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn           []string             `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn        []string             `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt           *string              `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte          *string              `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt           *string              `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte          *string              `json:"updatedAt_gte,omitempty"`
+	MapsEvery             *MapWhereInput       `json:"maps_every,omitempty"`
+	MapsSome              *MapWhereInput       `json:"maps_some,omitempty"`
+	MapsNone              *MapWhereInput       `json:"maps_none,omitempty"`
+	LinkedAppsEvery       *LinkedAppWhereInput `json:"linkedApps_every,omitempty"`
+	LinkedAppsSome        *LinkedAppWhereInput `json:"linkedApps_some,omitempty"`
+	LinkedAppsNone        *LinkedAppWhereInput `json:"linkedApps_none,omitempty"`
+	And                   []UserWhereInput     `json:"AND,omitempty"`
+	Or                    []UserWhereInput     `json:"OR,omitempty"`
+	Not                   []UserWhereInput     `json:"NOT,omitempty"`
 }
 
-type KnotCreateManyWithoutMapInput struct {
-	Create  []KnotCreateWithoutMapInput `json:"create,omitempty"`
-	Connect []KnotWhereUniqueInput      `json:"connect,omitempty"`
-}
-
-type KnotCreateWithoutMapInput struct {
-	ID      *string `json:"id,omitempty"`
-	TrackId string  `json:"trackId"`
-	Level   int32   `json:"level"`
-	Visited *bool   `json:"visited,omitempty"`
-}
-
-type LinkUpdateInput struct {
-	Map    *MapUpdateOneRequiredWithoutLinksInput `json:"map,omitempty"`
-	Source *string                                `json:"source,omitempty"`
-	Target *string                                `json:"target,omitempty"`
-}
-
-type MapUpdateOneRequiredWithoutLinksInput struct {
-	Create  *MapCreateWithoutLinksInput     `json:"create,omitempty"`
-	Update  *MapUpdateWithoutLinksDataInput `json:"update,omitempty"`
-	Upsert  *MapUpsertWithoutLinksInput     `json:"upsert,omitempty"`
-	Connect *MapWhereUniqueInput            `json:"connect,omitempty"`
-}
-
-type MapUpdateWithoutLinksDataInput struct {
-	Title      *string                                `json:"title,omitempty"`
-	Author     *UserUpdateOneRequiredWithoutMapsInput `json:"author,omitempty"`
-	FlagshipId *string                                `json:"flagshipId,omitempty"`
-	Public     *bool                                  `json:"public,omitempty"`
-	Knots      *KnotUpdateManyWithoutMapInput         `json:"knots,omitempty"`
-}
-
-type KnotUpdateManyWithoutMapInput struct {
-	Create     []KnotCreateWithoutMapInput                `json:"create,omitempty"`
-	Delete     []KnotWhereUniqueInput                     `json:"delete,omitempty"`
-	Connect    []KnotWhereUniqueInput                     `json:"connect,omitempty"`
-	Set        []KnotWhereUniqueInput                     `json:"set,omitempty"`
-	Disconnect []KnotWhereUniqueInput                     `json:"disconnect,omitempty"`
-	Update     []KnotUpdateWithWhereUniqueWithoutMapInput `json:"update,omitempty"`
-	Upsert     []KnotUpsertWithWhereUniqueWithoutMapInput `json:"upsert,omitempty"`
-	DeleteMany []KnotScalarWhereInput                     `json:"deleteMany,omitempty"`
-	UpdateMany []KnotUpdateManyWithWhereNestedInput       `json:"updateMany,omitempty"`
-}
-
-type KnotUpdateWithWhereUniqueWithoutMapInput struct {
-	Where KnotWhereUniqueInput          `json:"where"`
-	Data  KnotUpdateWithoutMapDataInput `json:"data"`
-}
-
-type KnotUpdateWithoutMapDataInput struct {
-	TrackId *string `json:"trackId,omitempty"`
-	Level   *int32  `json:"level,omitempty"`
-	Visited *bool   `json:"visited,omitempty"`
-}
-
-type KnotUpsertWithWhereUniqueWithoutMapInput struct {
-	Where  KnotWhereUniqueInput          `json:"where"`
-	Update KnotUpdateWithoutMapDataInput `json:"update"`
-	Create KnotCreateWithoutMapInput     `json:"create"`
-}
-
-type KnotScalarWhereInput struct {
-	ID                   *string                `json:"id,omitempty"`
-	IDNot                *string                `json:"id_not,omitempty"`
-	IDIn                 []string               `json:"id_in,omitempty"`
-	IDNotIn              []string               `json:"id_not_in,omitempty"`
-	IDLt                 *string                `json:"id_lt,omitempty"`
-	IDLte                *string                `json:"id_lte,omitempty"`
-	IDGt                 *string                `json:"id_gt,omitempty"`
-	IDGte                *string                `json:"id_gte,omitempty"`
-	IDContains           *string                `json:"id_contains,omitempty"`
-	IDNotContains        *string                `json:"id_not_contains,omitempty"`
-	IDStartsWith         *string                `json:"id_starts_with,omitempty"`
-	IDNotStartsWith      *string                `json:"id_not_starts_with,omitempty"`
-	IDEndsWith           *string                `json:"id_ends_with,omitempty"`
-	IDNotEndsWith        *string                `json:"id_not_ends_with,omitempty"`
-	TrackId              *string                `json:"trackId,omitempty"`
-	TrackIdNot           *string                `json:"trackId_not,omitempty"`
-	TrackIdIn            []string               `json:"trackId_in,omitempty"`
-	TrackIdNotIn         []string               `json:"trackId_not_in,omitempty"`
-	TrackIdLt            *string                `json:"trackId_lt,omitempty"`
-	TrackIdLte           *string                `json:"trackId_lte,omitempty"`
-	TrackIdGt            *string                `json:"trackId_gt,omitempty"`
-	TrackIdGte           *string                `json:"trackId_gte,omitempty"`
-	TrackIdContains      *string                `json:"trackId_contains,omitempty"`
-	TrackIdNotContains   *string                `json:"trackId_not_contains,omitempty"`
-	TrackIdStartsWith    *string                `json:"trackId_starts_with,omitempty"`
-	TrackIdNotStartsWith *string                `json:"trackId_not_starts_with,omitempty"`
-	TrackIdEndsWith      *string                `json:"trackId_ends_with,omitempty"`
-	TrackIdNotEndsWith   *string                `json:"trackId_not_ends_with,omitempty"`
-	Level                *int32                 `json:"level,omitempty"`
-	LevelNot             *int32                 `json:"level_not,omitempty"`
-	LevelIn              []int32                `json:"level_in,omitempty"`
-	LevelNotIn           []int32                `json:"level_not_in,omitempty"`
-	LevelLt              *int32                 `json:"level_lt,omitempty"`
-	LevelLte             *int32                 `json:"level_lte,omitempty"`
-	LevelGt              *int32                 `json:"level_gt,omitempty"`
-	LevelGte             *int32                 `json:"level_gte,omitempty"`
-	Visited              *bool                  `json:"visited,omitempty"`
-	VisitedNot           *bool                  `json:"visited_not,omitempty"`
-	CreatedAt            *string                `json:"createdAt,omitempty"`
-	CreatedAtNot         *string                `json:"createdAt_not,omitempty"`
-	CreatedAtIn          []string               `json:"createdAt_in,omitempty"`
-	CreatedAtNotIn       []string               `json:"createdAt_not_in,omitempty"`
-	CreatedAtLt          *string                `json:"createdAt_lt,omitempty"`
-	CreatedAtLte         *string                `json:"createdAt_lte,omitempty"`
-	CreatedAtGt          *string                `json:"createdAt_gt,omitempty"`
-	CreatedAtGte         *string                `json:"createdAt_gte,omitempty"`
-	UpdatedAt            *string                `json:"updatedAt,omitempty"`
-	UpdatedAtNot         *string                `json:"updatedAt_not,omitempty"`
-	UpdatedAtIn          []string               `json:"updatedAt_in,omitempty"`
-	UpdatedAtNotIn       []string               `json:"updatedAt_not_in,omitempty"`
-	UpdatedAtLt          *string                `json:"updatedAt_lt,omitempty"`
-	UpdatedAtLte         *string                `json:"updatedAt_lte,omitempty"`
-	UpdatedAtGt          *string                `json:"updatedAt_gt,omitempty"`
-	UpdatedAtGte         *string                `json:"updatedAt_gte,omitempty"`
-	And                  []KnotScalarWhereInput `json:"AND,omitempty"`
-	Or                   []KnotScalarWhereInput `json:"OR,omitempty"`
-	Not                  []KnotScalarWhereInput `json:"NOT,omitempty"`
-}
-
-type KnotUpdateManyWithWhereNestedInput struct {
-	Where KnotScalarWhereInput    `json:"where"`
-	Data  KnotUpdateManyDataInput `json:"data"`
-}
-
-type KnotUpdateManyDataInput struct {
-	TrackId *string `json:"trackId,omitempty"`
-	Level   *int32  `json:"level,omitempty"`
-	Visited *bool   `json:"visited,omitempty"`
-}
-
-type MapUpsertWithoutLinksInput struct {
-	Update MapUpdateWithoutLinksDataInput `json:"update"`
-	Create MapCreateWithoutLinksInput     `json:"create"`
-}
-
-type LinkUpdateManyMutationInput struct {
-	Source *string `json:"source,omitempty"`
-	Target *string `json:"target,omitempty"`
-}
-
-type LinkedAppCreateInput struct {
-	ID           *string                             `json:"id,omitempty"`
-	Type         AppType                             `json:"type"`
-	AccessToken  *string                             `json:"accessToken,omitempty"`
-	TokenExpiry  *string                             `json:"tokenExpiry,omitempty"`
-	RefreshToken *string                             `json:"refreshToken,omitempty"`
-	UserId       string                              `json:"userId"`
-	Username     *string                             `json:"username,omitempty"`
-	User         UserCreateOneWithoutLinkedAppsInput `json:"user"`
-}
-
-type UserCreateOneWithoutLinkedAppsInput struct {
-	Create  *UserCreateWithoutLinkedAppsInput `json:"create,omitempty"`
-	Connect *UserWhereUniqueInput             `json:"connect,omitempty"`
-}
-
-type UserCreateWithoutLinkedAppsInput struct {
-	ID       *string                          `json:"id,omitempty"`
-	Username *string                          `json:"username,omitempty"`
-	Maps     *MapCreateManyWithoutAuthorInput `json:"maps,omitempty"`
-}
-
-type MapCreateManyWithoutAuthorInput struct {
-	Create  []MapCreateWithoutAuthorInput `json:"create,omitempty"`
-	Connect []MapWhereUniqueInput         `json:"connect,omitempty"`
-}
-
-type MapCreateWithoutAuthorInput struct {
-	ID         *string                        `json:"id,omitempty"`
-	Title      *string                        `json:"title,omitempty"`
-	FlagshipId *string                        `json:"flagshipId,omitempty"`
-	Public     *bool                          `json:"public,omitempty"`
-	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
-	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
+type UserCreateOneWithoutMapsInput struct {
+	Create  *UserCreateWithoutMapsInput `json:"create,omitempty"`
+	Connect *UserWhereUniqueInput       `json:"connect,omitempty"`
 }
 
 type LinkedAppUpdateInput struct {
@@ -1930,47 +1701,155 @@ type LinkedAppUpdateInput struct {
 	User         *UserUpdateOneRequiredWithoutLinkedAppsInput `json:"user,omitempty"`
 }
 
-type UserUpdateOneRequiredWithoutLinkedAppsInput struct {
-	Create  *UserCreateWithoutLinkedAppsInput     `json:"create,omitempty"`
-	Update  *UserUpdateWithoutLinkedAppsDataInput `json:"update,omitempty"`
-	Upsert  *UserUpsertWithoutLinkedAppsInput     `json:"upsert,omitempty"`
-	Connect *UserWhereUniqueInput                 `json:"connect,omitempty"`
+type LinkedAppCreateManyWithoutUserInput struct {
+	Create  []LinkedAppCreateWithoutUserInput `json:"create,omitempty"`
+	Connect []LinkedAppWhereUniqueInput       `json:"connect,omitempty"`
 }
 
-type UserUpdateWithoutLinkedAppsDataInput struct {
-	Username *string                          `json:"username,omitempty"`
-	Maps     *MapUpdateManyWithoutAuthorInput `json:"maps,omitempty"`
+type LinkWhereInput struct {
+	ID                  *string          `json:"id,omitempty"`
+	IDNot               *string          `json:"id_not,omitempty"`
+	IDIn                []string         `json:"id_in,omitempty"`
+	IDNotIn             []string         `json:"id_not_in,omitempty"`
+	IDLt                *string          `json:"id_lt,omitempty"`
+	IDLte               *string          `json:"id_lte,omitempty"`
+	IDGt                *string          `json:"id_gt,omitempty"`
+	IDGte               *string          `json:"id_gte,omitempty"`
+	IDContains          *string          `json:"id_contains,omitempty"`
+	IDNotContains       *string          `json:"id_not_contains,omitempty"`
+	IDStartsWith        *string          `json:"id_starts_with,omitempty"`
+	IDNotStartsWith     *string          `json:"id_not_starts_with,omitempty"`
+	IDEndsWith          *string          `json:"id_ends_with,omitempty"`
+	IDNotEndsWith       *string          `json:"id_not_ends_with,omitempty"`
+	Map                 *MapWhereInput   `json:"map,omitempty"`
+	Source              *string          `json:"source,omitempty"`
+	SourceNot           *string          `json:"source_not,omitempty"`
+	SourceIn            []string         `json:"source_in,omitempty"`
+	SourceNotIn         []string         `json:"source_not_in,omitempty"`
+	SourceLt            *string          `json:"source_lt,omitempty"`
+	SourceLte           *string          `json:"source_lte,omitempty"`
+	SourceGt            *string          `json:"source_gt,omitempty"`
+	SourceGte           *string          `json:"source_gte,omitempty"`
+	SourceContains      *string          `json:"source_contains,omitempty"`
+	SourceNotContains   *string          `json:"source_not_contains,omitempty"`
+	SourceStartsWith    *string          `json:"source_starts_with,omitempty"`
+	SourceNotStartsWith *string          `json:"source_not_starts_with,omitempty"`
+	SourceEndsWith      *string          `json:"source_ends_with,omitempty"`
+	SourceNotEndsWith   *string          `json:"source_not_ends_with,omitempty"`
+	Target              *string          `json:"target,omitempty"`
+	TargetNot           *string          `json:"target_not,omitempty"`
+	TargetIn            []string         `json:"target_in,omitempty"`
+	TargetNotIn         []string         `json:"target_not_in,omitempty"`
+	TargetLt            *string          `json:"target_lt,omitempty"`
+	TargetLte           *string          `json:"target_lte,omitempty"`
+	TargetGt            *string          `json:"target_gt,omitempty"`
+	TargetGte           *string          `json:"target_gte,omitempty"`
+	TargetContains      *string          `json:"target_contains,omitempty"`
+	TargetNotContains   *string          `json:"target_not_contains,omitempty"`
+	TargetStartsWith    *string          `json:"target_starts_with,omitempty"`
+	TargetNotStartsWith *string          `json:"target_not_starts_with,omitempty"`
+	TargetEndsWith      *string          `json:"target_ends_with,omitempty"`
+	TargetNotEndsWith   *string          `json:"target_not_ends_with,omitempty"`
+	And                 []LinkWhereInput `json:"AND,omitempty"`
+	Or                  []LinkWhereInput `json:"OR,omitempty"`
+	Not                 []LinkWhereInput `json:"NOT,omitempty"`
 }
 
-type MapUpdateManyWithoutAuthorInput struct {
-	Create     []MapCreateWithoutAuthorInput                `json:"create,omitempty"`
-	Delete     []MapWhereUniqueInput                        `json:"delete,omitempty"`
-	Connect    []MapWhereUniqueInput                        `json:"connect,omitempty"`
-	Set        []MapWhereUniqueInput                        `json:"set,omitempty"`
-	Disconnect []MapWhereUniqueInput                        `json:"disconnect,omitempty"`
-	Update     []MapUpdateWithWhereUniqueWithoutAuthorInput `json:"update,omitempty"`
-	Upsert     []MapUpsertWithWhereUniqueWithoutAuthorInput `json:"upsert,omitempty"`
-	DeleteMany []MapScalarWhereInput                        `json:"deleteMany,omitempty"`
-	UpdateMany []MapUpdateManyWithWhereNestedInput          `json:"updateMany,omitempty"`
+type LinkCreateManyWithoutMapInput struct {
+	Create  []LinkCreateWithoutMapInput `json:"create,omitempty"`
+	Connect []LinkWhereUniqueInput      `json:"connect,omitempty"`
 }
 
-type MapUpdateWithWhereUniqueWithoutAuthorInput struct {
-	Where MapWhereUniqueInput             `json:"where"`
-	Data  MapUpdateWithoutAuthorDataInput `json:"data"`
-}
-
-type MapUpdateWithoutAuthorDataInput struct {
+type MapCreateWithoutAuthorInput struct {
+	ID         *string                        `json:"id,omitempty"`
 	Title      *string                        `json:"title,omitempty"`
 	FlagshipId *string                        `json:"flagshipId,omitempty"`
 	Public     *bool                          `json:"public,omitempty"`
-	Knots      *KnotUpdateManyWithoutMapInput `json:"knots,omitempty"`
-	Links      *LinkUpdateManyWithoutMapInput `json:"links,omitempty"`
+	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
+	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
 }
 
-type MapUpsertWithWhereUniqueWithoutAuthorInput struct {
-	Where  MapWhereUniqueInput             `json:"where"`
-	Update MapUpdateWithoutAuthorDataInput `json:"update"`
-	Create MapCreateWithoutAuthorInput     `json:"create"`
+type KnotUpdateInput struct {
+	TrackId *string                                `json:"trackId,omitempty"`
+	Level   *int32                                 `json:"level,omitempty"`
+	Visited *bool                                  `json:"visited,omitempty"`
+	Map     *MapUpdateOneRequiredWithoutKnotsInput `json:"map,omitempty"`
+}
+
+type MapCreateManyWithoutAuthorInput struct {
+	Create  []MapCreateWithoutAuthorInput `json:"create,omitempty"`
+	Connect []MapWhereUniqueInput         `json:"connect,omitempty"`
+}
+
+type MapUpdateWithoutKnotsDataInput struct {
+	Title      *string                                `json:"title,omitempty"`
+	Author     *UserUpdateOneRequiredWithoutMapsInput `json:"author,omitempty"`
+	FlagshipId *string                                `json:"flagshipId,omitempty"`
+	Public     *bool                                  `json:"public,omitempty"`
+	Links      *LinkUpdateManyWithoutMapInput         `json:"links,omitempty"`
+}
+
+type UserCreateWithoutLinkedAppsInput struct {
+	ID       *string                          `json:"id,omitempty"`
+	Username *string                          `json:"username,omitempty"`
+	Maps     *MapCreateManyWithoutAuthorInput `json:"maps,omitempty"`
+}
+
+type LinkedAppSubscriptionWhereInput struct {
+	MutationIn                 []MutationType                    `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                           `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                          `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                          `json:"updatedFields_contains_some,omitempty"`
+	Node                       *LinkedAppWhereInput              `json:"node,omitempty"`
+	And                        []LinkedAppSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []LinkedAppSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []LinkedAppSubscriptionWhereInput `json:"NOT,omitempty"`
+}
+
+type LinkCreateInput struct {
+	ID     *string                       `json:"id,omitempty"`
+	Map    MapCreateOneWithoutLinksInput `json:"map"`
+	Source string                        `json:"source"`
+	Target string                        `json:"target"`
+}
+
+type UserUpdateInput struct {
+	Username   *string                              `json:"username,omitempty"`
+	Maps       *MapUpdateManyWithoutAuthorInput     `json:"maps,omitempty"`
+	LinkedApps *LinkedAppUpdateManyWithoutUserInput `json:"linkedApps,omitempty"`
+}
+
+type MapCreateOneWithoutLinksInput struct {
+	Create  *MapCreateWithoutLinksInput `json:"create,omitempty"`
+	Connect *MapWhereUniqueInput        `json:"connect,omitempty"`
+}
+
+type MapUpdateInput struct {
+	Title      *string                                `json:"title,omitempty"`
+	Author     *UserUpdateOneRequiredWithoutMapsInput `json:"author,omitempty"`
+	FlagshipId *string                                `json:"flagshipId,omitempty"`
+	Public     *bool                                  `json:"public,omitempty"`
+	Knots      *KnotUpdateManyWithoutMapInput         `json:"knots,omitempty"`
+	Links      *LinkUpdateManyWithoutMapInput         `json:"links,omitempty"`
+}
+
+type MapCreateWithoutLinksInput struct {
+	ID         *string                        `json:"id,omitempty"`
+	Title      *string                        `json:"title,omitempty"`
+	Author     UserCreateOneWithoutMapsInput  `json:"author"`
+	FlagshipId *string                        `json:"flagshipId,omitempty"`
+	Public     *bool                          `json:"public,omitempty"`
+	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
+}
+
+type UserUpsertWithoutLinkedAppsInput struct {
+	Update UserUpdateWithoutLinkedAppsDataInput `json:"update"`
+	Create UserCreateWithoutLinkedAppsInput     `json:"create"`
+}
+
+type KnotCreateManyWithoutMapInput struct {
+	Create  []KnotCreateWithoutMapInput `json:"create,omitempty"`
+	Connect []KnotWhereUniqueInput      `json:"connect,omitempty"`
 }
 
 type MapScalarWhereInput struct {
@@ -2039,115 +1918,69 @@ type MapScalarWhereInput struct {
 	Not                     []MapScalarWhereInput `json:"NOT,omitempty"`
 }
 
-type MapUpdateManyWithWhereNestedInput struct {
-	Where MapScalarWhereInput    `json:"where"`
-	Data  MapUpdateManyDataInput `json:"data"`
+type KnotCreateWithoutMapInput struct {
+	ID      *string `json:"id,omitempty"`
+	TrackId string  `json:"trackId"`
+	Level   int32   `json:"level"`
+	Visited *bool   `json:"visited,omitempty"`
 }
 
-type MapUpdateManyDataInput struct {
-	Title      *string `json:"title,omitempty"`
-	FlagshipId *string `json:"flagshipId,omitempty"`
-	Public     *bool   `json:"public,omitempty"`
+type MapUpdateWithWhereUniqueWithoutAuthorInput struct {
+	Where MapWhereUniqueInput             `json:"where"`
+	Data  MapUpdateWithoutAuthorDataInput `json:"data"`
 }
 
-type UserUpsertWithoutLinkedAppsInput struct {
-	Update UserUpdateWithoutLinkedAppsDataInput `json:"update"`
-	Create UserCreateWithoutLinkedAppsInput     `json:"create"`
+type LinkUpdateInput struct {
+	Map    *MapUpdateOneRequiredWithoutLinksInput `json:"map,omitempty"`
+	Source *string                                `json:"source,omitempty"`
+	Target *string                                `json:"target,omitempty"`
 }
 
-type LinkedAppUpdateManyMutationInput struct {
-	Type         *AppType `json:"type,omitempty"`
-	AccessToken  *string  `json:"accessToken,omitempty"`
-	TokenExpiry  *string  `json:"tokenExpiry,omitempty"`
-	RefreshToken *string  `json:"refreshToken,omitempty"`
-	UserId       *string  `json:"userId,omitempty"`
-	Username     *string  `json:"username,omitempty"`
+type KnotCreateInput struct {
+	ID      *string                       `json:"id,omitempty"`
+	TrackId string                        `json:"trackId"`
+	Level   int32                         `json:"level"`
+	Visited *bool                         `json:"visited,omitempty"`
+	Map     MapCreateOneWithoutKnotsInput `json:"map"`
 }
 
-type MapCreateInput struct {
-	ID         *string                        `json:"id,omitempty"`
-	Title      *string                        `json:"title,omitempty"`
-	Author     UserCreateOneWithoutMapsInput  `json:"author"`
-	FlagshipId *string                        `json:"flagshipId,omitempty"`
-	Public     *bool                          `json:"public,omitempty"`
-	Knots      *KnotCreateManyWithoutMapInput `json:"knots,omitempty"`
-	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
+type MapUpdateOneRequiredWithoutLinksInput struct {
+	Create  *MapCreateWithoutLinksInput     `json:"create,omitempty"`
+	Update  *MapUpdateWithoutLinksDataInput `json:"update,omitempty"`
+	Upsert  *MapUpsertWithoutLinksInput     `json:"upsert,omitempty"`
+	Connect *MapWhereUniqueInput            `json:"connect,omitempty"`
 }
 
-type MapUpdateInput struct {
+type UserCreateWithoutMapsInput struct {
+	ID         *string                              `json:"id,omitempty"`
+	Username   *string                              `json:"username,omitempty"`
+	LinkedApps *LinkedAppCreateManyWithoutUserInput `json:"linkedApps,omitempty"`
+}
+
+type MapUpdateWithoutLinksDataInput struct {
 	Title      *string                                `json:"title,omitempty"`
 	Author     *UserUpdateOneRequiredWithoutMapsInput `json:"author,omitempty"`
 	FlagshipId *string                                `json:"flagshipId,omitempty"`
 	Public     *bool                                  `json:"public,omitempty"`
 	Knots      *KnotUpdateManyWithoutMapInput         `json:"knots,omitempty"`
-	Links      *LinkUpdateManyWithoutMapInput         `json:"links,omitempty"`
 }
 
-type MapUpdateManyMutationInput struct {
-	Title      *string `json:"title,omitempty"`
-	FlagshipId *string `json:"flagshipId,omitempty"`
-	Public     *bool   `json:"public,omitempty"`
+type LinkCreateWithoutMapInput struct {
+	ID     *string `json:"id,omitempty"`
+	Source string  `json:"source"`
+	Target string  `json:"target"`
 }
 
-type UserCreateInput struct {
-	ID         *string                              `json:"id,omitempty"`
-	Username   *string                              `json:"username,omitempty"`
-	Maps       *MapCreateManyWithoutAuthorInput     `json:"maps,omitempty"`
-	LinkedApps *LinkedAppCreateManyWithoutUserInput `json:"linkedApps,omitempty"`
-}
-
-type UserUpdateInput struct {
-	Username   *string                              `json:"username,omitempty"`
-	Maps       *MapUpdateManyWithoutAuthorInput     `json:"maps,omitempty"`
-	LinkedApps *LinkedAppUpdateManyWithoutUserInput `json:"linkedApps,omitempty"`
-}
-
-type UserUpdateManyMutationInput struct {
-	Username *string `json:"username,omitempty"`
-}
-
-type KnotSubscriptionWhereInput struct {
-	MutationIn                 []MutationType               `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                      `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                     `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                     `json:"updatedFields_contains_some,omitempty"`
-	Node                       *KnotWhereInput              `json:"node,omitempty"`
-	And                        []KnotSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []KnotSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []KnotSubscriptionWhereInput `json:"NOT,omitempty"`
-}
-
-type LinkSubscriptionWhereInput struct {
-	MutationIn                 []MutationType               `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                      `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                     `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                     `json:"updatedFields_contains_some,omitempty"`
-	Node                       *LinkWhereInput              `json:"node,omitempty"`
-	And                        []LinkSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []LinkSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []LinkSubscriptionWhereInput `json:"NOT,omitempty"`
-}
-
-type LinkedAppSubscriptionWhereInput struct {
-	MutationIn                 []MutationType                    `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                           `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                          `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                          `json:"updatedFields_contains_some,omitempty"`
-	Node                       *LinkedAppWhereInput              `json:"node,omitempty"`
-	And                        []LinkedAppSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []LinkedAppSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []LinkedAppSubscriptionWhereInput `json:"NOT,omitempty"`
-}
-
-type MapSubscriptionWhereInput struct {
-	MutationIn                 []MutationType              `json:"mutation_in,omitempty"`
-	UpdatedFieldsContains      *string                     `json:"updatedFields_contains,omitempty"`
-	UpdatedFieldsContainsEvery []string                    `json:"updatedFields_contains_every,omitempty"`
-	UpdatedFieldsContainsSome  []string                    `json:"updatedFields_contains_some,omitempty"`
-	Node                       *MapWhereInput              `json:"node,omitempty"`
-	And                        []MapSubscriptionWhereInput `json:"AND,omitempty"`
-	Or                         []MapSubscriptionWhereInput `json:"OR,omitempty"`
-	Not                        []MapSubscriptionWhereInput `json:"NOT,omitempty"`
+type KnotUpdateManyWithoutMapInput struct {
+	Create     []KnotCreateWithoutMapInput                `json:"create,omitempty"`
+	Delete     []KnotWhereUniqueInput                     `json:"delete,omitempty"`
+	Connect    []KnotWhereUniqueInput                     `json:"connect,omitempty"`
+	Set        []KnotWhereUniqueInput                     `json:"set,omitempty"`
+	Disconnect []KnotWhereUniqueInput                     `json:"disconnect,omitempty"`
+	Update     []KnotUpdateWithWhereUniqueWithoutMapInput `json:"update,omitempty"`
+	Upsert     []KnotUpsertWithWhereUniqueWithoutMapInput `json:"upsert,omitempty"`
+	DeleteMany []KnotScalarWhereInput                     `json:"deleteMany,omitempty"`
+	UpdateMany []KnotUpdateManyWithWhereNestedInput       `json:"updateMany,omitempty"`
 }
 
 type UserSubscriptionWhereInput struct {
@@ -2161,23 +1994,179 @@ type UserSubscriptionWhereInput struct {
 	Not                        []UserSubscriptionWhereInput `json:"NOT,omitempty"`
 }
 
-type KnotExec struct {
+type KnotUpdateWithWhereUniqueWithoutMapInput struct {
+	Where KnotWhereUniqueInput          `json:"where"`
+	Data  KnotUpdateWithoutMapDataInput `json:"data"`
+}
+
+type LinkWhereUniqueInput struct {
+	ID *string `json:"id,omitempty"`
+}
+
+type KnotUpdateWithoutMapDataInput struct {
+	TrackId *string `json:"trackId,omitempty"`
+	Level   *int32  `json:"level,omitempty"`
+	Visited *bool   `json:"visited,omitempty"`
+}
+
+type MapWhereUniqueInput struct {
+	ID *string `json:"id,omitempty"`
+}
+
+type KnotUpsertWithWhereUniqueWithoutMapInput struct {
+	Where  KnotWhereUniqueInput          `json:"where"`
+	Update KnotUpdateWithoutMapDataInput `json:"update"`
+	Create KnotCreateWithoutMapInput     `json:"create"`
+}
+
+type UserUpdateWithoutLinkedAppsDataInput struct {
+	Username *string                          `json:"username,omitempty"`
+	Maps     *MapUpdateManyWithoutAuthorInput `json:"maps,omitempty"`
+}
+
+type KnotScalarWhereInput struct {
+	ID                   *string                `json:"id,omitempty"`
+	IDNot                *string                `json:"id_not,omitempty"`
+	IDIn                 []string               `json:"id_in,omitempty"`
+	IDNotIn              []string               `json:"id_not_in,omitempty"`
+	IDLt                 *string                `json:"id_lt,omitempty"`
+	IDLte                *string                `json:"id_lte,omitempty"`
+	IDGt                 *string                `json:"id_gt,omitempty"`
+	IDGte                *string                `json:"id_gte,omitempty"`
+	IDContains           *string                `json:"id_contains,omitempty"`
+	IDNotContains        *string                `json:"id_not_contains,omitempty"`
+	IDStartsWith         *string                `json:"id_starts_with,omitempty"`
+	IDNotStartsWith      *string                `json:"id_not_starts_with,omitempty"`
+	IDEndsWith           *string                `json:"id_ends_with,omitempty"`
+	IDNotEndsWith        *string                `json:"id_not_ends_with,omitempty"`
+	TrackId              *string                `json:"trackId,omitempty"`
+	TrackIdNot           *string                `json:"trackId_not,omitempty"`
+	TrackIdIn            []string               `json:"trackId_in,omitempty"`
+	TrackIdNotIn         []string               `json:"trackId_not_in,omitempty"`
+	TrackIdLt            *string                `json:"trackId_lt,omitempty"`
+	TrackIdLte           *string                `json:"trackId_lte,omitempty"`
+	TrackIdGt            *string                `json:"trackId_gt,omitempty"`
+	TrackIdGte           *string                `json:"trackId_gte,omitempty"`
+	TrackIdContains      *string                `json:"trackId_contains,omitempty"`
+	TrackIdNotContains   *string                `json:"trackId_not_contains,omitempty"`
+	TrackIdStartsWith    *string                `json:"trackId_starts_with,omitempty"`
+	TrackIdNotStartsWith *string                `json:"trackId_not_starts_with,omitempty"`
+	TrackIdEndsWith      *string                `json:"trackId_ends_with,omitempty"`
+	TrackIdNotEndsWith   *string                `json:"trackId_not_ends_with,omitempty"`
+	Level                *int32                 `json:"level,omitempty"`
+	LevelNot             *int32                 `json:"level_not,omitempty"`
+	LevelIn              []int32                `json:"level_in,omitempty"`
+	LevelNotIn           []int32                `json:"level_not_in,omitempty"`
+	LevelLt              *int32                 `json:"level_lt,omitempty"`
+	LevelLte             *int32                 `json:"level_lte,omitempty"`
+	LevelGt              *int32                 `json:"level_gt,omitempty"`
+	LevelGte             *int32                 `json:"level_gte,omitempty"`
+	Visited              *bool                  `json:"visited,omitempty"`
+	VisitedNot           *bool                  `json:"visited_not,omitempty"`
+	CreatedAt            *string                `json:"createdAt,omitempty"`
+	CreatedAtNot         *string                `json:"createdAt_not,omitempty"`
+	CreatedAtIn          []string               `json:"createdAt_in,omitempty"`
+	CreatedAtNotIn       []string               `json:"createdAt_not_in,omitempty"`
+	CreatedAtLt          *string                `json:"createdAt_lt,omitempty"`
+	CreatedAtLte         *string                `json:"createdAt_lte,omitempty"`
+	CreatedAtGt          *string                `json:"createdAt_gt,omitempty"`
+	CreatedAtGte         *string                `json:"createdAt_gte,omitempty"`
+	UpdatedAt            *string                `json:"updatedAt,omitempty"`
+	UpdatedAtNot         *string                `json:"updatedAt_not,omitempty"`
+	UpdatedAtIn          []string               `json:"updatedAt_in,omitempty"`
+	UpdatedAtNotIn       []string               `json:"updatedAt_not_in,omitempty"`
+	UpdatedAtLt          *string                `json:"updatedAt_lt,omitempty"`
+	UpdatedAtLte         *string                `json:"updatedAt_lte,omitempty"`
+	UpdatedAtGt          *string                `json:"updatedAt_gt,omitempty"`
+	UpdatedAtGte         *string                `json:"updatedAt_gte,omitempty"`
+	And                  []KnotScalarWhereInput `json:"AND,omitempty"`
+	Or                   []KnotScalarWhereInput `json:"OR,omitempty"`
+	Not                  []KnotScalarWhereInput `json:"NOT,omitempty"`
+}
+
+type LinkedAppCreateWithoutUserInput struct {
+	ID           *string `json:"id,omitempty"`
+	Type         AppType `json:"type"`
+	AccessToken  *string `json:"accessToken,omitempty"`
+	TokenExpiry  *string `json:"tokenExpiry,omitempty"`
+	RefreshToken *string `json:"refreshToken,omitempty"`
+	UserId       string  `json:"userId"`
+	Username     *string `json:"username,omitempty"`
+}
+
+type KnotUpdateManyWithWhereNestedInput struct {
+	Where KnotScalarWhereInput    `json:"where"`
+	Data  KnotUpdateManyDataInput `json:"data"`
+}
+
+type KnotSubscriptionWhereInput struct {
+	MutationIn                 []MutationType               `json:"mutation_in,omitempty"`
+	UpdatedFieldsContains      *string                      `json:"updatedFields_contains,omitempty"`
+	UpdatedFieldsContainsEvery []string                     `json:"updatedFields_contains_every,omitempty"`
+	UpdatedFieldsContainsSome  []string                     `json:"updatedFields_contains_some,omitempty"`
+	Node                       *KnotWhereInput              `json:"node,omitempty"`
+	And                        []KnotSubscriptionWhereInput `json:"AND,omitempty"`
+	Or                         []KnotSubscriptionWhereInput `json:"OR,omitempty"`
+	Not                        []KnotSubscriptionWhereInput `json:"NOT,omitempty"`
+}
+
+type LinkedAppCreateInput struct {
+	ID           *string                             `json:"id,omitempty"`
+	Type         AppType                             `json:"type"`
+	AccessToken  *string                             `json:"accessToken,omitempty"`
+	TokenExpiry  *string                             `json:"tokenExpiry,omitempty"`
+	RefreshToken *string                             `json:"refreshToken,omitempty"`
+	UserId       string                              `json:"userId"`
+	Username     *string                             `json:"username,omitempty"`
+	User         UserCreateOneWithoutLinkedAppsInput `json:"user"`
+}
+
+type LinkUpdateManyMutationInput struct {
+	Source *string `json:"source,omitempty"`
+	Target *string `json:"target,omitempty"`
+}
+
+type MapUpsertWithoutLinksInput struct {
+	Update MapUpdateWithoutLinksDataInput `json:"update"`
+	Create MapCreateWithoutLinksInput     `json:"create"`
+}
+
+type KnotUpdateManyDataInput struct {
+	TrackId *string `json:"trackId,omitempty"`
+	Level   *int32  `json:"level,omitempty"`
+	Visited *bool   `json:"visited,omitempty"`
+}
+
+type LinkedAppWhereUniqueInput struct {
+	ID *string `json:"id,omitempty"`
+}
+
+type MapUpdateOneRequiredWithoutKnotsInput struct {
+	Create  *MapCreateWithoutKnotsInput     `json:"create,omitempty"`
+	Update  *MapUpdateWithoutKnotsDataInput `json:"update,omitempty"`
+	Upsert  *MapUpsertWithoutKnotsInput     `json:"upsert,omitempty"`
+	Connect *MapWhereUniqueInput            `json:"connect,omitempty"`
+}
+
+type MapCreateWithoutKnotsInput struct {
+	ID         *string                        `json:"id,omitempty"`
+	Title      *string                        `json:"title,omitempty"`
+	Author     UserCreateOneWithoutMapsInput  `json:"author"`
+	FlagshipId *string                        `json:"flagshipId,omitempty"`
+	Public     *bool                          `json:"public,omitempty"`
+	Links      *LinkCreateManyWithoutMapInput `json:"links,omitempty"`
+}
+
+type UserWhereUniqueInput struct {
+	ID *string `json:"id,omitempty"`
+}
+
+type UserPreviousValuesExec struct {
 	exec *prisma.Exec
 }
 
-func (instance *KnotExec) Map() *MapExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Map"},
-		"map",
-		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
-
-	return &MapExec{ret}
-}
-
-func (instance KnotExec) Exec(ctx context.Context) (*Knot, error) {
-	var v Knot
+func (instance UserPreviousValuesExec) Exec(ctx context.Context) (*UserPreviousValues, error) {
+	var v UserPreviousValues
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -2188,29 +2177,182 @@ func (instance KnotExec) Exec(ctx context.Context) (*Knot, error) {
 	return &v, nil
 }
 
-func (instance KnotExec) Exists(ctx context.Context) (bool, error) {
+func (instance UserPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type KnotExecArray struct {
+type UserPreviousValuesExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance KnotExecArray) Exec(ctx context.Context) ([]Knot, error) {
-	var v []Knot
+func (instance UserPreviousValuesExecArray) Exec(ctx context.Context) ([]UserPreviousValues, error) {
+	var v []UserPreviousValues
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-var KnotFields = []string{"id", "trackId", "level", "visited", "createdAt", "updatedAt"}
+var UserPreviousValuesFields = []string{"id", "username", "createdAt", "updatedAt"}
 
-type Knot struct {
-	ID        string `json:"id"`
-	TrackId   string `json:"trackId"`
-	Level     int32  `json:"level"`
-	Visited   bool   `json:"visited"`
-	CreatedAt string `json:"createdAt"`
-	UpdatedAt string `json:"updatedAt"`
+type UserPreviousValues struct {
+	ID        string  `json:"id"`
+	Username  *string `json:"username,omitempty"`
+	CreatedAt string  `json:"createdAt"`
+	UpdatedAt string  `json:"updatedAt"`
+}
+
+type UserExec struct {
+	exec *prisma.Exec
+}
+
+type MapsParamsExec struct {
+	Where   *MapWhereInput
+	OrderBy *MapOrderByInput
+	Skip    *int32
+	After   *string
+	Before  *string
+	First   *int32
+	Last    *int32
+}
+
+func (instance *UserExec) Maps(params *MapsParamsExec) *MapExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := instance.exec.Client.GetMany(
+		instance.exec,
+		wparams,
+		[3]string{"MapWhereInput", "MapOrderByInput", "Map"},
+		"maps",
+		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
+
+	return &MapExecArray{ret}
+}
+
+type LinkedAppsParamsExec struct {
+	Where   *LinkedAppWhereInput
+	OrderBy *LinkedAppOrderByInput
+	Skip    *int32
+	After   *string
+	Before  *string
+	First   *int32
+	Last    *int32
+}
+
+func (instance *UserExec) LinkedApps(params *LinkedAppsParamsExec) *LinkedAppExecArray {
+	var wparams *prisma.WhereParams
+	if params != nil {
+		wparams = &prisma.WhereParams{
+			Where:   params.Where,
+			OrderBy: (*string)(params.OrderBy),
+			Skip:    params.Skip,
+			After:   params.After,
+			Before:  params.Before,
+			First:   params.First,
+			Last:    params.Last,
+		}
+	}
+
+	ret := instance.exec.Client.GetMany(
+		instance.exec,
+		wparams,
+		[3]string{"LinkedAppWhereInput", "LinkedAppOrderByInput", "LinkedApp"},
+		"linkedApps",
+		[]string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"})
+
+	return &LinkedAppExecArray{ret}
+}
+
+func (instance UserExec) Exec(ctx context.Context) (*User, error) {
+	var v User
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance UserExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type UserExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance UserExecArray) Exec(ctx context.Context) ([]User, error) {
+	var v []User
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var UserFields = []string{"id", "username", "createdAt", "updatedAt"}
+
+type User struct {
+	ID        string  `json:"id"`
+	Username  *string `json:"username,omitempty"`
+	CreatedAt string  `json:"createdAt"`
+	UpdatedAt string  `json:"updatedAt"`
+}
+
+type KnotEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *KnotEdgeExec) Node() *KnotExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Knot"},
+		"node",
+		[]string{"id", "trackId", "level", "visited", "createdAt", "updatedAt"})
+
+	return &KnotExec{ret}
+}
+
+func (instance KnotEdgeExec) Exec(ctx context.Context) (*KnotEdge, error) {
+	var v KnotEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance KnotEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type KnotEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance KnotEdgeExecArray) Exec(ctx context.Context) ([]KnotEdge, error) {
+	var v []KnotEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var KnotEdgeFields = []string{"cursor"}
+
+type KnotEdge struct {
+	Node   Knot   `json:"node"`
+	Cursor string `json:"cursor"`
 }
 
 type MapExec struct {
@@ -2333,80 +2475,34 @@ type Map struct {
 	UpdatedAt  string  `json:"updatedAt"`
 }
 
-type UserExec struct {
+type MapSubscriptionPayloadExec struct {
 	exec *prisma.Exec
 }
 
-type MapsParamsExec struct {
-	Where   *MapWhereInput
-	OrderBy *MapOrderByInput
-	Skip    *int32
-	After   *string
-	Before  *string
-	First   *int32
-	Last    *int32
-}
-
-func (instance *UserExec) Maps(params *MapsParamsExec) *MapExecArray {
-	var wparams *prisma.WhereParams
-	if params != nil {
-		wparams = &prisma.WhereParams{
-			Where:   params.Where,
-			OrderBy: (*string)(params.OrderBy),
-			Skip:    params.Skip,
-			After:   params.After,
-			Before:  params.Before,
-			First:   params.First,
-			Last:    params.Last,
-		}
-	}
-
-	ret := instance.exec.Client.GetMany(
+func (instance *MapSubscriptionPayloadExec) Node() *MapExec {
+	ret := instance.exec.Client.GetOne(
 		instance.exec,
-		wparams,
-		[3]string{"MapWhereInput", "MapOrderByInput", "Map"},
-		"maps",
+		nil,
+		[2]string{"", "Map"},
+		"node",
 		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
 
-	return &MapExecArray{ret}
+	return &MapExec{ret}
 }
 
-type LinkedAppsParamsExec struct {
-	Where   *LinkedAppWhereInput
-	OrderBy *LinkedAppOrderByInput
-	Skip    *int32
-	After   *string
-	Before  *string
-	First   *int32
-	Last    *int32
-}
-
-func (instance *UserExec) LinkedApps(params *LinkedAppsParamsExec) *LinkedAppExecArray {
-	var wparams *prisma.WhereParams
-	if params != nil {
-		wparams = &prisma.WhereParams{
-			Where:   params.Where,
-			OrderBy: (*string)(params.OrderBy),
-			Skip:    params.Skip,
-			After:   params.After,
-			Before:  params.Before,
-			First:   params.First,
-			Last:    params.Last,
-		}
-	}
-
-	ret := instance.exec.Client.GetMany(
+func (instance *MapSubscriptionPayloadExec) PreviousValues() *MapPreviousValuesExec {
+	ret := instance.exec.Client.GetOne(
 		instance.exec,
-		wparams,
-		[3]string{"LinkedAppWhereInput", "LinkedAppOrderByInput", "LinkedApp"},
-		"linkedApps",
-		[]string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"})
+		nil,
+		[2]string{"", "MapPreviousValues"},
+		"previousValues",
+		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
 
-	return &LinkedAppExecArray{ret}
+	return &MapPreviousValuesExec{ret}
 }
 
-func (instance UserExec) Exec(ctx context.Context) (*User, error) {
-	var v User
+func (instance MapSubscriptionPayloadExec) Exec(ctx context.Context) (*MapSubscriptionPayload, error) {
+	var v MapSubscriptionPayload
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -2417,27 +2513,26 @@ func (instance UserExec) Exec(ctx context.Context) (*User, error) {
 	return &v, nil
 }
 
-func (instance UserExec) Exists(ctx context.Context) (bool, error) {
+func (instance MapSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type UserExecArray struct {
+type MapSubscriptionPayloadExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance UserExecArray) Exec(ctx context.Context) ([]User, error) {
-	var v []User
+func (instance MapSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]MapSubscriptionPayload, error) {
+	var v []MapSubscriptionPayload
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-var UserFields = []string{"id", "username", "createdAt", "updatedAt"}
+var MapSubscriptionPayloadFields = []string{"mutation", "updatedFields"}
 
-type User struct {
-	ID        string  `json:"id"`
-	Username  *string `json:"username,omitempty"`
-	CreatedAt string  `json:"createdAt"`
-	UpdatedAt string  `json:"updatedAt"`
+type MapSubscriptionPayload struct {
+	Mutation      MutationType `json:"mutation"`
+	Node          *Map         `json:"node,omitempty"`
+	UpdatedFields []string     `json:"updatedFields,omitempty"`
 }
 
 type LinkedAppExec struct {
@@ -2493,139 +2588,6 @@ type LinkedApp struct {
 	Username     *string `json:"username,omitempty"`
 }
 
-type LinkExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LinkExec) Map() *MapExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Map"},
-		"map",
-		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
-
-	return &MapExec{ret}
-}
-
-func (instance LinkExec) Exec(ctx context.Context) (*Link, error) {
-	var v Link
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance LinkExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkExecArray) Exec(ctx context.Context) ([]Link, error) {
-	var v []Link
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkFields = []string{"id", "source", "target"}
-
-type Link struct {
-	ID     string `json:"id"`
-	Source string `json:"source"`
-	Target string `json:"target"`
-}
-
-type KnotConnectionExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *KnotConnectionExec) PageInfo() *PageInfoExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "PageInfo"},
-		"pageInfo",
-		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
-
-	return &PageInfoExec{ret}
-}
-
-func (instance *KnotConnectionExec) Edges() *KnotEdgeExecArray {
-	edges := instance.exec.Client.GetMany(
-		instance.exec,
-		nil,
-		[3]string{"KnotWhereInput", "KnotOrderByInput", "KnotEdge"},
-		"edges",
-		[]string{"cursor"})
-
-	nodes := edges.Client.GetOne(
-		edges,
-		nil,
-		[2]string{"", "Knot"},
-		"node",
-		KnotFields)
-
-	return &KnotEdgeExecArray{nodes}
-}
-
-func (instance *KnotConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "AggregateKnot"},
-		"aggregate",
-		[]string{"count"})
-
-	var v Aggregate
-	_, err := ret.Exec(ctx, &v)
-	return &v, err
-}
-
-func (instance KnotConnectionExec) Exec(ctx context.Context) (*KnotConnection, error) {
-	edges, err := instance.Edges().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	pageInfo, err := instance.PageInfo().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &KnotConnection{
-		Edges:    edges,
-		PageInfo: *pageInfo,
-	}, nil
-}
-
-func (instance KnotConnectionExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type KnotConnectionExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance KnotConnectionExecArray) Exec(ctx context.Context) ([]KnotConnection, error) {
-	var v []KnotConnection
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var KnotConnectionFields = []string{}
-
-type KnotConnection struct {
-	PageInfo PageInfo   `json:"pageInfo"`
-	Edges    []KnotEdge `json:"edges"`
-}
-
 type PageInfoExec struct {
 	exec *prisma.Exec
 }
@@ -2663,450 +2625,6 @@ type PageInfo struct {
 	HasPreviousPage bool    `json:"hasPreviousPage"`
 	StartCursor     *string `json:"startCursor,omitempty"`
 	EndCursor       *string `json:"endCursor,omitempty"`
-}
-
-type KnotEdgeExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *KnotEdgeExec) Node() *KnotExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Knot"},
-		"node",
-		[]string{"id", "trackId", "level", "visited", "createdAt", "updatedAt"})
-
-	return &KnotExec{ret}
-}
-
-func (instance KnotEdgeExec) Exec(ctx context.Context) (*KnotEdge, error) {
-	var v KnotEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance KnotEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type KnotEdgeExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance KnotEdgeExecArray) Exec(ctx context.Context) ([]KnotEdge, error) {
-	var v []KnotEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var KnotEdgeFields = []string{"cursor"}
-
-type KnotEdge struct {
-	Node   Knot   `json:"node"`
-	Cursor string `json:"cursor"`
-}
-
-type LinkConnectionExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LinkConnectionExec) PageInfo() *PageInfoExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "PageInfo"},
-		"pageInfo",
-		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
-
-	return &PageInfoExec{ret}
-}
-
-func (instance *LinkConnectionExec) Edges() *LinkEdgeExecArray {
-	edges := instance.exec.Client.GetMany(
-		instance.exec,
-		nil,
-		[3]string{"LinkWhereInput", "LinkOrderByInput", "LinkEdge"},
-		"edges",
-		[]string{"cursor"})
-
-	nodes := edges.Client.GetOne(
-		edges,
-		nil,
-		[2]string{"", "Link"},
-		"node",
-		LinkFields)
-
-	return &LinkEdgeExecArray{nodes}
-}
-
-func (instance *LinkConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "AggregateLink"},
-		"aggregate",
-		[]string{"count"})
-
-	var v Aggregate
-	_, err := ret.Exec(ctx, &v)
-	return &v, err
-}
-
-func (instance LinkConnectionExec) Exec(ctx context.Context) (*LinkConnection, error) {
-	edges, err := instance.Edges().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	pageInfo, err := instance.PageInfo().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &LinkConnection{
-		Edges:    edges,
-		PageInfo: *pageInfo,
-	}, nil
-}
-
-func (instance LinkConnectionExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkConnectionExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkConnectionExecArray) Exec(ctx context.Context) ([]LinkConnection, error) {
-	var v []LinkConnection
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkConnectionFields = []string{}
-
-type LinkConnection struct {
-	PageInfo PageInfo   `json:"pageInfo"`
-	Edges    []LinkEdge `json:"edges"`
-}
-
-type LinkEdgeExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LinkEdgeExec) Node() *LinkExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Link"},
-		"node",
-		[]string{"id", "source", "target"})
-
-	return &LinkExec{ret}
-}
-
-func (instance LinkEdgeExec) Exec(ctx context.Context) (*LinkEdge, error) {
-	var v LinkEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance LinkEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkEdgeExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkEdgeExecArray) Exec(ctx context.Context) ([]LinkEdge, error) {
-	var v []LinkEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkEdgeFields = []string{"cursor"}
-
-type LinkEdge struct {
-	Node   Link   `json:"node"`
-	Cursor string `json:"cursor"`
-}
-
-type LinkedAppConnectionExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LinkedAppConnectionExec) PageInfo() *PageInfoExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "PageInfo"},
-		"pageInfo",
-		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
-
-	return &PageInfoExec{ret}
-}
-
-func (instance *LinkedAppConnectionExec) Edges() *LinkedAppEdgeExecArray {
-	edges := instance.exec.Client.GetMany(
-		instance.exec,
-		nil,
-		[3]string{"LinkedAppWhereInput", "LinkedAppOrderByInput", "LinkedAppEdge"},
-		"edges",
-		[]string{"cursor"})
-
-	nodes := edges.Client.GetOne(
-		edges,
-		nil,
-		[2]string{"", "LinkedApp"},
-		"node",
-		LinkedAppFields)
-
-	return &LinkedAppEdgeExecArray{nodes}
-}
-
-func (instance *LinkedAppConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "AggregateLinkedApp"},
-		"aggregate",
-		[]string{"count"})
-
-	var v Aggregate
-	_, err := ret.Exec(ctx, &v)
-	return &v, err
-}
-
-func (instance LinkedAppConnectionExec) Exec(ctx context.Context) (*LinkedAppConnection, error) {
-	edges, err := instance.Edges().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	pageInfo, err := instance.PageInfo().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &LinkedAppConnection{
-		Edges:    edges,
-		PageInfo: *pageInfo,
-	}, nil
-}
-
-func (instance LinkedAppConnectionExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkedAppConnectionExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkedAppConnectionExecArray) Exec(ctx context.Context) ([]LinkedAppConnection, error) {
-	var v []LinkedAppConnection
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkedAppConnectionFields = []string{}
-
-type LinkedAppConnection struct {
-	PageInfo PageInfo        `json:"pageInfo"`
-	Edges    []LinkedAppEdge `json:"edges"`
-}
-
-type LinkedAppEdgeExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *LinkedAppEdgeExec) Node() *LinkedAppExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "LinkedApp"},
-		"node",
-		[]string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"})
-
-	return &LinkedAppExec{ret}
-}
-
-func (instance LinkedAppEdgeExec) Exec(ctx context.Context) (*LinkedAppEdge, error) {
-	var v LinkedAppEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance LinkedAppEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkedAppEdgeExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkedAppEdgeExecArray) Exec(ctx context.Context) ([]LinkedAppEdge, error) {
-	var v []LinkedAppEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkedAppEdgeFields = []string{"cursor"}
-
-type LinkedAppEdge struct {
-	Node   LinkedApp `json:"node"`
-	Cursor string    `json:"cursor"`
-}
-
-type MapConnectionExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *MapConnectionExec) PageInfo() *PageInfoExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "PageInfo"},
-		"pageInfo",
-		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
-
-	return &PageInfoExec{ret}
-}
-
-func (instance *MapConnectionExec) Edges() *MapEdgeExecArray {
-	edges := instance.exec.Client.GetMany(
-		instance.exec,
-		nil,
-		[3]string{"MapWhereInput", "MapOrderByInput", "MapEdge"},
-		"edges",
-		[]string{"cursor"})
-
-	nodes := edges.Client.GetOne(
-		edges,
-		nil,
-		[2]string{"", "Map"},
-		"node",
-		MapFields)
-
-	return &MapEdgeExecArray{nodes}
-}
-
-func (instance *MapConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "AggregateMap"},
-		"aggregate",
-		[]string{"count"})
-
-	var v Aggregate
-	_, err := ret.Exec(ctx, &v)
-	return &v, err
-}
-
-func (instance MapConnectionExec) Exec(ctx context.Context) (*MapConnection, error) {
-	edges, err := instance.Edges().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	pageInfo, err := instance.PageInfo().Exec(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &MapConnection{
-		Edges:    edges,
-		PageInfo: *pageInfo,
-	}, nil
-}
-
-func (instance MapConnectionExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type MapConnectionExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance MapConnectionExecArray) Exec(ctx context.Context) ([]MapConnection, error) {
-	var v []MapConnection
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var MapConnectionFields = []string{}
-
-type MapConnection struct {
-	PageInfo PageInfo  `json:"pageInfo"`
-	Edges    []MapEdge `json:"edges"`
-}
-
-type MapEdgeExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *MapEdgeExec) Node() *MapExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Map"},
-		"node",
-		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
-
-	return &MapExec{ret}
-}
-
-func (instance MapEdgeExec) Exec(ctx context.Context) (*MapEdge, error) {
-	var v MapEdge
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance MapEdgeExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type MapEdgeExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance MapEdgeExecArray) Exec(ctx context.Context) ([]MapEdge, error) {
-	var v []MapEdge
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var MapEdgeFields = []string{"cursor"}
-
-type MapEdge struct {
-	Node   Map    `json:"node"`
-	Cursor string `json:"cursor"`
 }
 
 type UserConnectionExec struct {
@@ -3193,23 +2711,107 @@ type UserConnection struct {
 	Edges    []UserEdge `json:"edges"`
 }
 
-type UserEdgeExec struct {
+type KnotConnectionExec struct {
 	exec *prisma.Exec
 }
 
-func (instance *UserEdgeExec) Node() *UserExec {
+func (instance *KnotConnectionExec) PageInfo() *PageInfoExec {
 	ret := instance.exec.Client.GetOne(
 		instance.exec,
 		nil,
-		[2]string{"", "User"},
-		"node",
-		[]string{"id", "username", "createdAt", "updatedAt"})
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
 
-	return &UserExec{ret}
+	return &PageInfoExec{ret}
 }
 
-func (instance UserEdgeExec) Exec(ctx context.Context) (*UserEdge, error) {
-	var v UserEdge
+func (instance *KnotConnectionExec) Edges() *KnotEdgeExecArray {
+	edges := instance.exec.Client.GetMany(
+		instance.exec,
+		nil,
+		[3]string{"KnotWhereInput", "KnotOrderByInput", "KnotEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	nodes := edges.Client.GetOne(
+		edges,
+		nil,
+		[2]string{"", "Knot"},
+		"node",
+		KnotFields)
+
+	return &KnotEdgeExecArray{nodes}
+}
+
+func (instance *KnotConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateKnot"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return &v, err
+}
+
+func (instance KnotConnectionExec) Exec(ctx context.Context) (*KnotConnection, error) {
+	edges, err := instance.Edges().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	pageInfo, err := instance.PageInfo().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &KnotConnection{
+		Edges:    edges,
+		PageInfo: *pageInfo,
+	}, nil
+}
+
+func (instance KnotConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type KnotConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance KnotConnectionExecArray) Exec(ctx context.Context) ([]KnotConnection, error) {
+	var v []KnotConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var KnotConnectionFields = []string{}
+
+type KnotConnection struct {
+	PageInfo PageInfo   `json:"pageInfo"`
+	Edges    []KnotEdge `json:"edges"`
+}
+
+type KnotExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *KnotExec) Map() *MapExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Map"},
+		"map",
+		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
+
+	return &MapExec{ret}
+}
+
+func (instance KnotExec) Exec(ctx context.Context) (*Knot, error) {
+	var v Knot
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -3220,25 +2822,113 @@ func (instance UserEdgeExec) Exec(ctx context.Context) (*UserEdge, error) {
 	return &v, nil
 }
 
-func (instance UserEdgeExec) Exists(ctx context.Context) (bool, error) {
+func (instance KnotExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type UserEdgeExecArray struct {
+type KnotExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance UserEdgeExecArray) Exec(ctx context.Context) ([]UserEdge, error) {
-	var v []UserEdge
+func (instance KnotExecArray) Exec(ctx context.Context) ([]Knot, error) {
+	var v []Knot
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-var UserEdgeFields = []string{"cursor"}
+var KnotFields = []string{"id", "trackId", "level", "visited", "createdAt", "updatedAt"}
 
-type UserEdge struct {
-	Node   User   `json:"node"`
-	Cursor string `json:"cursor"`
+type Knot struct {
+	ID        string `json:"id"`
+	TrackId   string `json:"trackId"`
+	Level     int32  `json:"level"`
+	Visited   bool   `json:"visited"`
+	CreatedAt string `json:"createdAt"`
+	UpdatedAt string `json:"updatedAt"`
+}
+
+type MapConnectionExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *MapConnectionExec) PageInfo() *PageInfoExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
+
+	return &PageInfoExec{ret}
+}
+
+func (instance *MapConnectionExec) Edges() *MapEdgeExecArray {
+	edges := instance.exec.Client.GetMany(
+		instance.exec,
+		nil,
+		[3]string{"MapWhereInput", "MapOrderByInput", "MapEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	nodes := edges.Client.GetOne(
+		edges,
+		nil,
+		[2]string{"", "Map"},
+		"node",
+		MapFields)
+
+	return &MapEdgeExecArray{nodes}
+}
+
+func (instance *MapConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateMap"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return &v, err
+}
+
+func (instance MapConnectionExec) Exec(ctx context.Context) (*MapConnection, error) {
+	edges, err := instance.Edges().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	pageInfo, err := instance.PageInfo().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &MapConnection{
+		Edges:    edges,
+		PageInfo: *pageInfo,
+	}, nil
+}
+
+func (instance MapConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type MapConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance MapConnectionExecArray) Exec(ctx context.Context) ([]MapConnection, error) {
+	var v []MapConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var MapConnectionFields = []string{}
+
+type MapConnection struct {
+	PageInfo PageInfo  `json:"pageInfo"`
+	Edges    []MapEdge `json:"edges"`
 }
 
 type KnotSubscriptionPayloadExec struct {
@@ -3301,6 +2991,54 @@ type KnotSubscriptionPayload struct {
 	UpdatedFields []string     `json:"updatedFields,omitempty"`
 }
 
+type LinkedAppEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LinkedAppEdgeExec) Node() *LinkedAppExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "LinkedApp"},
+		"node",
+		[]string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"})
+
+	return &LinkedAppExec{ret}
+}
+
+func (instance LinkedAppEdgeExec) Exec(ctx context.Context) (*LinkedAppEdge, error) {
+	var v LinkedAppEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LinkedAppEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkedAppEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkedAppEdgeExecArray) Exec(ctx context.Context) ([]LinkedAppEdge, error) {
+	var v []LinkedAppEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkedAppEdgeFields = []string{"cursor"}
+
+type LinkedAppEdge struct {
+	Node   LinkedApp `json:"node"`
+	Cursor string    `json:"cursor"`
+}
+
 type KnotPreviousValuesExec struct {
 	exec *prisma.Exec
 }
@@ -3340,6 +3078,139 @@ type KnotPreviousValues struct {
 	Visited   bool   `json:"visited"`
 	CreatedAt string `json:"createdAt"`
 	UpdatedAt string `json:"updatedAt"`
+}
+
+type LinkExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LinkExec) Map() *MapExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Map"},
+		"map",
+		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
+
+	return &MapExec{ret}
+}
+
+func (instance LinkExec) Exec(ctx context.Context) (*Link, error) {
+	var v Link
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LinkExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkExecArray) Exec(ctx context.Context) ([]Link, error) {
+	var v []Link
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkFields = []string{"id", "source", "target"}
+
+type Link struct {
+	ID     string `json:"id"`
+	Source string `json:"source"`
+	Target string `json:"target"`
+}
+
+type LinkConnectionExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LinkConnectionExec) PageInfo() *PageInfoExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
+
+	return &PageInfoExec{ret}
+}
+
+func (instance *LinkConnectionExec) Edges() *LinkEdgeExecArray {
+	edges := instance.exec.Client.GetMany(
+		instance.exec,
+		nil,
+		[3]string{"LinkWhereInput", "LinkOrderByInput", "LinkEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	nodes := edges.Client.GetOne(
+		edges,
+		nil,
+		[2]string{"", "Link"},
+		"node",
+		LinkFields)
+
+	return &LinkEdgeExecArray{nodes}
+}
+
+func (instance *LinkConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateLink"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return &v, err
+}
+
+func (instance LinkConnectionExec) Exec(ctx context.Context) (*LinkConnection, error) {
+	edges, err := instance.Edges().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	pageInfo, err := instance.PageInfo().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LinkConnection{
+		Edges:    edges,
+		PageInfo: *pageInfo,
+	}, nil
+}
+
+func (instance LinkConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkConnectionExecArray) Exec(ctx context.Context) ([]LinkConnection, error) {
+	var v []LinkConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkConnectionFields = []string{}
+
+type LinkConnection struct {
+	PageInfo PageInfo   `json:"pageInfo"`
+	Edges    []LinkEdge `json:"edges"`
 }
 
 type LinkSubscriptionPayloadExec struct {
@@ -3402,12 +3273,34 @@ type LinkSubscriptionPayload struct {
 	UpdatedFields []string     `json:"updatedFields,omitempty"`
 }
 
-type LinkPreviousValuesExec struct {
+type UserSubscriptionPayloadExec struct {
 	exec *prisma.Exec
 }
 
-func (instance LinkPreviousValuesExec) Exec(ctx context.Context) (*LinkPreviousValues, error) {
-	var v LinkPreviousValues
+func (instance *UserSubscriptionPayloadExec) Node() *UserExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "User"},
+		"node",
+		[]string{"id", "username", "createdAt", "updatedAt"})
+
+	return &UserExec{ret}
+}
+
+func (instance *UserSubscriptionPayloadExec) PreviousValues() *UserPreviousValuesExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "UserPreviousValues"},
+		"previousValues",
+		[]string{"id", "username", "createdAt", "updatedAt"})
+
+	return &UserPreviousValuesExec{ret}
+}
+
+func (instance UserSubscriptionPayloadExec) Exec(ctx context.Context) (*UserSubscriptionPayload, error) {
+	var v UserSubscriptionPayload
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -3418,26 +3311,68 @@ func (instance LinkPreviousValuesExec) Exec(ctx context.Context) (*LinkPreviousV
 	return &v, nil
 }
 
-func (instance LinkPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+func (instance UserSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type LinkPreviousValuesExecArray struct {
+type UserSubscriptionPayloadExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance LinkPreviousValuesExecArray) Exec(ctx context.Context) ([]LinkPreviousValues, error) {
-	var v []LinkPreviousValues
+func (instance UserSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]UserSubscriptionPayload, error) {
+	var v []UserSubscriptionPayload
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-var LinkPreviousValuesFields = []string{"id", "source", "target"}
+var UserSubscriptionPayloadFields = []string{"mutation", "updatedFields"}
 
-type LinkPreviousValues struct {
-	ID     string `json:"id"`
-	Source string `json:"source"`
-	Target string `json:"target"`
+type UserSubscriptionPayload struct {
+	Mutation      MutationType `json:"mutation"`
+	Node          *User        `json:"node,omitempty"`
+	UpdatedFields []string     `json:"updatedFields,omitempty"`
+}
+
+type LinkedAppPreviousValuesExec struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkedAppPreviousValuesExec) Exec(ctx context.Context) (*LinkedAppPreviousValues, error) {
+	var v LinkedAppPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LinkedAppPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkedAppPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkedAppPreviousValuesExecArray) Exec(ctx context.Context) ([]LinkedAppPreviousValues, error) {
+	var v []LinkedAppPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkedAppPreviousValuesFields = []string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"}
+
+type LinkedAppPreviousValues struct {
+	ID           string  `json:"id"`
+	Type         AppType `json:"type"`
+	AccessToken  *string `json:"accessToken,omitempty"`
+	TokenExpiry  *string `json:"tokenExpiry,omitempty"`
+	RefreshToken *string `json:"refreshToken,omitempty"`
+	UserId       string  `json:"userId"`
+	Username     *string `json:"username,omitempty"`
 }
 
 type LinkedAppSubscriptionPayloadExec struct {
@@ -3500,108 +3435,6 @@ type LinkedAppSubscriptionPayload struct {
 	UpdatedFields []string     `json:"updatedFields,omitempty"`
 }
 
-type LinkedAppPreviousValuesExec struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkedAppPreviousValuesExec) Exec(ctx context.Context) (*LinkedAppPreviousValues, error) {
-	var v LinkedAppPreviousValues
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance LinkedAppPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type LinkedAppPreviousValuesExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance LinkedAppPreviousValuesExecArray) Exec(ctx context.Context) ([]LinkedAppPreviousValues, error) {
-	var v []LinkedAppPreviousValues
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var LinkedAppPreviousValuesFields = []string{"id", "type", "accessToken", "tokenExpiry", "refreshToken", "userId", "username"}
-
-type LinkedAppPreviousValues struct {
-	ID           string  `json:"id"`
-	Type         AppType `json:"type"`
-	AccessToken  *string `json:"accessToken,omitempty"`
-	TokenExpiry  *string `json:"tokenExpiry,omitempty"`
-	RefreshToken *string `json:"refreshToken,omitempty"`
-	UserId       string  `json:"userId"`
-	Username     *string `json:"username,omitempty"`
-}
-
-type MapSubscriptionPayloadExec struct {
-	exec *prisma.Exec
-}
-
-func (instance *MapSubscriptionPayloadExec) Node() *MapExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "Map"},
-		"node",
-		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
-
-	return &MapExec{ret}
-}
-
-func (instance *MapSubscriptionPayloadExec) PreviousValues() *MapPreviousValuesExec {
-	ret := instance.exec.Client.GetOne(
-		instance.exec,
-		nil,
-		[2]string{"", "MapPreviousValues"},
-		"previousValues",
-		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
-
-	return &MapPreviousValuesExec{ret}
-}
-
-func (instance MapSubscriptionPayloadExec) Exec(ctx context.Context) (*MapSubscriptionPayload, error) {
-	var v MapSubscriptionPayload
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance MapSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type MapSubscriptionPayloadExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance MapSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]MapSubscriptionPayload, error) {
-	var v []MapSubscriptionPayload
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var MapSubscriptionPayloadFields = []string{"mutation", "updatedFields"}
-
-type MapSubscriptionPayload struct {
-	Mutation      MutationType `json:"mutation"`
-	Node          *Map         `json:"node,omitempty"`
-	UpdatedFields []string     `json:"updatedFields,omitempty"`
-}
-
 type MapPreviousValuesExec struct {
 	exec *prisma.Exec
 }
@@ -3643,11 +3476,181 @@ type MapPreviousValues struct {
 	UpdatedAt  string  `json:"updatedAt"`
 }
 
-type UserSubscriptionPayloadExec struct {
+type LinkPreviousValuesExec struct {
 	exec *prisma.Exec
 }
 
-func (instance *UserSubscriptionPayloadExec) Node() *UserExec {
+func (instance LinkPreviousValuesExec) Exec(ctx context.Context) (*LinkPreviousValues, error) {
+	var v LinkPreviousValues
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance LinkPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkPreviousValuesExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkPreviousValuesExecArray) Exec(ctx context.Context) ([]LinkPreviousValues, error) {
+	var v []LinkPreviousValues
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkPreviousValuesFields = []string{"id", "source", "target"}
+
+type LinkPreviousValues struct {
+	ID     string `json:"id"`
+	Source string `json:"source"`
+	Target string `json:"target"`
+}
+
+type LinkedAppConnectionExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LinkedAppConnectionExec) PageInfo() *PageInfoExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "PageInfo"},
+		"pageInfo",
+		[]string{"hasNextPage", "hasPreviousPage", "startCursor", "endCursor"})
+
+	return &PageInfoExec{ret}
+}
+
+func (instance *LinkedAppConnectionExec) Edges() *LinkedAppEdgeExecArray {
+	edges := instance.exec.Client.GetMany(
+		instance.exec,
+		nil,
+		[3]string{"LinkedAppWhereInput", "LinkedAppOrderByInput", "LinkedAppEdge"},
+		"edges",
+		[]string{"cursor"})
+
+	nodes := edges.Client.GetOne(
+		edges,
+		nil,
+		[2]string{"", "LinkedApp"},
+		"node",
+		LinkedAppFields)
+
+	return &LinkedAppEdgeExecArray{nodes}
+}
+
+func (instance *LinkedAppConnectionExec) Aggregate(ctx context.Context) (*Aggregate, error) {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "AggregateLinkedApp"},
+		"aggregate",
+		[]string{"count"})
+
+	var v Aggregate
+	_, err := ret.Exec(ctx, &v)
+	return &v, err
+}
+
+func (instance LinkedAppConnectionExec) Exec(ctx context.Context) (*LinkedAppConnection, error) {
+	edges, err := instance.Edges().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	pageInfo, err := instance.PageInfo().Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LinkedAppConnection{
+		Edges:    edges,
+		PageInfo: *pageInfo,
+	}, nil
+}
+
+func (instance LinkedAppConnectionExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type LinkedAppConnectionExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance LinkedAppConnectionExecArray) Exec(ctx context.Context) ([]LinkedAppConnection, error) {
+	var v []LinkedAppConnection
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var LinkedAppConnectionFields = []string{}
+
+type LinkedAppConnection struct {
+	PageInfo PageInfo        `json:"pageInfo"`
+	Edges    []LinkedAppEdge `json:"edges"`
+}
+
+type MapEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *MapEdgeExec) Node() *MapExec {
+	ret := instance.exec.Client.GetOne(
+		instance.exec,
+		nil,
+		[2]string{"", "Map"},
+		"node",
+		[]string{"id", "title", "flagshipId", "public", "createdAt", "updatedAt"})
+
+	return &MapExec{ret}
+}
+
+func (instance MapEdgeExec) Exec(ctx context.Context) (*MapEdge, error) {
+	var v MapEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance MapEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type MapEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance MapEdgeExecArray) Exec(ctx context.Context) ([]MapEdge, error) {
+	var v []MapEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var MapEdgeFields = []string{"cursor"}
+
+type MapEdge struct {
+	Node   Map    `json:"node"`
+	Cursor string `json:"cursor"`
+}
+
+type UserEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *UserEdgeExec) Node() *UserExec {
 	ret := instance.exec.Client.GetOne(
 		instance.exec,
 		nil,
@@ -3658,19 +3661,56 @@ func (instance *UserSubscriptionPayloadExec) Node() *UserExec {
 	return &UserExec{ret}
 }
 
-func (instance *UserSubscriptionPayloadExec) PreviousValues() *UserPreviousValuesExec {
+func (instance UserEdgeExec) Exec(ctx context.Context) (*UserEdge, error) {
+	var v UserEdge
+	ok, err := instance.exec.Exec(ctx, &v)
+	if err != nil {
+		return nil, err
+	}
+	if !ok {
+		return nil, ErrNoResult
+	}
+	return &v, nil
+}
+
+func (instance UserEdgeExec) Exists(ctx context.Context) (bool, error) {
+	return instance.exec.Exists(ctx)
+}
+
+type UserEdgeExecArray struct {
+	exec *prisma.Exec
+}
+
+func (instance UserEdgeExecArray) Exec(ctx context.Context) ([]UserEdge, error) {
+	var v []UserEdge
+	err := instance.exec.ExecArray(ctx, &v)
+	return v, err
+}
+
+var UserEdgeFields = []string{"cursor"}
+
+type UserEdge struct {
+	Node   User   `json:"node"`
+	Cursor string `json:"cursor"`
+}
+
+type LinkEdgeExec struct {
+	exec *prisma.Exec
+}
+
+func (instance *LinkEdgeExec) Node() *LinkExec {
 	ret := instance.exec.Client.GetOne(
 		instance.exec,
 		nil,
-		[2]string{"", "UserPreviousValues"},
-		"previousValues",
-		[]string{"id", "username", "createdAt", "updatedAt"})
+		[2]string{"", "Link"},
+		"node",
+		[]string{"id", "source", "target"})
 
-	return &UserPreviousValuesExec{ret}
+	return &LinkExec{ret}
 }
 
-func (instance UserSubscriptionPayloadExec) Exec(ctx context.Context) (*UserSubscriptionPayload, error) {
-	var v UserSubscriptionPayload
+func (instance LinkEdgeExec) Exec(ctx context.Context) (*LinkEdge, error) {
+	var v LinkEdge
 	ok, err := instance.exec.Exec(ctx, &v)
 	if err != nil {
 		return nil, err
@@ -3681,63 +3721,23 @@ func (instance UserSubscriptionPayloadExec) Exec(ctx context.Context) (*UserSubs
 	return &v, nil
 }
 
-func (instance UserSubscriptionPayloadExec) Exists(ctx context.Context) (bool, error) {
+func (instance LinkEdgeExec) Exists(ctx context.Context) (bool, error) {
 	return instance.exec.Exists(ctx)
 }
 
-type UserSubscriptionPayloadExecArray struct {
+type LinkEdgeExecArray struct {
 	exec *prisma.Exec
 }
 
-func (instance UserSubscriptionPayloadExecArray) Exec(ctx context.Context) ([]UserSubscriptionPayload, error) {
-	var v []UserSubscriptionPayload
+func (instance LinkEdgeExecArray) Exec(ctx context.Context) ([]LinkEdge, error) {
+	var v []LinkEdge
 	err := instance.exec.ExecArray(ctx, &v)
 	return v, err
 }
 
-var UserSubscriptionPayloadFields = []string{"mutation", "updatedFields"}
+var LinkEdgeFields = []string{"cursor"}
 
-type UserSubscriptionPayload struct {
-	Mutation      MutationType `json:"mutation"`
-	Node          *User        `json:"node,omitempty"`
-	UpdatedFields []string     `json:"updatedFields,omitempty"`
-}
-
-type UserPreviousValuesExec struct {
-	exec *prisma.Exec
-}
-
-func (instance UserPreviousValuesExec) Exec(ctx context.Context) (*UserPreviousValues, error) {
-	var v UserPreviousValues
-	ok, err := instance.exec.Exec(ctx, &v)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		return nil, ErrNoResult
-	}
-	return &v, nil
-}
-
-func (instance UserPreviousValuesExec) Exists(ctx context.Context) (bool, error) {
-	return instance.exec.Exists(ctx)
-}
-
-type UserPreviousValuesExecArray struct {
-	exec *prisma.Exec
-}
-
-func (instance UserPreviousValuesExecArray) Exec(ctx context.Context) ([]UserPreviousValues, error) {
-	var v []UserPreviousValues
-	err := instance.exec.ExecArray(ctx, &v)
-	return v, err
-}
-
-var UserPreviousValuesFields = []string{"id", "username", "createdAt", "updatedAt"}
-
-type UserPreviousValues struct {
-	ID        string  `json:"id"`
-	Username  *string `json:"username,omitempty"`
-	CreatedAt string  `json:"createdAt"`
-	UpdatedAt string  `json:"updatedAt"`
+type LinkEdge struct {
+	Node   Link   `json:"node"`
+	Cursor string `json:"cursor"`
 }
