@@ -4,25 +4,6 @@ import store from '@/store'
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 const LIKED_PLAYLIST_NAME = 'Liked from mimiko'
 
-// PERFORM REQUEST
-
-export async function getToken() {
-  let retries = 0
-  let token = null
-
-  while (!token && retries < 10) {
-    await store.dispatch('auth/refreshToken').catch(() => {})
-    token = store.getters['auth/token']('spotify')
-
-    if (!token) {
-      retries++
-      await new Promise(r => setTimeout(r, 1000))
-    }
-  }
-
-  return token
-}
-
 async function performGetRequest(endpoint, params) {
   const token = await getToken()
   const response = await axios.get(API_BASE_URL + endpoint, {
@@ -47,15 +28,33 @@ async function performPostRequest(endpoint, data, method = 'POST') {
   return response.data
 }
 
+export async function getToken() {
+  let retries = 0
+  let token = null
+
+  while (!token && retries < 10) {
+    await store.dispatch('auth/refreshToken').catch(() => {})
+    token = store.getters['auth/token']('spotify')
+
+    if (!token) {
+      retries++
+      await new Promise(r => setTimeout(r, 1000))
+    }
+  }
+
+  return token
+}
+
 // HELPERS
 
+// TODO There are 3 image sizes returned -> Optimize
 function parseTracks(tracks) {
   return tracks.map(track => {
     return {
       id: track.id,
       title: track.name,
       artist: artistNamesToString(track.artists),
-      imgURL: track.album.images[1].url, // TODO There are 3 image sizes returned
+      imgURL: track.album.images[1].url,
       previewURL: track.preview_url,
     }
   })
@@ -101,7 +100,6 @@ export async function recoFromTrack(seeds, number) {
   return parseTracks(data.tracks)
 }
 
-//TODO Device id is always the web browser, support playing on other devices ?
 export async function playTrack(tracks, deviceId) {
   const data = {
     uris: tracks.map(id => `spotify:track:${id}`),

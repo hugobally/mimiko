@@ -57,7 +57,7 @@ export default {
         })
         commit('SET_TOKEN', { app: 'spotify', token: user.token })
       } catch (error) {
-        console.log(error)
+        // TODO
       }
     },
     async refreshToken({ state, commit, getters }) {
@@ -69,9 +69,7 @@ export default {
       if (state.refreshAppTokenLock) return
 
       commit('SET_APP_TOKEN_LOCK', true)
-      const newToken = await gqlGetToken().catch(error => {
-        console.log(error)
-      })
+      const newToken = await gqlGetToken().catch(() => {})
       commit('SET_APP_TOKEN_LOCK', false)
 
       commit('SET_TOKEN', { app: 'spotify', token: newToken })

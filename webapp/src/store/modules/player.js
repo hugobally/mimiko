@@ -163,14 +163,12 @@ export default {
               const token = await getToken()
               callback(token.access)
             } catch (error) {
-              console.log('SDK authtoken error : ', error)
               callback('')
             }
           },
         })
 
         player.addListener('player_state_changed', playerState => {
-          console.log(playerState)
           if (!playerState) {
             // TODO Resetting player is buggy
             // commit('RESET_PLAYER')
@@ -192,9 +190,6 @@ export default {
         player.addListener('ready', ({ device_id }) => {
           commit('SET_DEVICE_ID', device_id)
         })
-        player.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id)
-        })
 
         player.connect()
         commit('SET_SDK', player)
@@ -209,7 +204,7 @@ export default {
         const tracks = await getPlaylistTracks(id)
         commit('LIKED_PLAYLIST_INIT', { id: id, tracks: tracks })
       } catch (error) {
-        console.log(error)
+        // TODO
       }
     },
     async createLikedPlaylist({ commit }) {
@@ -217,7 +212,7 @@ export default {
         const id = await createPlaylist()
         commit('LIKED_PLAYLIST_INIT', { id: id, tracks: [] })
       } catch (error) {
-        console.log(error)
+        // TODO
       }
     },
     async addToLikedPlaylist({ state, commit }, trackId) {
@@ -359,7 +354,7 @@ export default {
             const recos = await recoFromTrack(seeds, 1)
             newTrack = recos[0]
           } catch (error) {
-            console.log(error)
+            // TODO
           }
           if (newTrack) {
             commit('PLAYQUEUE_PUSH', { track: newTrack, knot: null })
@@ -385,7 +380,7 @@ export default {
           await updateKnot(current.knot, { visited: true })
           commit('map/KNOT_SET_VISITED', current.knot, { root: true })
         } catch (error) {
-          console.log(error)
+          // TODO
         }
       }
       commit('SET_TRACK', current.track)

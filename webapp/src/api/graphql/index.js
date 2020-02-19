@@ -1,5 +1,4 @@
 import axios from 'axios'
-import store from '@/store'
 
 const backEndUrl = process.env.VUE_APP_BACKEND_URL
 const endpointUrl = backEndUrl + '/graphql'

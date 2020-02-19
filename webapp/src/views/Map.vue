@@ -78,7 +78,7 @@ export default {
       const track = this.knots[startKnotId].track
       this.$store.dispatch('player/playKnot', { track, knot: startKnotId })
     } catch (error) {
-      this.mapError(error)
+      this.mapError()
       if (this.load !== 100) this.$store.commit('map/MAP_SET_LOAD', 0)
       return
     }
@@ -89,8 +89,7 @@ export default {
     this.$store.commit('player/RESET_PLAYER')
   },
   methods: {
-    mapError(error) {
-      console.log(error)
+    mapError() {
       this.$store.dispatch('pushFlashQueue', {
         content: 'Whoops ! The map could not be loaded.',
         type: 'error',

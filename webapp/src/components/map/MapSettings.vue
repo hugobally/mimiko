@@ -87,7 +87,6 @@ export default {
         })
         this.renameSuccess = true
       } catch (error) {
-        console.log(error)
         this.$store.dispatch('pushFlashQueue', {
           content: 'Could not rename the map',
           type: 'error',

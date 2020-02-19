@@ -143,7 +143,7 @@ export default {
     },
   },
   actions: {
-    // Get map from backend and layout each level progressively
+    // TODO Restructure
     async fetchMap({ commit, dispatch, state, rootState }, id) {
       const map = await gql.map(id)
 
@@ -227,8 +227,7 @@ export default {
       dispatch('force/initForceLayout', null, { root: true })
     },
 
-    // Populate track data from spotify API
-    async populate({ commit, state, dispatch }) {
+    async populate({ state, dispatch }) {
       let ac = { count: 0, tracks: {} }
       for (const key in state.knots) {
         const id = state.knots[key].track.id
@@ -257,7 +256,6 @@ export default {
       }
     },
 
-    // Create new knots
     async createKnots(
       { commit, state, dispatch },
       { input, sourceId, visited },
@@ -268,9 +266,6 @@ export default {
         state.knots[sourceId].level + 1,
         visited,
       )
-      if (r.errors) {
-        console.log(r.errors)
-      }
 
       const newKnots = r.knots.map(v => {
         return {
@@ -284,9 +279,6 @@ export default {
       commit('KNOT_ADD_CHILDREN', { id: sourceId, children: childrenIds })
 
       r = await gql.createLinks(state.id, sourceId, childrenIds)
-      if (r.errors) {
-        console.log(r.errors)
-      }
 
       dispatch('addKnots', newKnots)
       dispatch('addLinks', r.links)
@@ -296,7 +288,8 @@ export default {
       commit('player/PLAYQUEUE_RESET', null, { root: true })
       dispatch('player/bufferFindNext', null, { root: true })
     },
-    // TODO Rework => not specific to creating with recommendation
+
+    // TODO Restructure
     async createKnotsWithReco(
       { state, dispatch },
       { sourceId, newTracks, number, autoplay, visited },
@@ -315,7 +308,6 @@ export default {
           }
           newTracks = await spotify.recoFromTrack(seeds, number)
         } catch (error) {
-          console.log(error)
           return
         }
       }
@@ -346,9 +338,8 @@ export default {
       })
     },
 
-    //
     async deleteKnot({ commit, dispatch, state, rootState }, knotId) {
-      // TODO keep a counter of knots length
+      // TODO keep a store getter of knots length
       if (Object.keys(state.knots).length < 2) return
 
       const rootKnot = state.knots[knotId]
@@ -361,9 +352,9 @@ export default {
 
       // TODO generic DFS function (shared with autoplay, etc..)
       const [parentLinkId, parentLink] = links.find(
-        ([k, v]) => v.target === knotId,
+        // eslint-disable-next-line no-unused-vars
+        ([_, v]) => v.target === knotId,
       )
-      // const dfs = links.filter(([k, v]) => v.source === knotId)
       const dfs = [parentLinkId]
       while (dfs.length > 0) {
         const current = dfs[dfs.length - 1]
@@ -381,16 +372,10 @@ export default {
       try {
         const linkCount = await gql.deleteLinks(state.id, linksToDelete)
         if (linkCount !== linksToDelete.length) {
-          // TODO flash error -- set error flag that prevents any action
-          // ask to reload the page
-          console.log('error with remote link deletion')
           return
         }
-        const knotCount = await gql.deleteKnots(state.id, knotsToDelete)
-        if (knotCount !== knotsToDelete.length) {
-          // TODO see above
-          console.log('error with remote knot deletion')
-        }
+
+        // TODO On error with link/knot count, flash message + reload
 
         await rootState.player.sdk.nextTrack().catch(() => {})
         commit('player/RESET_PLAYER', null, { root: true })
@@ -402,11 +387,10 @@ export default {
           childrenToRemove: knotId,
         })
       } catch (error) {
-        console.log(error)
+        //
       }
     },
 
-    // Wrapper around adding new knots so that the D3 simulation is synchronized
     addKnots({ commit }, knots) {
       commit('MAP_ADD_KNOTS', knots)
       commit('force/ADD_KNOTS', knots, { root: true })
@@ -423,7 +407,7 @@ export default {
       commit('LINKS_DELETE', links)
     },
 
-    async focus({ commit, rootState }, target) {
+    async focus({ commit }, target) {
       commit('SET_FOCUSED', null)
       await new Promise(r => setTimeout(r, 100))
       commit('SET_FOCUSED', target)

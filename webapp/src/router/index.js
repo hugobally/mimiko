@@ -17,7 +17,8 @@ const routes = [
   {
     path: '/welcome',
     name: 'welcome',
-    component: () => import(/* webpackChunkName: "intro" */ '@/views/Welcome'),
+    component: () =>
+      import(/* webpackChunkName: "welcome" */ '@/views/Welcome'),
   },
   {
     path: '/map/:id',
@@ -69,7 +70,7 @@ router.beforeEach(async (to, from, next) => {
       try {
         await store.dispatch('auth/whoami')
       } catch (error) {
-        console.log(error)
+        // TODO
       }
     }
 

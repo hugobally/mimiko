@@ -64,7 +64,7 @@ export default {
         this.$store.commit('auth/RESET_AUTH')
         this.$router.push({ path: '/welcome' })
       } catch (error) {
-        console.log('error')
+        // TODO
       }
     },
   },

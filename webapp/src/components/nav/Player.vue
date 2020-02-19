@@ -88,7 +88,7 @@ export default {
         if (e.code === 'Space' && this.$route.hash === '') this.play()
       })
     } catch (error) {
-      console.log(error)
+      // TODO
     }
   },
   computed: {
@@ -184,14 +184,13 @@ export default {
           })
         }
         if (!this.isSourceKnot || this.readOnly) {
-          console.log(this.likedPlaylist)
           if (!this.likedPlaylist.id) {
             await this.$store.dispatch('player/createLikedPlaylist')
           }
           await this.$store.dispatch('player/addToLikedPlaylist', this.track.id)
         }
       } catch (error) {
-        console.log(error)
+        // TODO
       }
     },
     async dislike() {
@@ -217,7 +216,7 @@ export default {
     try {
       await this.$store.commit('player/DISCONNECT_SDK')
     } catch (error) {
-      console.log(error)
+      // TODO
     }
   },
 }
@@ -322,7 +321,6 @@ export default {
   align-items: center;
 
   cursor: pointer;
-  // padding: 0px 20px;
 
   background-color: rgba(255, 255, 255, 0.11);
 }

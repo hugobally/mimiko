@@ -112,7 +112,7 @@ async function fetchMaps(commit, mutation, filter) {
         map.flagship = tracks.find(track => track.id === map.flagshipId)
       }
     } catch (error) {
-      console.log(error) /**/
+      // TODO
     }
     commit(mutation, maps)
 

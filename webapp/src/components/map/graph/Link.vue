@@ -42,7 +42,6 @@ export default {
       }
     },
     path() {
-      const source = this.knots[this.link.source]
       const target = this.knots[this.link.target]
       if (target.children.length !== 0) return {}
 
@@ -69,11 +68,7 @@ export default {
           steps.push(id)
         }
 
-        // if (!obj.parent && steps.length < 2 && unvisitedSteps.length < 2) {
-        //   unvisitedSteps.push(id)
-        // }
         id = obj.parent
-        console.log(steps.unvisitedSteps)
       }
       return {
         steps: steps.reverse(),

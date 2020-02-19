@@ -61,7 +61,7 @@ export default {
     },
   },
   actions: {
-    initForceLayout({ commit, state, rootState }) {
+    initForceLayout({ commit, state }) {
       const handleTick = async () => {
         commit('map/KNOTS_SET_POS', state.knots, { root: true })
       }

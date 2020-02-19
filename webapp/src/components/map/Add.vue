@@ -1,4 +1,4 @@
-<!-- TODO Duplicated from Create.vue => Factorize -->
+<!-- TODO Duplicated from Create.vue => Factorize all similar components -->
 
 <template>
   <div class="add-container disable-scrollbar">
