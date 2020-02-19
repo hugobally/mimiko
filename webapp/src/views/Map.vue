@@ -72,6 +72,7 @@ export default {
           sourceId: startKnotId,
           number: 1,
         })
+        this.$store.commit('map/MAP_SET_FRESH_CREATED', false)
       }
 
       const track = this.knots[startKnotId].track
