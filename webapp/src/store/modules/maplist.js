@@ -55,6 +55,9 @@ export default {
     userMaps: state => {
       return state.userMaps.concat(state.localCreatedMaps).reverse()
     },
+    publicMaps: state => {
+      return state.localCreatedMaps.reverse().concat(state.publicMaps)
+    },
   },
   actions: {
     // TODO For beta only -- implement infinite scroll/pages/..

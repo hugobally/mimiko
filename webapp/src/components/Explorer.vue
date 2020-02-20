@@ -33,7 +33,7 @@ export default {
       return this.filteredMaps || this.publicMaps
     },
     publicMaps() {
-      return this.$store.state.maplist.publicMaps
+      return this.$store.getters['maplist/publicMaps']
     },
     noSearchResult() {
       return (

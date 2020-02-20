@@ -33,7 +33,7 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 
 	var params *prisma.MapsParams
 
-	order := prisma.MapOrderByInputCreatedAtAsc
+	order := prisma.MapOrderByInputCreatedAtDesc
 	if filter != nil && filter.UserId != nil {
 		params = &prisma.MapsParams{
 			Where: &prisma.MapWhereInput{
