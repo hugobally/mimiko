@@ -1,11 +1,10 @@
 <template>
-  <div class="user noselect">
-    <div
-      class="username-container"
-      v-if="user.logged"
-      @mouseover="hovered = true"
-      @mouseleave="hovered = false"
-    >
+  <div
+    class="user noselect"
+    @mouseover="hovered = true"
+    @mouseleave="hovered = false"
+  >
+    <div class="username-container" v-if="user.logged">
       <div class="username">
         <span>{{ user.username !== '' ? user.username : user.id }}</span>
         <svg class="caret" viewBox="0 0 49.892857 20.15317">
