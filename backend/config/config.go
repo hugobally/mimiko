@@ -9,9 +9,14 @@ import (
 
 type Config struct {
 	Env string `yaml:"env" envconfig:"MIMIKO_ENV"`
+	Tls struct {
+		Cert string `yaml:"cert" envconfig:"MIMIKO_CERT"`
+		Key  string `yaml:"key" envconfig:"MIMIKO_KEY"`
+	} `yaml:"tls"`
 	Server struct {
 		Host string `yaml:"host" envconfig:"MIMIKO_SERVER_HOST"`
 		Port int    `yaml:"port" envconfig:"MIMIKO_SERVER_PORT"`
+		StaticPath string `yaml:"static_path" envconfig:"MIMIKO_STATIC_PATH"`
 	} `yaml:"server"`
 	Auth struct {
 		JwtKey string `yaml:"jwt_key" envconfig:"MIMIKO_JWT_KEY"`

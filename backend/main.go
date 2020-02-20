@@ -42,6 +42,7 @@ func initSharedServices() *shared.Services {
 
 func main() {
 	svcs := initSharedServices()
+	cfg := svcs.Config
 
 	mux := http.NewServeMux()
 
@@ -51,18 +52,13 @@ func main() {
 	gqlHandler := api.NewHandler(svcs)
 	gqlHandler.SetupRoutes(mux)
 
-	cfg := svcs.Config
 	addr := fmt.Sprintf("%v:%d", cfg.Server.Host, cfg.Server.Port)
-
-	muxWithMiddleware := handlers.LoggingHandler(os.Stdout, mux)
-	srv := server.New(muxWithMiddleware, addr)
+	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)
 
 	svcs.Logger.Printf("server starting at %v", addr)
+	err := srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
 
-	// TODO Read cert files
-	// TODO ListenAndServeTLS
-	//err := srv.ListenAndServe()
-	//if err != nil {
-	//	svcs.Logger.Fatalf("server failed to start: %v", err)
-	//}
+	if err != nil {
+		svcs.Logger.Fatalf("server failed to start: %v", err)
+	}
 }
