@@ -1,6 +1,7 @@
 package static
 
 import (
+	"fmt"
 	"github.com/hugobally/mimiko/backend/shared"
 	"net/http"
 )
@@ -12,16 +13,19 @@ func NewHandler(s *shared.Services) *Handler {
 }
 
 func (h *Handler) SetupRoutes(mux *http.ServeMux) {
-	mux.Handle("/", WrapNotFound(http.FileServer(http.Dir(h.Config.Server.StaticPath))))
+	staticPath := h.Config.Server.StaticPath
+	indexPath := fmt.Sprintf("%v/%v", staticPath, "index.html")
+	mux.Handle("/", WrapNotFound(http.FileServer(http.Dir(staticPath)), indexPath))
 }
 
 // Vue Frontend requires 404's on static assets to return index.html instead
-func WrapNotFound(next http.Handler) http.HandlerFunc {
+func WrapNotFound(next http.Handler, indexPath string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cw := &CustomResponseWriter{ResponseWriter: w}
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(cw, r)
 		if cw.status == http.StatusNotFound {
-			http.ServeFile(w, r, "/")
+			w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+			http.ServeFile(w, r, indexPath)
 		}
 	}
 }
