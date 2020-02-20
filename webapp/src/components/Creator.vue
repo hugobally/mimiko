@@ -369,6 +369,11 @@ function replaceSpecial(str) {
     width: 600px;
     height: 600px;
   }
+
+  .mode-container {
+    width: 300px;
+    height: 300px;
+  }
 }
 
 .search-input-transition-enter-active,
