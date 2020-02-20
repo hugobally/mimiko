@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/hugobally/mimiko/backend/static"
 	"log"
 	"net/http"
 	"os"
@@ -46,11 +47,9 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	loginHandler := login.NewHandler(svcs)
-	loginHandler.SetupRoutes(mux)
-
-	gqlHandler := api.NewHandler(svcs)
-	gqlHandler.SetupRoutes(mux)
+	login.NewHandler(svcs).SetupRoutes(mux)
+	api.NewHandler(svcs).SetupRoutes(mux)
+	static.NewHandler(svcs).SetupRoutes(mux)
 
 	addr := fmt.Sprintf("%v:%d", cfg.Server.Host, cfg.Server.Port)
 	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)

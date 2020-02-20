@@ -33,6 +33,7 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 
 	var params *prisma.MapsParams
 
+	order := prisma.MapOrderByInputCreatedAtAsc
 	if filter != nil && filter.UserId != nil {
 		params = &prisma.MapsParams{
 			Where: &prisma.MapWhereInput{
@@ -40,13 +41,14 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 					ID: filter.UserId,
 				},
 			},
+			OrderBy: &order,
 		}
 		if user.ID != *filter.UserId {
 			onlyPublic := true
 			params.Where.Public = &onlyPublic
 		}
 	} else {
-		params = MapsDefaultFilter(user.ID)
+		params = MapsDefaultFilter(order)
 	}
 
 	if filter != nil {
@@ -61,17 +63,15 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 	return r.Prisma.Maps(params).Exec(ctx)
 }
 
-func MapsDefaultFilter(userId string) *prisma.MapsParams {
+func MapsDefaultFilter(order prisma.MapOrderByInput) *prisma.MapsParams {
 	onlyPublic := true
 	defaultPageLength := int32(100)
 
 	return &prisma.MapsParams{
 		Where: &prisma.MapWhereInput{
 			Public: &onlyPublic,
-			Author: &prisma.UserWhereInput{
-				IDNot: &userId,
-			},
 		},
+		OrderBy: &order,
 		First: &defaultPageLength,
 	}
 }
