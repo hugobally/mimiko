@@ -244,7 +244,7 @@ export default {
       }
       if (ac.count !== 0) await dispatch('setTracksData', ac.tracks)
     },
-    async setTracksData({ commit, state }, input) {
+    async setTracksData({ commit }, input) {
       const trackIds = Object.keys(input).join()
       const parsedTracks = await spotify.getTracks(trackIds)
 
@@ -348,42 +348,44 @@ export default {
       const knotsToDelete = []
       const linksToDelete = []
 
-      const links = Object.entries(state.links)
+      const linkIds = Object.keys(state.links)
 
-      // TODO generic DFS function (shared with autoplay, etc..)
-      const [parentLinkId, parentLink] = links.find(
-        // eslint-disable-next-line no-unused-vars
-        ([_, v]) => v.target === knotId,
-      )
-      const dfs = [parentLinkId]
-      while (dfs.length > 0) {
-        const current = dfs[dfs.length - 1]
+      const parentLinkId = linkIds.find(id => state.links[id].target === knotId)
 
-        linksToDelete.push(current)
-        dfs.pop()
+      if (parentLinkId) {
+        // TODO generic DFS function (shared with autoplay, etc..)
+        const dfs = [parentLinkId]
+        while (dfs.length > 0) {
+          const current = dfs[dfs.length - 1]
 
-        const target = state.links[current].target
-        knotsToDelete.push(target)
-        for (const [k, _] of links.filter(([k, v]) => v.source === target)) {
-          dfs.push(k)
+          linksToDelete.push(current)
+          dfs.pop()
+
+          const target = state.links[current].target
+
+          knotsToDelete.push(target)
+
+          for (const id of linkIds.filter(
+            id => state.links[id].source === target,
+          )) {
+            dfs.push(id)
+          }
         }
       }
 
       try {
-        const linkCount = await gql.deleteLinks(state.id, linksToDelete)
-        if (linkCount !== linksToDelete.length) {
-          return
-        }
-
-        // TODO On error with link/knot count, flash message + reload
-
+        // TODO Handle desynchronization errors
         await rootState.player.sdk.nextTrack().catch(() => {})
         commit('player/RESET_PLAYER', null, { root: true })
 
+        await gql.deleteLinks(state.id, linksToDelete)
+        await gql.deleteKnots(state.id, knotsToDelete)
+
         dispatch('removeLinks', linksToDelete)
         dispatch('removeKnots', knotsToDelete)
+
         commit('KNOT_REMOVE_CHILDREN', {
-          id: parentLink.source,
+          id: state.links[parentLinkId].source,
           childrenToRemove: knotId,
         })
       } catch (error) {

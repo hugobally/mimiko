@@ -166,5 +166,4 @@ img,
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
 }
-
 </style>

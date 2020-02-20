@@ -86,7 +86,7 @@ export default {
       commit('SET_SIM', simulation)
     },
 
-    resetForce({ commit, state }) {
+    resetForce({ commit }) {
       commit('RESET_FORCE')
     },
   },
