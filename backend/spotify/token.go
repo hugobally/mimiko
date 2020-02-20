@@ -49,7 +49,7 @@ func (c *Client) performTokenRequest(content url.Values) (*TokenResponse, error)
 	credentials := base64.URLEncoding.EncodeToString(
 		[]byte(c.Config.Spotify.ClientId + ":" + c.Config.Spotify.ClientSecret))
 
-	req.Header.Set("Authorization", "Basic " + credentials)
+	req.Header.Set("Authorization", "Basic "+credentials)
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {

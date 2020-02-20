@@ -55,7 +55,6 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Println("successful login for user", user.ID)
 }
 
-
 func (h *Handler) ParseRequest(w http.ResponseWriter, r *http.Request) (*string, error) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -82,8 +81,8 @@ func (h *Handler) UpsertUser(u *spotify.UserResponse, d *spotify.TokenResponse, 
 
 	apps, err := h.Prisma.LinkedApps(&prisma.LinkedAppsParams{
 		Where: &prisma.LinkedAppWhereInput{
-			Type:     &appType,
-			UserId:   &u.Id,
+			Type:   &appType,
+			UserId: &u.Id,
 		},
 	}).Exec(ctx)
 	if err != nil {
@@ -97,7 +96,7 @@ func (h *Handler) UpsertUser(u *spotify.UserResponse, d *spotify.TokenResponse, 
 
 	if len(apps) == 0 {
 		newUser, err = h.Prisma.CreateLinkedApp(prisma.LinkedAppCreateInput{
-			UserId: 			u.Id,
+			UserId:   u.Id,
 			Username: &u.DisplayName,
 			Type:     prisma.AppTypeSpotify,
 			User: prisma.UserCreateOneWithoutLinkedAppsInput{
@@ -142,7 +141,7 @@ func (h *Handler) SetLoginCookie(w http.ResponseWriter, user *prisma.User) error
 		Expires:  exp,
 		Path:     "/",
 		HttpOnly: true,
-		Secure: true,
+		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
 	})
 	return nil

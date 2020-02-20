@@ -8,11 +8,10 @@ import (
 	"net/http"
 )
 
-
 type UserResponse struct {
-	Id    string `json:"id"`
+	Id          string `json:"id"`
 	DisplayName string `json:"display_name"`
-	Error struct {
+	Error       struct {
 		Status  int    `json:"status"`
 		Message string `json:"message"`
 	} `json:"error"`
@@ -45,4 +44,3 @@ func (c *Client) GetUser(token string) (*UserResponse, error) {
 
 	return user, nil
 }
-

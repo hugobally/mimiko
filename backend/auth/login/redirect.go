@@ -23,13 +23,12 @@ func (h *Handler) SpotifyRedirect(w http.ResponseWriter, r *http.Request) {
 		"streaming",                  // SDK playback
 		"user-modify-playback-state", // API playback
 
-		"user-read-email",            // Read Email Address
-		"user-read-private",          // Subscription type (Free/Premium)
+		"user-read-email",   // Read Email Address
+		"user-read-private", // Subscription type (Free/Premium)
 
-		"playlist-read-private",      // Playlist
+		"playlist-read-private", // Playlist
 		"playlist-modify-public",
 		"playlist-modify-private",
-
 	}
 	p.Add("scope", strings.Join(scopes, " "))
 

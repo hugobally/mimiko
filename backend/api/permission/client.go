@@ -28,7 +28,6 @@ func (c *Client) ReadUserPrivate(ctx context.Context, user *prisma.User) error {
 	return nil
 }
 
-
 func (c *Client) GetMapOwner(ctx context.Context, mapId string) (*prisma.User, error) {
 	return c.Prisma.Map(prisma.MapWhereUniqueInput{
 		ID: &mapId,

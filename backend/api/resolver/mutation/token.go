@@ -15,8 +15,8 @@ func (r *Resolver) GetToken(ctx context.Context, appType prisma.AppType) (*prism
 	}
 
 	apps, err := r.Prisma.LinkedApps(&prisma.LinkedAppsParams{
-		Where:   &prisma.LinkedAppWhereInput{
-			User:  &prisma.UserWhereInput{ID: &user.ID},
+		Where: &prisma.LinkedAppWhereInput{
+			User: &prisma.UserWhereInput{ID: &user.ID},
 			Type: &appType,
 		},
 	}).Exec(ctx)
@@ -41,16 +41,18 @@ func (r *Resolver) GetToken(ctx context.Context, appType prisma.AppType) (*prism
 		var refreshToken *string
 		if newToken.RefreshToken != "" {
 			refreshToken = &newToken.RefreshToken
-		} else { refreshToken = app.RefreshToken }
+		} else {
+			refreshToken = app.RefreshToken
+		}
 
 		app, err = r.Prisma.UpdateLinkedApp(prisma.LinkedAppUpdateParams{
-			Data:  prisma.LinkedAppUpdateInput{
-				AccessToken: &newToken.AccessToken,
-				TokenExpiry: &expStr,
+			Data: prisma.LinkedAppUpdateInput{
+				AccessToken:  &newToken.AccessToken,
+				TokenExpiry:  &expStr,
 				RefreshToken: refreshToken,
 			},
 			Where: prisma.LinkedAppWhereUniqueInput{
-					ID: &app.ID,
+				ID: &app.ID,
 			},
 		}).Exec(ctx)
 		if err != nil {

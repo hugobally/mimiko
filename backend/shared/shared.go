@@ -15,7 +15,7 @@ type Services struct {
 	HttpClient *http.Client
 	Config     *config.Config
 	JwtUtil    *jwt.Util
-	Spotify 	*spotify.Client
+	Spotify    *spotify.Client
 }
 
 func (s *Services) SetLogger(l *log.Logger) {

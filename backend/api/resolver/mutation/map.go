@@ -3,10 +3,10 @@ package mutation
 import (
 	"context"
 	"errors"
-	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/api/models"
-	"github.com/hugobally/mimiko/backend/validation"
+	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/prisma"
+	"github.com/hugobally/mimiko/backend/validation"
 )
 
 func validateMapTitle(title *string) error {
@@ -47,8 +47,8 @@ func (r *Resolver) CreateMap(ctx context.Context, mapInput models.MapInput) (*pr
 				ID: &user.ID,
 			},
 		},
-		Title: mapInput.Title,
-		Public: mapInput.Public,
+		Title:      mapInput.Title,
+		Public:     mapInput.Public,
 		FlagshipId: mapInput.FlagshipId,
 		Knots: &prisma.KnotCreateManyWithoutMapInput{
 			Create: []prisma.KnotCreateWithoutMapInput{
@@ -75,10 +75,10 @@ func (r *Resolver) UpdateMap(ctx context.Context, mapId string, mapInput models.
 	}
 
 	return r.Prisma.UpdateMap(prisma.MapUpdateParams{
-		Data:  prisma.MapUpdateInput{
-			Title: mapInput.Title,
+		Data: prisma.MapUpdateInput{
+			Title:      mapInput.Title,
 			FlagshipId: mapInput.FlagshipId,
-			Public: mapInput.Public,
+			Public:     mapInput.Public,
 		},
 		Where: prisma.MapWhereUniqueInput{
 			ID: &mapId,

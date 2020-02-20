@@ -27,7 +27,7 @@ func (r *Resolver) CreateKnots(ctx context.Context, mapId string, inputs []model
 				},
 			},
 			TrackId: *input.TrackId,
-			Level: *input.Level,
+			Level:   *input.Level,
 			Visited: input.Visited,
 		}).Exec(ctx)
 		if err != nil {
@@ -54,7 +54,7 @@ func (r *Resolver) UpdateKnot(ctx context.Context, knotId string, input models.K
 	}
 
 	return r.Prisma.UpdateKnot(prisma.KnotUpdateParams{
-		Data:  prisma.KnotUpdateInput{
+		Data: prisma.KnotUpdateInput{
 			Visited: input.Visited,
 		},
 		Where: prisma.KnotWhereUniqueInput{

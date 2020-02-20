@@ -48,4 +48,3 @@ func (r *Resolver) DeleteLinks(ctx context.Context, mapId string, linkIds []stri
 
 	return &models.MutationResult{Success: true, Count: int(res.Count)}, nil
 }
-

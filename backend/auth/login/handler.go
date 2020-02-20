@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type Handler struct { *shared.Services }
+type Handler struct{ *shared.Services }
 
 func (h *Handler) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/login", h.Login)
@@ -13,5 +13,5 @@ func (h *Handler) SetupRoutes(mux *http.ServeMux) {
 }
 
 func NewHandler(s *shared.Services) *Handler {
-	return &Handler{ s }
+	return &Handler{s}
 }

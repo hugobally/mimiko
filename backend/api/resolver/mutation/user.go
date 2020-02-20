@@ -3,8 +3,8 @@ package mutation
 import (
 	"context"
 	"github.com/hugobally/mimiko/backend/auth"
-	"github.com/hugobally/mimiko/backend/validation"
 	"github.com/hugobally/mimiko/backend/prisma"
+	"github.com/hugobally/mimiko/backend/validation"
 )
 
 // TODO Unique usernames
@@ -24,7 +24,7 @@ func (r *Resolver) UpdateUsername(ctx context.Context, newUsername string) (*pri
 	}
 
 	return r.Prisma.UpdateUser(prisma.UserUpdateParams{
-		Data:  prisma.UserUpdateInput{
+		Data: prisma.UserUpdateInput{
 			Username: &newUsername,
 		},
 		Where: prisma.UserWhereUniqueInput{

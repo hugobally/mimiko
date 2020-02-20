@@ -7,7 +7,6 @@ import (
 
 type Input struct {
 	Value string
-
 }
 
 func AlphaNumSpace(input string) error {

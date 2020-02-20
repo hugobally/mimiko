@@ -33,7 +33,7 @@ func New(handler http.Handler, serverAddress string) *http.Server {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		TLSConfig:     tlsConfig,
+		TLSConfig:    tlsConfig,
 		Handler:      handler,
 	}
 	return srv

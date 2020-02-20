@@ -2,8 +2,8 @@ package query
 
 import (
 	"context"
-	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/api/models"
+	"github.com/hugobally/mimiko/backend/auth"
 	"github.com/hugobally/mimiko/backend/prisma"
 )
 
@@ -66,7 +66,7 @@ func MapsDefaultFilter(userId string) *prisma.MapsParams {
 	defaultPageLength := int32(100)
 
 	return &prisma.MapsParams{
-		Where:   &prisma.MapWhereInput{
+		Where: &prisma.MapWhereInput{
 			Public: &onlyPublic,
 			Author: &prisma.UserWhereInput{
 				IDNot: &userId,
@@ -75,4 +75,3 @@ func MapsDefaultFilter(userId string) *prisma.MapsParams {
 		First: &defaultPageLength,
 	}
 }
-

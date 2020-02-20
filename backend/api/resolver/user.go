@@ -27,7 +27,7 @@ func (r *userResolver) LinkedApps(ctx context.Context, obj *prisma.User, typeArg
 	return r.Prisma.LinkedApps(&prisma.LinkedAppsParams{
 		Where: &prisma.LinkedAppWhereInput{
 			User: &prisma.UserWhereInput{
-				ID:&obj.ID,
+				ID: &obj.ID,
 			},
 			Type: typeArg,
 		},

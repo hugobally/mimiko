@@ -5,7 +5,7 @@ import (
 	"github.com/hugobally/mimiko/backend/shared"
 )
 
-type Resolver struct{
+type Resolver struct {
 	*shared.Services
 
 	Permission *permission.Client
