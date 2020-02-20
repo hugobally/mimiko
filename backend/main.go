@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/hugobally/mimiko/backend/static"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -23,7 +24,6 @@ import (
 func initSharedServices() *shared.Services {
 	cfg := config.New()
 	httpClient := client.New()
-	logger := log.New(os.Stdout, "mimiko/backend ", log.LstdFlags|log.Lshortfile)
 	prismaClient := prisma.New(nil)
 	jwtUtil := jwt.NewJwtHandler(cfg.Auth.JwtKey)
 
@@ -31,7 +31,6 @@ func initSharedServices() *shared.Services {
 
 	svcs.SetConfig(cfg)
 	svcs.SetHttpClient(httpClient)
-	svcs.SetLogger(logger)
 	svcs.SetPrisma(prismaClient)
 	svcs.SetJwtUtil(jwtUtil)
 
@@ -43,6 +42,16 @@ func initSharedServices() *shared.Services {
 
 func main() {
 	svcs := initSharedServices()
+
+	lf, err := os.OpenFile("/srv/log/mimiko.log",
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	defer lf.Close()
+	logger := log.New(io.MultiWriter(lf, os.Stdout), "mimiko/backend ", log.LstdFlags|log.Lshortfile)
+	svcs.SetLogger(logger)
+
 	cfg := svcs.Config
 
 	mux := http.NewServeMux()
@@ -55,7 +64,7 @@ func main() {
 	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)
 
 	svcs.Logger.Printf("server starting at %v", addr)
-	err := srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
+	err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
 
 	if err != nil {
 		svcs.Logger.Fatalf("server failed to start: %v", err)
