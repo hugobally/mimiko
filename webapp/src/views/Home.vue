@@ -20,11 +20,11 @@
           v-if="lastVisited"
           class="quick-link link"
           :to="{ path: `/map/${lastVisited}` }"
-          >Go to our last visited map</router-link
+          >Last visited map</router-link
         >
       </div>
     </div>
-    <h1 class="header noselect">
+    <h1 v-if="userMaps.length > 0" class="header noselect">
       Your Maps
     </h1>
     <MapList :readOnly="false" :maps="userMaps" />

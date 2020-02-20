@@ -56,7 +56,9 @@ export default {
       return state.userMaps.concat(state.localCreatedMaps).reverse()
     },
     publicMaps: state => {
-      return state.localCreatedMaps.filter(map => map.public).concat(state.publicMaps)
+      return state.localCreatedMaps
+        .filter(map => map.public)
+        .concat(state.publicMaps)
     },
   },
   actions: {
