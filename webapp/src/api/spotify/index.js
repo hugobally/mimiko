@@ -140,12 +140,10 @@ export async function createPlaylist() {
   }
   const token = await getToken()
 
-  console.log(token)
   const data = await performPostRequest(
     `users/${token.userId}/playlists`,
     params,
   )
-  console.log(data)
   return data.id
 }
 

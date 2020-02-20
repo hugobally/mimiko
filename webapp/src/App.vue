@@ -85,7 +85,6 @@ export default {
   },
   watch: {
     routePath(newVal) {
-      console.log(newVal)
       if (newVal.substr(0, 8) !== '/welcome') {
         this.maskNav = false
       } else {

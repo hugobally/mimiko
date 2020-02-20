@@ -176,7 +176,6 @@ export default {
           query: this.editMode ? { edit: true } : {},
         })
       } catch (error) {
-        console.log(error)
         this.$store.dispatch('pushFlashQueue', {
           content: 'Error when trying to create a new map, please retry.',
           type: 'error',
