@@ -2,7 +2,7 @@
 
 0. Tools needed : docker, go, prisma (npm install prisma --global)
 
-1. Create config.yml in the repository root folder with the following content
+1. Create config.yml in the backend folder with the following content
 
 ```
   env: DEV
@@ -11,7 +11,7 @@
     key: /path/to/private_key.pem
   server:
     host: localhost
-    port: 443
+    port: 8081
   spotify:
     client_id: [SPOTIFY_CLIENT_ID]
     client_secret: [SPOTIFY_CLIENT_SECRET]
