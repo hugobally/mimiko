@@ -43,14 +43,16 @@ func initSharedServices() *shared.Services {
 func main() {
 	svcs := initSharedServices()
 
-	lf, err := os.OpenFile("/srv/log/mimiko.log",
+  // TODO
+	lf, err := os.OpenFile("server.log",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
 	}
 	defer lf.Close()
-	logger := log.New(io.MultiWriter(lf, os.Stdout), "mimiko/backend ", log.LstdFlags|log.Lshortfile)
+	logger := log.New(io.MultiWriter(lf, os.Stdout), "backend ", log.LstdFlags|log.Lshortfile)
 	svcs.SetLogger(logger)
+  //
 
 	cfg := svcs.Config
 
