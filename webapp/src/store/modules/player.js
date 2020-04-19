@@ -369,7 +369,12 @@ export default {
             const existingTracks = Object.values(state.knots).map(
               knot => knot.track.id,
             )
-            const recos = await recoFromTrack(seeds, 1, existingTracks, state.previewMode)
+            const recos = await recoFromTrack(
+              seeds,
+              1,
+              existingTracks,
+              state.previewMode,
+            )
             newTrack = recos[0]
           } catch (error) {
             // TODO
@@ -386,7 +391,7 @@ export default {
         commit('BUFFER_SET_NEXT', newBufferItem)
       }
     },
-    async bufferPlay({ state, rootState, commit }) {
+    async bufferPlay({ state, rootState, commit, dispatch }) {
       const current = state.buffer.current
 
       if (
@@ -408,6 +413,18 @@ export default {
         await playTrack([current.track.id], state.deviceId)
       } catch (error) {
         commit('SET_PREVIEW_MODE', true)
+        if (!current.track.previewURL) {
+          dispatch(
+            'pushFlashQueue',
+            {
+              content:
+                'No audio preview available for this track on Spotify Free.',
+              type: 'error',
+              time: 3000,
+            },
+            { root: true },
+          )
+        }
       }
     },
   },

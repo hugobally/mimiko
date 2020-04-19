@@ -208,7 +208,7 @@ export default {
             sourceId: this.knot,
             number: numNewKnots,
           })
-          if (Object.values(this.$store.state.map.knots).length < 5) {
+          if (Object.values(this.$store.state.map.knots).length <= 5) {
             await new Promise(r => setTimeout(r, 200))
             this.$store.dispatch('map/focus', 'ALL')
           }
@@ -236,6 +236,7 @@ export default {
       this.debounceLike.counter = 0
 
       if (this.$store.state.player.previewMode) {
+        this.$store.commit('player/STATUS_PLAYING')
         if (this.track && !this.track.previewURL) {
           this.$store.dispatch('pushFlashQueue', {
             content:

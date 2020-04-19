@@ -102,6 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .search-input-container {
   display: flex;
   align-items: center;
@@ -146,13 +147,13 @@ export default {
 }
 
 .side-button {
-  border-radius: 0px 3px 3px 0px;
-  background-color: $bg-secondary;
-  color: $button-text-primary;
+  border-radius: 0px 10px 10px 0px;
+  color: $text-primary;
+  background: $bg-primary;
+  border: solid 2px $black;
   cursor: pointer;
   text-decoration: none;
-  border: 0px;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .text-input {
@@ -164,7 +165,9 @@ export default {
 }
 
 .side-button:hover {
-  background-color: $button-bg-primary;
+  // transform: scale(1.1) translate(5 0);
+  transform: scale(1.1) translate(5px);
+  transition: all 0.1s;
 }
 
 .busy {

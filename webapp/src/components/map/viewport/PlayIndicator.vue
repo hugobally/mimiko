@@ -2,7 +2,7 @@
   <g
     class="indicator-container"
     :transform="transformStr"
-    :opacity="playing && !previewMode ? 0.3 : 0"
+    :opacity="playing ? 0.3 : 0"
   >
     <circle
       class="animated-circle"
@@ -32,7 +32,7 @@ export default {
       return this.$store.state.player.knot
     },
     paused() {
-      return this.status !== 'PLAYING'
+      return this.status !== 'PLAYING' && !this.previewMode
     },
     knot() {
       if (!this.playing) return null
