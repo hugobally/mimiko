@@ -125,20 +125,15 @@ export async function recoFromTrack(
   }
   const data = await performGetRequest('recommendations', params)
 
-  console.log('recos before filtering', data.tracks.length)
-  if (previewMode) console.log('filtering in previewMode')
   const tracks = data.tracks.filter(track => {
     if (blacklist.includes(track.id)) {
-      console.log(`filtering ${track.name} as duplicate`)
       return false
     }
     if (previewMode && !track.preview_url) {
-      console.log(`filtering ${track.name} as no preview`)
       return false
     }
     return true
   })
-  console.log('recos after filtering', tracks.length)
 
   if (tracks.length < 1) return null
   return parseTracks([tracks[0]])

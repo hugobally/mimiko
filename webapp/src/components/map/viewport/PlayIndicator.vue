@@ -40,9 +40,7 @@ export default {
       return this.knots[this.playing]
     },
     transformStr() {
-      // if (!this.knot) return 'translate(0 0)'
       if (!this.knot) return
-      console.log(this.knot)
       const { x, y } = this.knot
       return `translate(${x} ${y})`
     },
