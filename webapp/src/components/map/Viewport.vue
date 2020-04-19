@@ -1,5 +1,6 @@
 <template>
   <div class="viewport-container">
+    <Overlay :viewport="viewportRef" />
     <svg
       ref="viewport"
       width="100%"
@@ -7,11 +8,11 @@
       xmlns="http://www.w3.org/2000/svg"
       :opacity="loaded ? 1 : 0"
     >
-      <ZoomHandler :viewport="viewportRef" :graph="graphRef">
-        <CircleBackground />
+      <ZoomHandler id="zoomgroup" :viewport="viewportRef" :graph="graphRef">
+        <!-- <CircleBackground /> -->
         <PlayIndicator v-if="playing" :key="playing" />
-        <HoverIndicator v-if="hovered" />
         <Graph ref="graphComponent" />
+        <HoverIndicator v-if="hovered" />
       </ZoomHandler>
 
       <Filters radius="40"></Filters>
@@ -23,9 +24,10 @@
 import Graph from '@/components/map/Graph'
 import ZoomHandler from '@/components/map/viewport/ZoomHandler'
 import Filters from '@/components/map/viewport/Filters'
-import CircleBackground from '@/components/map/viewport/CircleBackground'
+// import CircleBackground from '@/components/map/viewport/CircleBackground'
 import PlayIndicator from '@/components/map/viewport/PlayIndicator'
 import HoverIndicator from '@/components/map/viewport/HoverIndicator'
+import Overlay from '@/components/map/viewport/Overlay'
 
 export default {
   props: ['loaded'],
@@ -36,10 +38,11 @@ export default {
     }
   },
   components: {
+    Overlay,
     ZoomHandler,
     Graph,
     Filters,
-    CircleBackground,
+    // CircleBackground,
     PlayIndicator,
     HoverIndicator,
   },
@@ -66,6 +69,6 @@ export default {
   overflow: hidden;
   flex: 1;
 
-  background-color: #121212;
+  background-color: $bg-primary;
 }
 </style>

@@ -12,7 +12,7 @@
             <path
               id="path2492"
               d="M 25.324405,254.66667 H 75.21726 L 50.081843,234.5135 Z"
-              style="fill:#f9f9f9;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+              style="fill:#000000;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
             />
           </g>
         </svg>
@@ -85,11 +85,12 @@ export default {
   align-items: center;
   justify-content: center;
 
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $bg-primary;
+  border-left: solid 1px black;
 }
 
 .user:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: $bg-primary;
 }
 
 .username {
@@ -127,19 +128,24 @@ export default {
 
 .user-menu {
   position: absolute;
-  bottom: 64px;
+  bottom: 63px;
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #202020;
+  background-color: $bg-secondary;
+  color: $text-highlight;
+  border-bottom: solid black 1px;
 
   li {
+    display: flex;
+    align-items: center;
+    height: 50px;
     padding: 10px;
     list-style: none;
   }
 
   li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $bg-secondary-shade;
   }
 }
 </style>

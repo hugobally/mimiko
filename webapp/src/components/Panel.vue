@@ -58,8 +58,7 @@ export default {
   position: fixed;
 
   justify-content: center;
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: $bg-primary;
 }
 
 .panel-container {
@@ -67,15 +66,9 @@ export default {
   left: 0px;
   height: 100%;
   width: 100%;
-  background-color: rgba(30, 30, 30, 1);
+  background-color: $bg-primary;
   display: flex;
   flex-direction: column;
-}
-
-@media (min-width: 1024px) {
-  .panel-container {
-    width: 800px;
-  }
 }
 
 .panel-header {
@@ -83,19 +76,21 @@ export default {
   position: relative;
 }
 
+.panel-title {
+  width: 100%;
+  height: 80px;
+  padding: 0px 0px 5px 5px;
+  border-bottom: solid $bg-primary;
+  text-align: left;
+  font-size: 50px;
+}
+
 .close-icon {
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 50px;
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-
-.panel-title {
-  width: 100%;
-  padding: 0px 0px 5px 5px;
-  border-bottom: solid rgba(255, 255, 255, 0.1) 1px;
-  text-align: left;
 }
 </style>

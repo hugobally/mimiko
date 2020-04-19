@@ -12,6 +12,7 @@ function initialState() {
         id: '',
         username: '',
       },
+      color: '#222222',
     },
 
     load: 0,
@@ -25,13 +26,9 @@ function initialState() {
 
     hovered: null,
     focused: null,
-
-    linkColors: {
-      current: 0,
-      values: ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94'],
-    },
   }
 }
+// values: ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94'],
 
 export default {
   namespaced: true,
@@ -67,13 +64,6 @@ export default {
           children: knot.children || [],
           visited: knot.visited || false,
         })
-
-        if (knot.children && knot.level === 1) {
-          const colors = state.linkColors
-          state.knots[knot.id].color = colors.values[colors.current]
-          colors.current += 1
-          if (colors.current === colors.values.length) colors.current = 0
-        }
       }
     },
     MAP_ADD_LINKS(state, links) {
@@ -291,22 +281,24 @@ export default {
 
     // TODO Restructure
     async createKnotsWithReco(
-      { state, dispatch },
+      { state, rootState, dispatch },
       { sourceId, newTracks, number, autoplay, visited },
     ) {
       const knot = state.knots[sourceId]
 
+      const existingTracks = Object.values(state.knots).map(
+        knot => knot.track.id,
+      )
+
       if (!newTracks) {
         try {
           const seeds = [knot.track.id]
-          let current = knot
-          for (let i = 0; i < 4; i++) {
-            if (!current.parent) break
-
-            current = state.knots[current.parent]
-            seeds.push(current.track.id)
-          }
-          newTracks = await spotify.recoFromTrack(seeds, number)
+          newTracks = await spotify.recoFromTrack(
+            seeds,
+            number,
+            existingTracks,
+            rootState.player.previewMode,
+          )
         } catch (error) {
           return
         }

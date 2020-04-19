@@ -63,20 +63,13 @@ export default {
       this.$store.commit('map/MAP_SET_LOAD', 100)
 
       if (freshCreated) {
-        await new Promise(r => setTimeout(r, 2000))
-        await this.$store.dispatch('map/createKnotsWithReco', {
-          sourceId: startKnotId,
-          number: 1,
-        })
-        await this.$store.dispatch('map/createKnotsWithReco', {
-          sourceId: startKnotId,
-          number: 1,
-        })
+        await new Promise(r => setTimeout(r, 500))
+        // await this.$store.dispatch('map/createKnotsWithReco', {
+        //   sourceId: startKnotId,
+        //   number: 1,
+        // })
         this.$store.commit('map/MAP_SET_FRESH_CREATED', false)
       }
-
-      const track = this.knots[startKnotId].track
-      this.$store.dispatch('player/playKnot', { track, knot: startKnotId })
     } catch (error) {
       this.mapError()
       if (this.load !== 100) this.$store.commit('map/MAP_SET_LOAD', 0)

@@ -2,6 +2,7 @@ export default {
   state: {
     flashQueue: [],
     manualZoomQueue: [],
+    zoomLevel: 1,
   },
   mutations: {
     PUSH_FLASH_QUEUE(state, message) {
@@ -15,6 +16,9 @@ export default {
     },
     SHIFT_ZOOM_QUEUE(state) {
       state.manualZoomQueue.shift()
+    },
+    SET_ZOOM_LEVEL(state, newVal) {
+      state.zoomLevel = newVal
     },
   },
   actions: {

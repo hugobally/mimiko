@@ -61,19 +61,18 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: rgb(35, 35, 35);
+  background-color: $bg-primary;
 }
 
 .zoombar-container > img {
   padding: 7px;
-  opacity: 0.6;
   pointer-events: auto;
   cursor: pointer;
+  border: solid 1px black;
 }
 
 .zoombar-container > img:hover {
-  opacity: 1;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: $bg-secondary;
 }
 
 .zoom-button {

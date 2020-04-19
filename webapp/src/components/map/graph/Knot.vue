@@ -6,7 +6,7 @@
     @mouseover="setHovered(true)"
     @mouseleave="setHovered(false)"
   >
-    <circle :r="radius / 1.8" fill="#EEEEEE"> </circle>
+    <circle :r="radius / 1.9" :fill="color"> </circle>
     <image
       class="album-art-circle"
       :x="-radius / 2"
@@ -33,6 +33,9 @@ export default {
     }
   },
   computed: {
+    color() {
+      return this.$store.state.map.meta.color
+    },
     transformStr() {
       const { x, y } = this.knot
       return `translate(${x} ${y})`

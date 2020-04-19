@@ -30,9 +30,9 @@ export default {
   align-items: center;
   justify-content: center;
 
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+background-color: $bg-primary;
+  color: $text-primary;
+  border: solid 1px black;
 
   padding: 12px;
 }

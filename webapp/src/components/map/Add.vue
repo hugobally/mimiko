@@ -124,7 +124,7 @@ function formatTitle(track) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .add-container {
   width: 100%;
   height: 100%;
@@ -176,14 +176,14 @@ function formatTitle(track) {
 .visited-select {
   padding: 5px;
   margin: 0px 3px;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: $bg-primary;
   cursor: pointer;
 }
 
 .selected {
   opacity: 1;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: solid 1px rgba(255, 255, 255, 0.4);
+  background-color: $bg-primary;
+  border: solid 1px $bg-primary;
 }
 
 .add-button {
@@ -191,13 +191,13 @@ function formatTitle(track) {
   width: 80px;
   height: 40px;
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #121212;
+  background-color: $bg-primary;
+  color: $text-primary;
   border-radius: 3px;
   cursor: pointer;
 }
 
 .add-button:hover {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: $bg-primary;
 }
 </style>

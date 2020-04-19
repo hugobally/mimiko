@@ -43,38 +43,40 @@ export default {
 <style lang="scss" scoped>
 .map-title-container {
   position: absolute;
-  top: 0px;
-  left: 0px;
-
+  top: 5px;
+  left: 10px;
   padding: 5px;
+
   font-size: 25px;
-  color: rgba(255, 255, 255, 0.5);
-  background-color: #121212dd;
+  color: $text-primary;
+  background-color: $bg-primary;
 
   display: flex;
   align-items: center;
+
+  .settings-icon {
+    display: none;
+  }
 }
 
 .title-separator {
   padding: 0px 5px;
-  color: rgba(255, 255, 255, 0.7);
+  color: $bg-secondary;
 }
 
 .settings-icon {
   width: 20px;
   height: 20px;
-  margin-left: 10px;
-  opacity: 0.4;
+  margin-left: 5px;
 }
 
 .hoverable:hover {
   cursor: pointer;
-  background-color: #eee;
-  color: #121212dd;
+  background-color: $bg-hover;
+  color: $bg-primary;
 
   .settings-icon {
-    filter: brightness(0);
-    opacity: 1;
+    display: inline;
   }
 }
 </style>

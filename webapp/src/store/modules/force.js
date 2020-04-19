@@ -74,7 +74,7 @@ export default {
         .force(
           'r',
           d3.forceRadial(function(d) {
-            return d.level * 300
+            return d.level * 100
           }),
         )
         .on('end', () => {

@@ -2,16 +2,16 @@
   <div id="app">
     <FlashMessage :style="flashLayout" />
 
+    <router-view :key="routePath" :style="pageLayout" />
+
     <transition name="panel">
       <Panel v-if="panelContent" :style="pageLayout">
         <component :is="panelContent" />
       </Panel>
     </transition>
 
-    <router-view :key="routePath" :style="pageLayout" />
-
     <Nav :class="{ hidden: maskNav && !logged }" :style="navLayout"> </Nav>
-    <div class="debug-center"></div>
+    <!-- <div class="debug-center"></div> -->
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
     Panel,
     Settings,
     explore: Explorer,
-    create: Creator,
+    new: Creator,
     add: Add,
     settings: Settings,
     'map-settings': MapSettings,
@@ -105,14 +105,14 @@ export default {
 }
 
 body {
-  background-color: #121212;
+  background-color: $bg-primary;
 }
 #app {
   font-family: 'IBM Plex Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #eee;
+  color: $text-primary;
 }
 
 img,
@@ -135,13 +135,13 @@ img,
 }
 
 .mask-nav {
-  background-color: #121212;
+  background-color: $bg-primary;
   z-index: 2;
 }
 
 .panel-enter-active,
 .panel-leave-active {
-  transition: all 0.2s;
+  transition: all 0s;
 }
 
 .panel-enter,
@@ -160,10 +160,24 @@ img,
 
 .button {
   text-decoration: none;
-  border: none;
+  border: solid 1px black;
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.7);
+  background-color: $bg-primary;
+  color: $text-primary;
   cursor: pointer;
 }
+
+.button:hover {
+  background-color: $bg-secondary;
+  color: $text-highlight;
+}
+
+// .debug-center {
+//   left: 50%;
+//   top: 50%;
+//   width: 5px;
+//   height: 5px;
+//   background-color: red;
+//   position: fixed;
+// }
 </style>

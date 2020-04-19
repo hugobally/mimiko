@@ -32,7 +32,7 @@ export default {
       if (queue.length === 0) return
 
       this.message = queue[0]
-      await new Promise(r => setTimeout(r, 3000))
+      await new Promise(r => setTimeout(r, this.message.time || 3000))
       this.$store.dispatch('shiftFlashQueue')
     },
   },
@@ -47,7 +47,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #121212;
 }
 
 .hidden {
@@ -55,7 +54,8 @@ export default {
 }
 
 .info {
-  background-color: cadetblue;
+  background-color: $black;
+  color: $text-highlight;
 }
 
 .success {
@@ -64,5 +64,6 @@ export default {
 
 .error {
   background-color: crimson;
+  color: $text-highlight;
 }
 </style>

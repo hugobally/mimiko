@@ -96,7 +96,7 @@ export default {
 }
 
 .map-list-item-container:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  border: solid 3px $black;
 }
 
 .map-flagship-cover {
@@ -124,8 +124,7 @@ export default {
   flex: 1;
   min-width: 0;
   margin-right: 5px;
-  color: rgba(255, 255, 255, 0.6);
-
+  color: $text-primary;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -146,9 +145,8 @@ export default {
 }
 
 .map-actions:hover {
-  background-color: #121212;
   .map-action-delete-path {
-    fill: rgba(255, 255, 255, 0.5);
+    fill: $bg-primary;
   }
 }
 
@@ -163,7 +161,7 @@ export default {
 
 .delete-confirm-enter-active,
 .delele-confirm-leave-active {
-  transition: all 0.5s;
+  transition: all 0.05s;
 }
 
 .delete-confirm-enter,

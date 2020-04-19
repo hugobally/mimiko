@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="-7.867422"
+     inkscape:cx="-80.724565"
      inkscape:cy="101.27266"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -35,11 +35,11 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="960"
+     inkscape:window-width="1920"
      inkscape:window-height="1016"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata1390">
     <rdf:RDF>
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -60,84 +60,84 @@
     <g
        id="g1352"
        transform="matrix(0.0662929,0,0,0.0662929,95.807959,154.5343)"
-       style="fill:#f2f2f2">
+       style="fill:#333333">
       <g
          id="g1291"
-         style="fill:#f2f2f2">
+         style="fill:#333333">
         <g
            id="g1289"
-           style="fill:#f2f2f2">
+           style="fill:#333333">
           <g
              id="g1287"
-             style="fill:#f2f2f2">
+             style="fill:#333333">
             <path
                id="path1279"
                d="M 160,0 H 10.667 C 4.771,0 0,4.771 0,10.667 V 160 c 0,5.896 4.771,10.667 10.667,10.667 H 32 c 5.896,0 10.667,-4.771 10.667,-10.667 V 42.667 H 160 c 5.896,0 10.667,-4.771 10.667,-10.667 V 10.667 C 170.667,4.771 165.896,0 160,0 Z"
                inkscape:connector-curvature="0"
-               style="fill:#f2f2f2" />
+               style="fill:#333333" />
             <path
                id="path1281"
                d="M 458.667,0 H 309.333 c -5.896,0 -10.667,4.771 -10.667,10.667 V 32 c 0,5.896 4.771,10.667 10.667,10.667 H 426.666 V 160 c 0,5.896 4.771,10.667 10.667,10.667 h 21.333 c 5.896,0 10.667,-4.771 10.667,-10.667 V 10.667 C 469.333,4.771 464.563,0 458.667,0 Z"
                inkscape:connector-curvature="0"
-               style="fill:#f2f2f2" />
+               style="fill:#333333" />
             <path
                id="path1283"
                d="m 458.667,298.667 h -21.333 c -5.896,0 -10.667,4.771 -10.667,10.667 V 426.667 H 309.333 c -5.896,0 -10.667,4.771 -10.667,10.667 v 21.333 c 0,5.896 4.771,10.667 10.667,10.667 h 149.333 c 5.896,0 10.667,-4.771 10.667,-10.667 V 309.333 c 0,-5.896 -4.77,-10.666 -10.666,-10.666 z"
                inkscape:connector-curvature="0"
-               style="fill:#f2f2f2" />
+               style="fill:#333333" />
             <path
                id="path1285"
                d="M 160,426.667 H 42.667 V 309.333 c 0,-5.896 -4.771,-10.667 -10.667,-10.667 H 10.667 C 4.771,298.667 0,303.437 0,309.333 v 149.333 c 0,5.896 4.771,10.667 10.667,10.667 H 160 c 5.896,0 10.667,-4.771 10.667,-10.667 v -21.333 c 0,-5.895 -4.771,-10.666 -10.667,-10.666 z"
                inkscape:connector-curvature="0"
-               style="fill:#f2f2f2" />
+               style="fill:#333333" />
           </g>
         </g>
       </g>
       <g
          id="g1293"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1295"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1297"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1299"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1301"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1303"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1305"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1307"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1309"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1311"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1313"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1315"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1317"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1319"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
       <g
          id="g1321"
-         style="fill:#f2f2f2" />
+         style="fill:#333333" />
     </g>
   </g>
 </svg>

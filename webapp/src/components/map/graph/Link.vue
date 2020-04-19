@@ -1,5 +1,5 @@
 <template>
-  <g :opacity="highlighted ? 1 : 0.5">
+  <g :opacity="highlighted ? 1 : 0.2">
     <transition name="link-path">
       <path
         v-if="path.steps && path.steps.length > 0"
@@ -33,7 +33,7 @@ export default {
     },
     color() {
       return {
-        stroke: this.path.color || '#ddd',
+        stroke: this.$store.state.map.meta.color,
       }
     },
     dashed() {
@@ -100,7 +100,7 @@ export default {
 <style scoped>
 path {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 1; /*3;*/
 }
 
 .link-path-enter-active,

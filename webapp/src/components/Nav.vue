@@ -32,12 +32,12 @@ export default {
 .nav-container {
   display: flex;
   height: 100%;
-
-  background-color: #121212;
+  background-color: $bg-primary;
+  border-top: solid 1px black;
 }
 
 .filler {
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $bg-primary;
 }
 </style>

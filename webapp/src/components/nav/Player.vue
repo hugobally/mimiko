@@ -6,31 +6,28 @@
       </div>
     </div>
     <div class="action-button-group">
-      <div class="button-wrapper" @click="addOrLike">
+      <div class="button-wrapper like-button-group" @click="like">
         <img
-          class="add-button"
-          v-if="isSourceKnot || editMode"
-          src="@/assets/svg/add-icon.svg"
-          alt="add-track-icon"
-        />
-        <img
-          class="like-button"
-          v-else-if="isLiked"
+          class="like-button-icon"
+          v-if="isLiked"
           src="@/assets/svg/heart-icon-full.svg"
           alt="full-liked-icon"
         />
         <img
-          class="like-button"
+          class="like-button-icon"
           v-else
           src="@/assets/svg/heart-icon-empty.svg"
           alt="no-liked-icon"
         />
       </div>
-      <div
-        class="button-wrapper"
-        v-if="!isSourceKnot && !readOnly"
-        @click="dislike"
-      >
+      <div v-if="!readOnly" class="add-button-wrapper" @click="add">
+        <img
+          class="add-button"
+          src="@/assets/svg/add-icon.svg"
+          alt="add-track-icon"
+        />
+      </div>
+      <div class="button-wrapper" v-if="!readOnly" @click="dislike">
         <img
           class="dislike-button"
           src="@/assets/svg/cross-icon.svg"
@@ -38,7 +35,7 @@
         />
       </div>
     </div>
-    <div class="playback-group">
+    <div class="playback-group" v-if="!previewMode">
       <div class="button-wrapper" @click="play">
         <img
           class="playback-button"
@@ -54,6 +51,9 @@
         />
       </div>
       <PlayBar />
+    </div>
+    <div class="playback-group center" v-else>
+      <audio controls autoplay :src="track && track.previewURL"></audio>
     </div>
   </div>
 </template>
@@ -78,14 +78,17 @@ export default {
   async mounted() {
     try {
       if (this.$store.state.player.sdk === null) {
-        this.$store.dispatch('player/loadSdk')
-      }
-      if (this.$store.state.player.likedPlaylist.id === null) {
-        this.$store.dispatch('player/loadLikedPlaylist')
+        const sdkIsLoaded = this.$store.dispatch('player/loadSdk')
+
+        await sdkIsLoaded
+        if (this.$store.state.player.likedPlaylist.id === null) {
+          this.$store.dispatch('player/loadLikedPlaylist')
+        }
       }
 
       window.addEventListener('keyup', e => {
         if (e.code === 'Space' && this.$route.hash === '') this.play()
+        if (e.code === 'Equal' && this.$route.hash === '') this.add()
       })
     } catch (error) {
       // TODO
@@ -94,6 +97,9 @@ export default {
   computed: {
     ...mapState('player', ['sdk', 'track', 'knot', 'status', 'likedPlaylist']),
     ...mapState('map', ['readOnly']),
+    previewMode() {
+      return this.$store.state.player.previewMode
+    },
     trackTitleStr() {
       if (!this.track) return ''
 
@@ -139,16 +145,36 @@ export default {
         this.$store.commit('player/STATUS_PAUSED')
       }
     },
-    addOrLike() {
-      if (this.editMode) return this.add()
-
-      return this.like()
-    },
-    add() {
+    async like() {
       if (!this.track) return
-      if (this.isSourceKnot && !this.editMode) return this.like()
-      const hash = this.$route.hash === '#add' ? '' : '#add'
-      this.switchHash(hash)
+
+      try {
+        if (this.isLiked) {
+          await this.$store.dispatch(
+            'player/removeFromLikedPlaylist',
+            this.track.id,
+          )
+          this.$store.dispatch('pushFlashQueue', {
+            content:
+              "Track removed from the Spotify playlist 'Liked from Mimiko'",
+            type: 'info',
+            time: 4000,
+          })
+          return
+        }
+
+        if (!this.likedPlaylist.id) {
+          await this.$store.dispatch('player/createLikedPlaylist')
+        }
+        await this.$store.dispatch('player/addToLikedPlaylist', this.track.id)
+        this.$store.dispatch('pushFlashQueue', {
+          content: "Track added to the Spotify playlist 'Liked from Mimiko'",
+          type: 'info',
+          time: 4000,
+        })
+      } catch (error) {
+        //TODO
+      }
     },
     // TODO Factorize to shared lib
     switchHash(hash) {
@@ -158,7 +184,7 @@ export default {
         hash: hash,
       })
     },
-    async like() {
+    async add() {
       if (!this.track) return
 
       this.debounceLike.counter += 1
@@ -177,24 +203,22 @@ export default {
       // with a click, lock further queries until promise.all is done
       try {
         if (!this.readOnly) {
-          const numNewKnots = this.likeCount < 1 && !this.isSourceKnot ? 2 : 1
+          const numNewKnots = 1
           await this.createKnotsWithReco({
             sourceId: this.knot,
             number: numNewKnots,
           })
-        }
-        if (!this.isSourceKnot || this.readOnly) {
-          if (!this.likedPlaylist.id) {
-            await this.$store.dispatch('player/createLikedPlaylist')
+          if (Object.values(this.$store.state.map.knots).length < 5) {
+            await new Promise(r => setTimeout(r, 200))
+            this.$store.dispatch('map/focus', 'ALL')
           }
-          await this.$store.dispatch('player/addToLikedPlaylist', this.track.id)
         }
       } catch (error) {
         // TODO
       }
     },
     async dislike() {
-      if (!this.knot) return
+      if (!this.knot || this.isSourceKnot) return
 
       this.blockDislike = true
       this.$store.dispatch('map/deleteKnot', this.knot)
@@ -210,6 +234,17 @@ export default {
     track: function() {
       clearTimeout(this.debounceLike.callbackId)
       this.debounceLike.counter = 0
+
+      if (this.$store.state.player.previewMode) {
+        if (this.track && !this.track.previewURL) {
+          this.$store.dispatch('pushFlashQueue', {
+            content:
+              'No audio preview available for this track on Spotify Free.',
+            type: 'error',
+            time: 3000,
+          })
+        }
+      }
     },
   },
   async destroyed() {
@@ -231,11 +266,12 @@ export default {
   justify-content: flex-start;
 }
 
-.button-wrapper {
+.button-wrapper,
+.add-button-wrapper {
   width: 100%;
-  min-width: 64px;
   height: 100%;
 
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,26 +279,30 @@ export default {
   cursor: pointer;
 }
 
-.button-wrapper:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.like-button,
+.like-button-icon,
 .add-button,
 .playback-button,
 .dislike-button {
   opacity: 0.8;
 }
 
-.like-button,
-.add-button {
+.like-button:hover {
+  transition: scale(1.3);
+}
+
+.like-button-icon {
   width: 40px;
   height: 40px;
 }
 
+.add-button {
+  width: 50px;
+  height: 50px;
+}
+
 .dislike-button {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }
 
 .playback-button {
@@ -272,18 +312,23 @@ export default {
 
 .action-button-group {
   flex: initial;
-  min-width: 128px;
+  width: 300px;
   height: 64px;
 
   display: flex;
   justify-content: space-around;
+  padding: 0px 10px;
 
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: $bg-primary;
+
+  & > div {
+    margin: 0px 10px 0px 10px;
+  }
 }
 
 @media (min-width: 800px) {
   .action-button-group {
-    width: 180px;
+    min-width: 180px;
   }
 }
 
@@ -303,7 +348,8 @@ export default {
   align-items: center;
   justify-content: flex-start;
 
-  background-color: rgba(255, 255, 255, 0.11);
+  background-color: $bg-primary;
+  border-left: 1px solid black;
 
   .button-wrapper {
     width: 64px;
@@ -322,7 +368,8 @@ export default {
 
   cursor: pointer;
 
-  background-color: rgba(255, 255, 255, 0.11);
+  background-color: $bg-primary;
+  border-right: solid 1px black;
 }
 
 .track-title-text {
@@ -336,13 +383,44 @@ export default {
 }
 
 .track-title-container:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: $bg-primary;
 }
 
 .filler {
   width: 30vw;
   min-width: 0px;
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: $bg-primary;
+}
+
+.button-wrapper:hover {
+  transform: scale(1.2);
+}
+
+.add-button-wrapper {
+  position: relative;
+  flex: 2;
+  height: 125%;
+  bottom: 20%;
+  background-color: $black;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.add-button-wrapper:hover {
+  background-color: $black-lighter;
+  transform: translateY(-3px);
+}
+
+.add-button-wrapper:hover:active {
+  background-color: $black;
+  transform: translateY(3px);
+}
+
+.playback-button {
+  min-width: 64px;
+}
+
+.center {
+  justify-content: center;
 }
 </style>

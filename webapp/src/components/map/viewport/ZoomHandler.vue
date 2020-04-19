@@ -62,13 +62,17 @@ export default {
     },
   },
   methods: {
-    transformCallback() {
+    async transformCallback() {
       this.transform = d3event.transform
+      this.$store.commit('SET_ZOOM_LEVEL', this.transform.k)
+      const hovered = this.$store.state.map.hovered
+      this.$store.commit('map/SET_HOVERED', null)
+      this.$store.commit('map/SET_HOVERED', hovered)
     },
     async fit(transitionTime = null) {
       const target = this.graph.$refs.graphGroup.getBBox()
 
-      const padding = this.freshCreated ? 0.03 : 0.8
+      const padding = this.freshCreated ? 0.5 : 0.8
 
       const width = this.viewport.clientWidth
       const height = this.viewport.clientHeight

@@ -13,6 +13,15 @@
           :placeholder="placeholder"
           @keyup.enter="emitSubmit"
         />
+        <ul v-show="autocompleteResults" class="autocomplete-group">
+          <li
+            v-for="(result, i) in autocompleteResults"
+            :key="i"
+            @click="selectAutocompleteResult(result)"
+          >
+            {{ result }}
+          </li>
+        </ul>
       </div>
       <button
         class="side-button"
@@ -35,14 +44,27 @@ export default {
     'label',
     'busy',
     'success',
+    'autocompleteFunction',
   ],
   data() {
     return {
       value: '',
       refreshed: false,
+      autocompleteResults: null,
+      autocompleteDebounce: null,
     }
   },
   mounted() {
+    // window.addEventListener('click', () => {
+    //   this.autocompleteResults = null
+    // })
+    // this.$el.addEventListener('click', e => {
+    //   e.stopPropagation()
+    // })
+    this.$el.addEventListener('keyup', e => {
+      if (e.code !== 'Enter') this.autocomplete()
+      this.refreshed = true
+    })
     if (this.valueProp) this.value = this.valueProp
   },
   methods: {
@@ -50,10 +72,30 @@ export default {
       this.refreshed = false
       this.$emit('submit', this.value)
     },
-  },
-  watch: {
-    value: function() {
-      this.refreshed = true
+    autocomplete() {
+      if (this.autocompleteDebounce) {
+        clearTimeout(this.autocompleteDebounce)
+        this.autocompleteDebounce = null
+      }
+
+      if (!this.value || this.value.length < 1) {
+        this.autocompleteResults = null
+        return
+      }
+
+      this.autocompleteDebounce = setTimeout(async () => {
+        try {
+          this.autocompleteResults = await this.autocompleteFunction(this.value)
+        } catch (error) {
+          // TODO
+        }
+
+        this.autocompleteDebounce = null
+      }, 200)
+    },
+    selectAutocompleteResult(result) {
+      this.value = result
+      this.autocompleteResults = null
     },
   },
 }
@@ -66,15 +108,47 @@ export default {
   justify-content: center;
 }
 
+.input-group {
+  position: relative;
+}
+
+.autocomplete-group {
+  position: absolute;
+  width: 100%;
+
+  // display: flex;
+  // flex-direction: column;
+  background-color: $bg-primary-shade;
+
+  cursor: pointer;
+
+  li {
+    list-style: none;
+    text-align: left;
+
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+    padding: 5px;
+  }
+
+  li:hover {
+    background-color: $bg-primary-dark;
+  }
+}
+
 .input-label {
   font-size: 20px;
   text-align: left;
   margin-bottom: 5px;
   width: 100%;
+  color: $text-primary;
 }
 
 .side-button {
   border-radius: 0px 3px 3px 0px;
+  background-color: $bg-secondary;
+  color: $button-text-primary;
   cursor: pointer;
   text-decoration: none;
   border: 0px;
@@ -82,16 +156,15 @@ export default {
 }
 
 .text-input {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #eee;
+  background-color: $bg-primary;
+  color: $text-primary;
   padding: 10px;
-  border-radius: 3px;
-  border: 0px;
+  border: 1px solid black;
   font-size: 20px;
 }
 
 .side-button:hover {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: $button-bg-primary;
 }
 
 .busy {
@@ -104,7 +177,7 @@ export default {
 }
 
 .success {
-  background-color: lightgreen;
+  background-color: $green;
 }
 
 @media (max-width: 600px) {

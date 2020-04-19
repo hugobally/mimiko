@@ -1,15 +1,11 @@
 <template>
   <div class="welcome-inherited-container">
+    <div class="background-fill"></div>
     <div class="welcome-container">
-      <img class="logo-big" src="@/assets/svg/logo.svg" alt="hero-logo" />
-      <h1 class="welcome-header">Welcome ! &#x1F3B8;</h1>
+      <h1 class="welcome-header">Welcome</h1>
       <LoginButton class="login-button">
         <span>Login with Spotify</span>
       </LoginButton>
-      <span class="info-message"
-        >Don't have a Premium account ?<br />
-        Stay tuned for Free users support !</span
-      >
     </div>
   </div>
 </template>
@@ -23,7 +19,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .welcome-inherited-container {
   position: relative;
   padding-top: 64px;
@@ -31,7 +27,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #121212;
+  background-color: $bg-primary;
 }
 
 .welcome-container {
@@ -41,10 +37,6 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
-  background-color: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 5px;
 }
 
 .logo-big {
@@ -67,12 +59,18 @@ export default {
   }
 }
 
+.hero-logo {
+}
+
 .welcome-header {
   margin: 30px 0px;
+  background-color: $bg-primary;
+  border: solid 1px #121212;
+  padding: 20px;
 }
 
 .info-message {
-  color: rgba(255, 255, 255, 0.6);
+  color: $bg-primary;
 }
 
 .login-button {
@@ -80,6 +78,14 @@ export default {
 }
 
 .login-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: $bg-primary;
+}
+
+.background-fill {
+  position: fixed;
+  left: 0px;
+  width: 50%;
+  height: 100%;
+  background-color: $black;
 }
 </style>

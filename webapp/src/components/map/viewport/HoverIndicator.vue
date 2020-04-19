@@ -1,6 +1,11 @@
 <template>
   <g class="hover-container" :transform="transformStr">
-    <circle fill="#eeeeee" :r="radius / 1.5" />
+    <circle
+      stroke="#121212"
+      stroke-width="4"
+      fill-opacity="0"
+      :r="radius / 1.5"
+    />
   </g>
 </template>
 
@@ -15,6 +20,11 @@ export default {
   },
   computed: {
     ...mapState('map', ['knots', 'hovered']),
+    trackTitle() {
+      if (!this.knot) return ''
+
+      return this.knot.track.artist + ' - ' + this.knot.track.title
+    },
     knot() {
       if (!this.hovered) return null
 

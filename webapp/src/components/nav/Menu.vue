@@ -1,14 +1,25 @@
 <template>
   <div class="menu">
-    <router-link to="/home" class="logo-container" tag="div">
-      <img class="logo" src="@/assets/svg/logo.svg" alt="logo-link-home" />
-    </router-link>
+    <!-- <div class="logo-container">
+      <img class="logo" src="@/assets/svg/logo-text.svg" alt="logo-link-home" />
+    </div> -->
     <div class="menu-buttons">
-      <div @click="toggleExplorer" class="menu-item menu-button noselect">
+      <router-link to="/home" class="menu-item menu-button noselect" tag="div">
+        <span>Home</span>
+      </router-link>
+      <div
+        @click="toggleExplorer"
+        class="menu-item menu-button noselect"
+        :class="{ 'highlighted-button': currentPanel == '#explore' }"
+      >
         <span>Explore</span>
       </div>
-      <div @click="toggleCreator" class="menu-item menu-button noselect">
-        <span>Create</span>
+      <div
+        @click="toggleCreator"
+        class="menu-item menu-button noselect"
+        :class="{ 'highlighted-button': currentPanel == '#new' }"
+      >
+        <span>New</span>
       </div>
     </div>
   </div>
@@ -16,13 +27,20 @@
 
 <script>
 export default {
+  computed: {
+    currentPanel() {
+      if (!this.$route || !this.$route.hash) return ''
+
+      return this.$route.hash
+    },
+  },
   methods: {
     toggleExplorer() {
-      const newHash = this.$route.hash === '#explore' ? '' : '#explore'
+      const newHash = this.currentPanel === '#explore' ? '' : '#explore'
       this.$router.push({ path: this.$route.path, hash: newHash })
     },
     toggleCreator() {
-      const newHash = this.$route.hash === '#create' ? '' : '#create'
+      const newHash = this.currentPanel === '#new' ? '' : '#new'
       this.$router.push({ path: this.$route.path, hash: newHash })
     },
   },
@@ -31,14 +49,11 @@ export default {
 
 <style lang="scss" scoped>
 .menu {
-  flex: 1;
-  min-width: 200px;
-  max-width: 250px;
-
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $bg-primary;
+  border-right: solid 1px black;
 }
 
 .logo-container {
@@ -49,8 +64,6 @@ export default {
   align-items: center;
   justify-content: center;
 
-  cursor: pointer;
-
   transition: all 0.05s ease-out;
 }
 
@@ -59,17 +72,12 @@ export default {
   height: 44px;
 }
 
-.logo-container:hover {
-  .logo {
-    filter: brightness(3);
-  }
-}
-
 .menu-buttons {
   height: 100%;
   flex: 1;
   display: flex;
 }
+
 .menu-button {
   flex: 1;
   height: 100%;
@@ -80,12 +88,18 @@ export default {
   padding: 5px 10px 0px 10px;
 }
 
-.menu-button:hover {
-  color: #eee;
+.menu-item {
+  width: 80px;
 }
 
 .menu-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  color: #eee;
+  background-color: black;
   transition: background-color 0.05s;
+}
+
+.highlighted-button {
+  color: #eee;
+  background-color: black;
 }
 </style>

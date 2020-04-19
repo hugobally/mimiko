@@ -89,13 +89,15 @@ function mapMetadataIncludes(str, fields) {
 
 .explorer-searchbar {
   height: 32px;
-  width: 100%;
+  width: 80%;
   border: 0px;
   padding: 5px;
   font-size: 20px;
   font-family: 'IBM Plex Sans', sans-serif;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.3);
+  background-color: $bg-primary;
+  border: 1px solid black;
+  margin: 0px 10px 0px 10px;
+  color: $text-primary;
 }
 
 .explorer-searchbar::placeholder {
@@ -109,7 +111,7 @@ function mapMetadataIncludes(str, fields) {
 }
 
 .no-result {
-  color: rgba(255, 255, 255, 0.4);
+  color: $bg-secondary;
   margin: 20px 0px;
 }
 </style>

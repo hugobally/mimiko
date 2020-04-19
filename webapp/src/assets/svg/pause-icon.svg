@@ -29,7 +29,7 @@
      id="namedview843"
      showgrid="false"
      inkscape:zoom="8.4285714"
-     inkscape:cx="12"
+     inkscape:cx="-12.20339"
      inkscape:cy="14"
      inkscape:window-x="0"
      inkscape:window-y="27"
@@ -83,7 +83,7 @@
      id="title89">Artboard 1 copy 5</title>
   <g
      transform="translate(-13,-11)"
-     style="isolation:isolate;fill:#f9f9f9"
+     style="isolation:isolate;fill:#1a1a1a"
      id="g104"
      class="cls-1">
     <rect
@@ -95,7 +95,7 @@
        rx="1.58"
        ry="1.58"
        id="rect91"
-       style="fill:#f9f9f9;fill-opacity:1" />
+       style="fill:#1a1a1a;fill-opacity:1" />
     <rect
        class="cls-2"
        x="29"
@@ -105,11 +105,11 @@
        rx="1.58"
        ry="1.58"
        id="rect93"
-       style="fill:#f9f9f9;fill-opacity:1" />
+       style="fill:#1a1a1a;fill-opacity:1" />
     <g
        class="cls-3"
        mask="url(#mask)"
        id="g101"
-       style="fill:#f9f9f9" />
+       style="fill:#1a1a1a" />
   </g>
 </svg>

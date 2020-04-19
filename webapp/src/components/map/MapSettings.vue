@@ -10,7 +10,7 @@
       :busy="busy"
       :success="renameSuccess"
     />
-    <div class="editmode-container noselect">
+    <!-- <div class="editmode-container noselect">
       <span class="editmode-label">Edit Mode</span>
       <div class="editmode-select-group">
         <div
@@ -28,7 +28,7 @@
           OFF
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -148,13 +148,13 @@ function validateMapTitle(title) {
   padding: 5px;
   min-width: 50px;
   margin: 0px 3px;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: $bg-primary;
   cursor: pointer;
 }
 
 .selected {
   opacity: 1;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: solid 1px rgba(255, 255, 255, 0.4);
+  background-color: $bg-secondary;
+  border: solid 1px $bg-primary;
 }
 </style>

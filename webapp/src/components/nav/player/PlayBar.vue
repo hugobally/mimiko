@@ -1,7 +1,18 @@
 <template>
   <div class="playbar-container">
     <div class="playbar-fill" :style="fillStyle"></div>
-    <span class="playbar-timestamp noselect">{{ timeStamp }}</span>
+    <div class="playbar-text-group">
+      <span class="playbar-timestamp noselect">{{ timeStamp }}</span>
+      <div class="playbar-title-wrapper">
+        <!-- <span class="playbar-title noselect">
+          {{
+            ((track && track.artist) || '') +
+              ' - ' +
+              ((track && track.title) || '')
+          }}
+        </span> -->
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,7 +31,7 @@ export default {
     this.$el.addEventListener('click', this.seekOnClick)
   },
   computed: {
-    ...mapState('player', ['status', 'position', 'duration', 'sdk']),
+    ...mapState('player', ['status', 'position', 'duration', 'sdk', 'track']),
     timeStamp() {
       const posMin = Math.floor(this.localPos / 60000)
       const posSec = Math.floor((this.localPos % 60000) / 1000)
@@ -98,15 +109,55 @@ export default {
 
 .playbar-fill {
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: $black;
 }
 
-.playbar-timestamp {
-  color: #fff;
+.playbar-text-group {
   position: absolute;
-  left: 10px;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0px 10px 0px 10px;
+}
+
+.playbar-timestamp,
+.playbar-title {
+  color: white;
   mix-blend-mode: difference;
+
   white-space: nowrap;
-  text-overflow: hidden;
+}
+
+// .playbar-timestamp {
+// height: 100%;
+// display: flex;
+// align-items: center;
+// background-color: $bg-primary;
+// }
+
+.playbar-title-wrapper {
+  max-width: 80%;
+  overflow: hidden;
+}
+
+.playbar-title {
+  display: inline-block;
+  // animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
 }
 </style>

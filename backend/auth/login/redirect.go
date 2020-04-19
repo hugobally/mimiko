@@ -21,7 +21,9 @@ func (h *Handler) SpotifyRedirect(w http.ResponseWriter, r *http.Request) {
 	p.Add("redirect_uri", h.Config.Spotify.RedirectUri)
 	scopes := []string{
 		"streaming",                  // SDK playback
+
 		"user-modify-playback-state", // API playback
+		"user-read-playback-state",
 
 		"user-read-email",   // Read Email Address
 		"user-read-private", // Subscription type (Free/Premium)

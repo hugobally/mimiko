@@ -2,14 +2,14 @@
   <g
     class="indicator-container"
     :transform="transformStr"
-    :opacity="playing ? 1 : 0"
+    :opacity="playing && !previewMode ? 0.3 : 0"
   >
     <circle
       class="animated-circle"
       :class="{ 'animated-paused': paused }"
       fill="none"
-      :stroke="paused ? '#5f8dd3' : '#eeeeee'"
-      stroke-width="2"
+      :stroke="paused ? '#5f8dd3' : '#121212'"
+      stroke-width="1"
       :r="radius / 2.5"
     >
     </circle>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState('map', ['knots', 'hovered']),
-    ...mapState('player', ['status']),
+    ...mapState('player', ['status', 'previewMode']),
     playing() {
       return this.$store.state.player.knot
     },
@@ -40,6 +40,9 @@ export default {
       return this.knots[this.playing]
     },
     transformStr() {
+      // if (!this.knot) return 'translate(0 0)'
+      if (!this.knot) return
+      console.log(this.knot)
       const { x, y } = this.knot
       return `translate(${x} ${y})`
     },
@@ -77,6 +80,6 @@ export default {
 }
 
 .animated-paused {
-  animation-duration: 9s;
+  animation-duration: 6s;
 }
 </style>

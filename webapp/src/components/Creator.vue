@@ -6,14 +6,16 @@
           <SearchInput
             class="search-input"
             @submit="findTrack"
-            placeholder="Find your starting song"
+            placeholder="Title, artist"
             :valueProp="findLastValue || null"
             :submitWord="!busy ? 'Find' : 'Working...'"
+            label="Find a starting song for your map"
             :busy="busy"
             :valid="flagship || !findRetry"
+            :autocompleteFunction="autocomplete"
           />
         </div>
-        <div class="discoverable-container noselect">
+        <div class="discoverable-container noselect hidden">
           <span class="discoverable-label">Map Discoverability</span>
           <div class="discoverable-select-group">
             <div
@@ -32,7 +34,7 @@
             </div>
           </div>
         </div>
-        <div class="mode-select-container noselect">
+        <!-- <div class="mode-select-container noselect">
           <div
             class="mode-container"
             :class="{ selected: editMode === false }"
@@ -63,7 +65,7 @@
               Create a curated music graph and share it with the world!
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div v-else class="form-container" key="map-title">
         <div class="flagship-preview-container" v-if="flagship">
@@ -98,7 +100,7 @@
 
 <script>
 import SearchInput from '@/components/creator/SearchInput'
-import { searchForTrack } from '@/api/spotify'
+import { searchForTrack, autocomplete } from '@/api/spotify'
 import { createMap as gqlCreateMap } from '@/api/graphql'
 
 export default {
@@ -108,7 +110,7 @@ export default {
   data() {
     return {
       editMode: false,
-      isPublic: false,
+      isPublic: true,
 
       busy: false,
 
@@ -119,6 +121,8 @@ export default {
       title: null,
       validTitle: false,
       createRetry: false,
+
+      autocomplete: autocomplete,
     }
   },
   computed: {
@@ -141,7 +145,7 @@ export default {
         const tracks = await searchForTrack(value)
 
         if (tracks) this.flagship = tracks[0]
-        this.title = replaceSpecial(this.flagship.title)
+        this.title = replaceSpecial(this.flagship.artist)
       } catch (error) {
         return
       } finally {
@@ -207,7 +211,7 @@ function validateMapTitle(title) {
 }
 
 function replaceSpecial(str) {
-  return str.replace(/[\W]+/g, ' ')
+  return str.replace(/[\W]+/g, ' ').substring(0, 79)
 }
 </script>
 
@@ -225,7 +229,7 @@ function replaceSpecial(str) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .form-container > * {
@@ -258,12 +262,12 @@ function replaceSpecial(str) {
 
 .discoverable-select-group {
   display: flex;
+  color: $text-primary;
 }
 
 .discoverable-select {
   padding: 5px;
   margin: 0px 3px;
-  background-color: rgba(255, 255, 255, 0.03);
   cursor: pointer;
 }
 
@@ -282,7 +286,7 @@ function replaceSpecial(str) {
   justify-content: center;
   height: 100%;
   margin: 2px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: $bg-primary;
   opacity: 0.8;
   padding: 5px;
   cursor: pointer;
@@ -302,15 +306,13 @@ function replaceSpecial(str) {
   padding: 5px;
   margin-top: 50px;
   font-size: 15px;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.6);
+  background-color: $button-bg-primary;
+  color: $button-text-primary;
   cursor: pointer;
 }
 
 .selected {
-  opacity: 1;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: solid 1px rgba(255, 255, 255, 0.4);
+  border: solid 1px $bg-secondary;
 }
 
 .mode-icon {
@@ -318,7 +320,7 @@ function replaceSpecial(str) {
 }
 
 .mode-description {
-  color: rgba(255, 255, 255, 0.5);
+  color: $text-primary;
 }
 
 @media (max-width: 600px) {

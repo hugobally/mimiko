@@ -1,11 +1,8 @@
 <template>
-  <div class="home-container disable-scrollbar">
+  <div class="home-container">
     <div ref="welcome-header" class="welcome-header-container">
       <!-- <h1 class="main-header header noselect">Welcome to mimiko</h1> -->
-      <div class="text-logo">
-        <img src="@/assets/svg/text-logo.svg" />
-      </div>
-      <div class="quick-links-container">
+      <!-- <div class="quick-links-container">
         <router-link
           class="quick-link link"
           :to="{ path: currentPath, hash: '#explore' }"
@@ -22,12 +19,12 @@
           :to="{ path: `/map/${lastVisited}` }"
           >Last visited map</router-link
         >
-      </div>
+      </div> -->
     </div>
     <h1 v-if="userMaps.length > 0" class="header noselect">
-      Your Maps
+      Maps
     </h1>
-    <MapList :readOnly="false" :maps="userMaps" />
+    <MapList class="map-list" :readOnly="false" :maps="userMaps" />
   </div>
 </template>
 
@@ -51,8 +48,11 @@ export default {
       return this.$route.path
     },
   },
-  mounted() {
-    this.$store.dispatch('maplist/fetchAllUserMaps')
+  async mounted() {
+    await this.$store.dispatch('maplist/fetchAllUserMaps')
+    if (this.userMaps.length === 0) {
+      this.$router.push({ path: this.$route.path, hash: '#new' })
+    }
     this.lastVisited = localStorage.getItem('last_visited')
   },
 }
@@ -63,7 +63,7 @@ export default {
   position: fixed;
   overflow-y: scroll;
 
-  background-color: #121212;
+  background-color: $bg-primary;
 }
 
 .text-logo {
@@ -77,13 +77,13 @@ export default {
 .quick-link {
   width: 100%;
   font-size: 30px;
-  color: rgba(255, 255, 255, 0.9);
+  color: $bg-primary;
   padding: 10px;
   margin-left: 5px;
 }
 
 .quick-link:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: $bg-primary;
 }
 
 .quick-links-container {
@@ -99,16 +99,17 @@ export default {
 
 .header {
   padding: 20px 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-bottom: solid rgba(255, 255, 255, 0.1) 1px;
-  font-size: 32px;
-  text-align: center;
+  width: 100%;
+  background-color: $bg-primary;
+  border-bottom: solid $bg-primary;
+  font-size: 50px;
+  text-align: left;
 }
 
 .user-maps-header {
   display: flex;
   justify-content: flex-start;
-  border-bottom: solid rgba(255, 255, 255, 0.1) 1px;
+  border-bottom: solid $bg-primary;
   align-items: center;
 }
 

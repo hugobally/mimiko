@@ -90,22 +90,80 @@ export async function searchForTrack(searchString) {
   return parseTracks([data.tracks.items[0]])
 }
 
-export async function recoFromTrack(seeds, number) {
+export async function autocomplete(searchString) {
   const params = {
-    limit: number,
+    q: searchString,
+    type: 'track',
+    market: 'from_token',
+    limit: 10,
+  }
+  try {
+    const data = await performGetRequest('search', params)
+
+    const results = data.tracks.items
+    if (results.length < 1) return null
+
+    return results.map(track => {
+      return track.name + ' - ' + artistNamesToString(track.artists)
+    })
+  } catch (error) {
+    //TODO
+    return null
+  }
+}
+
+export async function recoFromTrack(
+  seeds,
+  number,
+  blacklist = [],
+  previewMode,
+) {
+  const params = {
+    limit: Math.max(number, 10),
     seed_tracks: seeds.join(),
     market: 'from_token',
   }
   const data = await performGetRequest('recommendations', params)
-  return parseTracks(data.tracks)
+
+  console.log('recos before filtering', data.tracks.length)
+  if (previewMode) console.log('filtering in previewMode')
+  const tracks = data.tracks.filter(track => {
+    if (blacklist.includes(track.id)) {
+      console.log(`filtering ${track.name} as duplicate`)
+      return false
+    }
+    if (previewMode && !track.preview_url) {
+      console.log(`filtering ${track.name} as no preview`)
+      return false
+    }
+    return true
+  })
+  console.log('recos after filtering', tracks.length)
+
+  if (tracks.length < 1) return null
+  return parseTracks([tracks[0]])
 }
 
-export async function playTrack(tracks, deviceId) {
+export async function getActiveDevice(localDeviceId) {
+  const data = await performGetRequest('me/player/devices')
+  if (data.devices.length < 1) return null
+
+  const activeDevice = data.devices.find(
+    device => device.is_active === true && device.id !== localDeviceId,
+  )
+  if (!activeDevice) return null
+
+  return activeDevice.id
+}
+
+export async function playTrack(tracks, localDeviceId) {
   const data = {
     uris: tracks.map(id => `spotify:track:${id}`),
   }
+  //TODO Optimize ? (avoid 2 requests on each play)
+  const activeDeviceId = await getActiveDevice(localDeviceId)
   await performPostRequest(
-    `me/player/play${deviceId ? '?device_id=' + deviceId : ''}`,
+    `me/player/play?device_id=${activeDeviceId || localDeviceId}`,
     data,
     'PUT',
   )
@@ -178,4 +236,11 @@ export async function addTrackToPlaylist(playlistId, trackUri) {
     position: 0,
   }
   await performPostRequest(`playlists/${playlistId}/tracks`, params)
+}
+
+export async function removeTrackFromPlaylist(playlistId, trackUri) {
+  const params = {
+    tracks: [{ uri: `spotify:track:${trackUri}` }],
+  }
+  await performPostRequest(`playlists/${playlistId}/tracks`, params, 'DELETE')
 }

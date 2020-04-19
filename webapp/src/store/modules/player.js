@@ -6,6 +6,7 @@ import {
   createPlaylist,
   getPlaylistTracks,
   addTrackToPlaylist,
+  removeTrackFromPlaylist,
 } from '@/api/spotify'
 import { updateKnot } from '@/api/graphql'
 
@@ -31,6 +32,8 @@ function initialPlayer() {
     playQueue: [],
 
     status: 'IDLE',
+
+    previewMode: false,
   }
 }
 
@@ -68,6 +71,9 @@ export default {
         state.position = playerState.position
         state.duration = playerState.duration
       }
+    },
+    SET_PREVIEW_MODE(state, value) {
+      state.previewMode = value
     },
 
     SET_KNOT(state, knot) {
@@ -125,6 +131,11 @@ export default {
     LIKED_PLAYLIST_PUSH(state, id) {
       state.likedPlaylist.tracks.push(id)
     },
+    LIKED_PLAYLIST_REMOVE(state, id) {
+      state.likedPlaylist.tracks = state.likedPlaylist.tracks.filter(
+        track => track != id,
+      )
+    },
 
     RESET_PLAYER(state) {
       Object.assign(state, {
@@ -143,7 +154,7 @@ export default {
   },
   actions: {
     loadSdk({ state, commit, dispatch }) {
-      if (window.onSpotifyWebPlaybackSDKReady) return
+      if (window.onSpotifyWebPlaybackSDKReady) return null
 
       const spotifyPlaybackSDK = document.createElement('script')
       spotifyPlaybackSDK.setAttribute(
@@ -154,46 +165,50 @@ export default {
 
       document.body.appendChild(spotifyPlaybackSDK)
 
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        // eslint-disable-next-line no-undef
-        const player = new Spotify.Player({
-          name: 'Mimiko WebApp',
-          getOAuthToken: async callback => {
-            try {
-              const token = await getToken()
-              callback(token.access)
-            } catch (error) {
-              callback('')
+      return new Promise((resolve, reject) => {
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          // eslint-disable-next-line no-undef
+          const player = new Spotify.Player({
+            name: 'Mimiko',
+            getOAuthToken: async callback => {
+              try {
+                const token = await getToken()
+                callback(token.access)
+              } catch (error) {
+                callback('')
+              }
+            },
+          })
+
+          player.addListener('player_state_changed', playerState => {
+            if (!playerState) {
+              // TODO Resetting player is buggy
+              // commit('RESET_PLAYER')
+              return
             }
-          },
-        })
 
-        player.addListener('player_state_changed', playerState => {
-          if (!playerState) {
-            // TODO Resetting player is buggy
-            // commit('RESET_PLAYER')
-            return
-          }
+            commit('SET_TIMESTAMP', playerState)
 
-          commit('SET_TIMESTAMP', playerState)
+            if (playerState.paused && state.status === 'PLAYING') {
+              commit('STATUS_PAUSED')
+            }
+            if (!playerState.paused && state.status !== 'PLAYING') {
+              commit('STATUS_PLAYING')
+            }
 
-          if (playerState.paused && state.status === 'PLAYING') {
-            commit('STATUS_PAUSED')
-          }
-          if (!playerState.paused && state.status !== 'PLAYING') {
-            commit('STATUS_PLAYING')
-          }
+            dispatch('bufferSync', playerState)
+          })
 
-          dispatch('bufferSync', playerState)
-        })
+          player.addListener('ready', ({ device_id }) => {
+            commit('SET_DEVICE_ID', device_id)
+          })
 
-        player.addListener('ready', ({ device_id }) => {
-          commit('SET_DEVICE_ID', device_id)
-        })
+          player.connect()
+          commit('SET_SDK', player)
 
-        player.connect()
-        commit('SET_SDK', player)
-      }
+          resolve()
+        }
+      })
     },
 
     async loadLikedPlaylist({ commit }) {
@@ -222,8 +237,15 @@ export default {
       await addTrackToPlaylist(state.likedPlaylist.id, trackId)
       commit('LIKED_PLAYLIST_PUSH', trackId)
     },
+    async removeFromLikedPlaylist({ state, commit }, trackId) {
+      if (!state.likedPlaylist.id) return
+      if (!state.likedPlaylist.tracks.includes(trackId)) return
 
-    playKnot({ commit, dispatch }, { track, knot }) {
+      await removeTrackFromPlaylist(state.likedPlaylist.id, trackId)
+      commit('LIKED_PLAYLIST_REMOVE', trackId)
+    },
+
+    playKnot({ state, commit, dispatch }, { track, knot }) {
       commit('PLAYQUEUE_RESET')
       commit('PLAYQUEUE_PUSH', { track: track, knot: knot })
       dispatch('bufferPush')
@@ -344,14 +366,10 @@ export default {
           let newTrack = null
           try {
             const seeds = [knots[current].track.id]
-            let step = knots[current]
-            for (let i = 0; i < 4; i++) {
-              if (!step.parent) break
-
-              step = knots[step.parent]
-              seeds.push(step.track.id)
-            }
-            const recos = await recoFromTrack(seeds, 1)
+            const existingTracks = Object.values(state.knots).map(
+              knot => knot.track.id,
+            )
+            const recos = await recoFromTrack(seeds, 1, existingTracks, state.previewMode)
             newTrack = recos[0]
           } catch (error) {
             // TODO
@@ -386,7 +404,11 @@ export default {
       commit('SET_TRACK', current.track)
       commit('SET_KNOT', current.knot)
 
-      await playTrack([current.track.id], state.deviceId)
+      try {
+        await playTrack([current.track.id], state.deviceId)
+      } catch (error) {
+        commit('SET_PREVIEW_MODE', true)
+      }
     },
   },
 }
