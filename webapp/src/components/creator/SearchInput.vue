@@ -102,7 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .search-input-container {
   display: flex;
   align-items: center;
@@ -111,6 +110,7 @@ export default {
 
 .input-group {
   position: relative;
+  z-index: 2;
 }
 
 .autocomplete-group {
@@ -148,9 +148,9 @@ export default {
 
 .side-button {
   border-radius: 0px 10px 10px 0px;
-  color: $text-primary;
-  background: $bg-primary;
-  border: solid 2px $black;
+  color: $text-highlight;
+  background: $black;
+  border: solid 1px $black;
   cursor: pointer;
   text-decoration: none;
   font-size: 20px;
@@ -162,12 +162,6 @@ export default {
   padding: 10px;
   border: 1px solid black;
   font-size: 20px;
-}
-
-.side-button:hover {
-  // transform: scale(1.1) translate(5 0);
-  transform: scale(1.1) translate(5px);
-  transition: all 0.1s;
 }
 
 .busy {

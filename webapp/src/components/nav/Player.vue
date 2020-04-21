@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     ...mapState('player', ['sdk', 'track', 'knot', 'status', 'likedPlaylist']),
-    ...mapState('map', ['readOnly']),
+    ...mapState('map', ['readOnly', 'knots']),
     previewMode() {
       return this.$store.state.player.previewMode
     },
@@ -185,8 +185,6 @@ export default {
       })
     },
     async add() {
-      if (!this.track) return
-
       this.debounceLike.counter += 1
 
       if (!this.debounceLike.callbackId) {

@@ -33,7 +33,7 @@ export default {
   display: flex;
   height: 100%;
   background-color: $bg-primary;
-  border-top: solid 1px black;
+  border-top: solid 2px $black;
 }
 
 .filler {

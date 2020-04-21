@@ -8,9 +8,9 @@
       class="animated-circle"
       :class="{ 'animated-paused': paused }"
       fill="none"
-      :stroke="paused ? '#5f8dd3' : '#121212'"
+      stroke="#121212"
       stroke-width="1"
-      :r="radius / 2.5"
+      :r="radius / 1.95"
     >
     </circle>
   </g>
@@ -59,25 +59,25 @@ export default {
     opacity: 1;
   }
 
-  60% {
-    transform: scale(5);
+  50% {
+    transform: scale(4);
     opacity: 0;
   }
 
   100% {
-    transform: scale(5);
+    transform: scale(4);
     opacity: 0;
   }
 }
 
 .animated-circle {
-  animation-duration: 3s;
+  animation-duration: 3.5s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-name: circle-animation;
 }
 
 .animated-paused {
-  animation-duration: 6s;
+  animation-duration: 9s;
 }
 </style>

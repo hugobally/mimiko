@@ -4,7 +4,6 @@
       <img
         class="map-flagship-cover"
         :src="map.flagship && map.flagship.imgURL"
-        alt="cover"
       />
       <span class="map-title">{{ map.title }}</span>
       <span class="map-author-name" v-if="readOnly">
@@ -96,7 +95,8 @@ export default {
 }
 
 .map-list-item-container:hover {
-  border: solid 3px $black;
+  background-color: $black;
+  color: $text-highlight;
 }
 
 .map-flagship-cover {

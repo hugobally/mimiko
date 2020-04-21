@@ -250,10 +250,13 @@ export default {
       { commit, state, dispatch },
       { input, sourceId, visited },
     ) {
+      const sourceKnot = state.knots[sourceId]
+      const level = sourceKnot.level + 1
+
       let r = await gql.createKnots(
         state.id,
         Object.keys(input),
-        state.knots[sourceId].level + 1,
+        level,
         visited,
       )
 

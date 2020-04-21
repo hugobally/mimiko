@@ -366,7 +366,7 @@ export default {
           let newTrack = null
           try {
             const seeds = [knots[current].track.id]
-            const existingTracks = Object.values(state.knots).map(
+            const existingTracks = Object.values(knots).map(
               knot => knot.track.id,
             )
             const recos = await recoFromTrack(
