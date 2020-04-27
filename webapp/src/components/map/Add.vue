@@ -101,7 +101,7 @@ export default {
       if (!this.knot) return
 
       try {
-        await this.$store.dispatch('map/createKnotsWithReco', {
+        await this.$store.dispatch('map/createKnots', {
           sourceId: this.knot,
           newTracks: [this.track],
           visited: this.isVisited,

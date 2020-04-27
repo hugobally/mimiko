@@ -1,30 +1,22 @@
 <template>
   <div id="app">
-    <FlashMessage :style="flashLayout" />
-
-    <router-view :key="routePath" :style="pageLayout" />
-
-    <transition name="panel">
-      <Panel v-if="panelContent" :style="pageLayout">
-        <component :is="panelContent" />
-      </Panel>
-    </transition>
-
-    <Nav :class="{ hidden: maskNav && !logged }" :style="navLayout"> </Nav>
-    <!-- <div class="debug-center"></div> -->
+    <router-view :key="routePath" class="page-layout" />
+    <Panel v-if="panelContent" class="page-layout">
+      <component :is="panelContent" />
+    </Panel>
+    <Nav :class="{ hidden: maskNav && !logged }" class="nav-layout"> </Nav>
+    <FlashMessage class="flash-layout" />
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
-
 import Panel from '@/components/Panel'
 import Explorer from '@/components/Explorer'
 import Creator from '@/components/Creator'
 import Add from '@/components/map/Add'
 import MapSettings from '@/components/map/MapSettings'
 import Settings from '@/components/Settings'
-
 import FlashMessage from '@/components/utils/FlashMessage'
 
 export default {
@@ -42,37 +34,12 @@ export default {
   },
   data() {
     return {
-      navHeight: 64,
       maskNav: true,
     }
   },
   computed: {
     panelContent() {
       return this.$route.hash.slice(1)
-    },
-    navLayout() {
-      return {
-        position: 'fixed',
-        bottom: '0px',
-        width: '100%',
-        height: `${this.navHeight}px`,
-      }
-    },
-    flashLayout() {
-      return {
-        position: 'fixed',
-        top: `0px`,
-        minWidth: '100%',
-        minHeight: '50px',
-        zIndex: '2',
-      }
-    },
-    pageLayout() {
-      return {
-        marginBottom: `${this.navHeight}px`,
-        width: '100%',
-        height: `calc(100vh - ${this.navHeight}px`,
-      }
     },
     routePath() {
       return this.$route.path
@@ -139,16 +106,6 @@ img,
   z-index: 2;
 }
 
-.panel-enter-active,
-.panel-leave-active {
-  transition: all 0s;
-}
-
-.panel-enter,
-.panel-leave-to {
-  opacity: 0;
-}
-
 .disable-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
@@ -172,12 +129,24 @@ img,
   color: $text-highlight;
 }
 
-// .debug-center {
-//   left: 50%;
-//   top: 50%;
-//   width: 5px;
-//   height: 5px;
-//   background-color: red;
-//   position: fixed;
-// }
+.nav-layout {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: $navbar-height;
+}
+
+.flash-layout {
+  position: fixed;
+  top: 0px;
+  min-width: 100%;
+  min-height: 50px;
+  z-index: 2;
+}
+
+.page-layout {
+  margin-bottom: $navbar-height;
+  width: 100%;
+  height: calc(100vh - #{$navbar-height});
+}
 </style>

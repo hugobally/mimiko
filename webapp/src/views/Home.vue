@@ -1,26 +1,6 @@
 <template>
   <div class="home-container">
-    <div ref="welcome-header" class="welcome-header-container">
-      <!-- <h1 class="main-header header noselect">Welcome to mimiko</h1> -->
-      <!-- <div class="quick-links-container">
-        <router-link
-          class="quick-link link"
-          :to="{ path: currentPath, hash: '#explore' }"
-          >Discover music from other users</router-link
-        >
-        <router-link
-          class="quick-link link"
-          :to="{ path: currentPath, hash: '#create' }"
-          >Create a new music map
-        </router-link>
-        <router-link
-          v-if="lastVisited"
-          class="quick-link link"
-          :to="{ path: `/map/${lastVisited}` }"
-          >Last visited map</router-link
-        >
-      </div> -->
-    </div>
+    <div ref="welcome-header" class="welcome-header-container"></div>
     <h1 v-if="userMaps.length > 0" class="header noselect">
       Maps
     </h1>

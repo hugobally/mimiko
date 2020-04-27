@@ -4,71 +4,6 @@ import store from '@/store'
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 const LIKED_PLAYLIST_NAME = 'Liked from mimiko'
 
-async function performGetRequest(endpoint, params) {
-  const token = await getToken()
-  const response = await axios.get(API_BASE_URL + endpoint, {
-    headers: {
-      Authorization: 'Bearer ' + token.access,
-    },
-    params: params,
-  })
-  return response.data
-}
-
-async function performPostRequest(endpoint, data, method = 'POST') {
-  const token = await getToken()
-  const response = await axios({
-    method: method,
-    url: API_BASE_URL + endpoint,
-    data: data,
-    headers: {
-      Authorization: 'Bearer ' + token.access,
-    },
-  })
-  return response.data
-}
-
-export async function getToken() {
-  let retries = 0
-  let token = null
-
-  while (!token && retries < 10) {
-    await store.dispatch('auth/refreshToken').catch(() => {})
-    token = store.getters['auth/token']('spotify')
-
-    if (!token) {
-      retries++
-      await new Promise(r => setTimeout(r, 1000))
-    }
-  }
-
-  return token
-}
-
-// HELPERS
-
-// TODO There are 3 image sizes returned -> Optimize
-function parseTracks(tracks) {
-  return tracks.map(track => {
-    return {
-      id: track.id,
-      title: track.name,
-      artist: artistNamesToString(track.artists),
-      imgURL: track.album.images[1].url,
-      previewURL: track.preview_url,
-    }
-  })
-}
-
-function artistNamesToString(artists) {
-  let result = ''
-  artists.forEach((artist, i) => {
-    if (i !== 0) result += ', '
-    result += artist.name
-  })
-  return result
-}
-
 // REQUESTS
 
 export async function getTracks(ids) {
@@ -238,4 +173,69 @@ export async function removeTrackFromPlaylist(playlistId, trackUri) {
     tracks: [{ uri: `spotify:track:${trackUri}` }],
   }
   await performPostRequest(`playlists/${playlistId}/tracks`, params, 'DELETE')
+}
+
+// Utility
+
+async function performGetRequest(endpoint, params) {
+  const token = await getToken()
+  const response = await axios.get(API_BASE_URL + endpoint, {
+    headers: {
+      Authorization: 'Bearer ' + token.access,
+    },
+    params: params,
+  })
+  return response.data
+}
+
+async function performPostRequest(endpoint, data, method = 'POST') {
+  const token = await getToken()
+  const response = await axios({
+    method: method,
+    url: API_BASE_URL + endpoint,
+    data: data,
+    headers: {
+      Authorization: 'Bearer ' + token.access,
+    },
+  })
+  return response.data
+}
+
+export async function getToken() {
+  let retries = 0
+  let token = null
+
+  while (!token && retries < 10) {
+    await store.dispatch('auth/refreshToken').catch(() => {})
+    token = store.getters['auth/token']('spotify')
+
+    if (!token) {
+      retries++
+      await new Promise(r => setTimeout(r, 1000))
+    }
+  }
+
+  return token
+}
+
+// TODO There are 3 image sizes returned -> Optimize?
+function parseTracks(tracks) {
+  return tracks.map(track => {
+    return {
+      id: track.id,
+      title: track.name,
+      artist: artistNamesToString(track.artists),
+      imgURL: track.album.images[1].url,
+      previewURL: track.preview_url,
+    }
+  })
+}
+
+function artistNamesToString(artists) {
+  let result = ''
+  artists.forEach((artist, i) => {
+    if (i !== 0) result += ', '
+    result += artist.name
+  })
+  return result
 }

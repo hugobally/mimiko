@@ -1,3 +1,4 @@
+// Colors
 $black: #121212;
 $black-lighter: #1a1a1a;
 
@@ -16,6 +17,8 @@ $button-bg-primary: #da635d;
 $button-bg-secondary: #cc0d00;
 $button-text-primary: white;
 
+// Layout
+$navbar-height: 64px;
 $mobile: 'only screen and (max-width: 768px)';
 $tablet: 'only screen and (min-width: 769px)';
 $tablet-only: 'only screen and (min-width: 769px) and (max-width: 1023px)';

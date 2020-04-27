@@ -1,14 +1,12 @@
 import axios from 'axios'
 
-const backEndUrl = process.env.VUE_APP_BACKEND_URL
-const endpointUrl = backEndUrl + '/graphql'
-
+const API_URL = process.env.VUE_APP_BACKEND_URL + '/graphql'
 const ERROR_MSG = 'backend query failed'
 
 async function perform(queryStr, variables = {}) {
   const response = await axios({
     method: 'POST',
-    url: endpointUrl,
+    url: API_URL,
     data: JSON.stringify({ query: queryStr, variables: variables }),
     headers: {
       'Content-Type': 'application/json',

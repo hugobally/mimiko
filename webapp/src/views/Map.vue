@@ -3,7 +3,6 @@
     <Viewport :loaded="loaded" />
     <ZoomBar />
     <MapTitle />
-
     <span v-if="loading" class="loading">LOADING...</span>
   </div>
 </template>
@@ -44,32 +43,13 @@ export default {
     try {
       this.$store.commit('map/SET_EDIT_MODE', this.query.edit ? true : false)
       await this.$store.dispatch('map/fetchMap', this.id)
+      this.$store.dispatch('force/initForceLayout', null, { root: true })
       await this.$store.dispatch('map/populate')
+
       localStorage.setItem('last_visited', this.id)
-
-      const keys = Object.keys(this.knots)
-      let startKnotId = null
-
-      for (const key of keys) {
-        if (this.knots[key].level === 0) {
-          startKnotId = key
-          break
-        }
-      }
-
-      const freshCreated = keys.length === 1
-      if (freshCreated) this.$store.commit('map/MAP_SET_FRESH_CREATED', true)
+      if (Object.keys(this.knots).length === 1) this.freshMapInit()
 
       this.$store.commit('map/MAP_SET_LOAD', 100)
-
-      if (freshCreated) {
-        await new Promise(r => setTimeout(r, 500))
-        // await this.$store.dispatch('map/createKnotsWithReco', {
-        //   sourceId: startKnotId,
-        //   number: 1,
-        // })
-        this.$store.commit('map/MAP_SET_FRESH_CREATED', false)
-      }
     } catch (error) {
       this.mapError()
       if (this.load !== 100) this.$store.commit('map/MAP_SET_LOAD', 0)
@@ -87,6 +67,11 @@ export default {
         content: 'Whoops ! The map could not be loaded.',
         type: 'error',
       })
+    },
+    async freshMapInit() {
+      this.$store.commit('map/MAP_SET_FRESH_CREATED', true)
+      await new Promise(r => setTimeout(r, 500))
+      this.$store.commit('map/MAP_SET_FRESH_CREATED', false)
     },
   },
   watch: {

@@ -25,6 +25,7 @@ func (r *Resolver) Map(ctx context.Context, mapID string) (*prisma.Map, error) {
 	return fetchedMap, nil
 }
 
+// TODO Separate user maps endpoint and general search endpoint
 func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prisma.Map, error) {
 	user, err := auth.GetUserFromContext(ctx)
 	if err != nil {
@@ -34,6 +35,7 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 	var params *prisma.MapsParams
 
 	order := prisma.MapOrderByInputCreatedAtDesc
+
 	if filter != nil && filter.UserId != nil {
 		params = &prisma.MapsParams{
 			Where: &prisma.MapWhereInput{
@@ -60,7 +62,12 @@ func (r *Resolver) Maps(ctx context.Context, filter *models.MapsFilter) ([]prism
 		}
 	}
 
-	return r.Prisma.Maps(params).Exec(ctx)
+	result, err := r.Prisma.Maps(params).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func MapsDefaultFilter(order prisma.MapOrderByInput) *prisma.MapsParams {

@@ -54,13 +54,8 @@ export default {
       autocompleteDebounce: null,
     }
   },
+  // TODO Click outside of autocomplete results box removes the box
   mounted() {
-    // window.addEventListener('click', () => {
-    //   this.autocompleteResults = null
-    // })
-    // this.$el.addEventListener('click', e => {
-    //   e.stopPropagation()
-    // })
     this.$el.addEventListener('keyup', e => {
       if (e.code !== 'Enter') this.autocomplete()
       this.refreshed = true

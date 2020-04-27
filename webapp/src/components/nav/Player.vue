@@ -127,7 +127,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('map', ['createKnotsWithReco']),
+    ...mapActions('map', ['createKnots']),
     hardWrapText(text) {
       const maxLength = 40
       if (text && text.length > maxLength) {
@@ -176,7 +176,7 @@ export default {
         //TODO
       }
     },
-    // TODO Factorize to shared lib
+    // TODO Factorize
     switchHash(hash) {
       this.$router.replace({
         path: this.$route.path,
@@ -202,7 +202,7 @@ export default {
       try {
         if (!this.readOnly) {
           const numNewKnots = 1
-          await this.createKnotsWithReco({
+          await this.createKnots({
             sourceId: this.knot,
             number: numNewKnots,
           })
@@ -219,7 +219,7 @@ export default {
       if (!this.knot || this.isSourceKnot) return
 
       this.blockDislike = true
-      this.$store.dispatch('map/deleteKnot', this.knot)
+      this.$store.dispatch('map/deleteKnots', this.knot)
       this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
       this.blockDislike = false

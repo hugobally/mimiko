@@ -165,7 +165,7 @@ export default {
 
       document.body.appendChild(spotifyPlaybackSDK)
 
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         window.onSpotifyWebPlaybackSDKReady = () => {
           // eslint-disable-next-line no-undef
           const player = new Spotify.Player({
@@ -245,7 +245,7 @@ export default {
       commit('LIKED_PLAYLIST_REMOVE', trackId)
     },
 
-    playKnot({ state, commit, dispatch }, { track, knot }) {
+    playKnot({ commit, dispatch }, { track, knot }) {
       commit('PLAYQUEUE_RESET')
       commit('PLAYQUEUE_PUSH', { track: track, knot: knot })
       dispatch('bufferPush')
@@ -317,7 +317,7 @@ export default {
             newTracks: [newCurrent.track],
           }
 
-          await dispatch('map/createKnotsWithReco', params, { root: true })
+          await dispatch('map/createKnots', params, { root: true })
 
           const knots = rootState.map.knots
           for (const childId of knots[parentId].children) {
