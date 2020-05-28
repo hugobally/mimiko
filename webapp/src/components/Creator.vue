@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       editMode: false,
-      isPublic: true,
+      isPublic: false,
 
       busy: false,
 
