@@ -9,7 +9,7 @@
           placeholder="Title, artist"
           :valueProp="findLastValue || null"
           :submitWord="!busy ? 'Start' : 'Working...'"
-          label="Find a starting song for your map"
+          label="Let's start with a song you like !"
           :busy="busy"
           :valid="flagship || !findRetry"
           :autocompleteFunction="autocomplete"
