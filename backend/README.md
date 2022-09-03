@@ -17,7 +17,7 @@
     client_secret: [SPOTIFY_CLIENT_SECRET]
     redirect_uri: https://localhost:8080/callback/spotify
   auth:
-    jwt_key: mysecretkey
+    jwt_key: bXlzZWNyZXRrZXkK
 ```
 
 2. a) Create a spotify app to obtain API credentials (https://developer.spotify.com/dashboard/)
