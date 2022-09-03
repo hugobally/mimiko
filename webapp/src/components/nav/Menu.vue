@@ -7,13 +7,13 @@
       <router-link to="/home" class="menu-item menu-button noselect" tag="div">
         <span>Home</span>
       </router-link>
-      <div
-        @click="toggleExplorer"
-        class="menu-item menu-button noselect"
-        :class="{ 'highlighted-button': currentPanel == '#explore' }"
-      >
-        <span>Explore</span>
-      </div>
+<!--      <div-->
+<!--        @click="toggleExplorer"-->
+<!--        class="menu-item menu-button noselect"-->
+<!--        :class="{ 'highlighted-button': currentPanel == '#explore' }"-->
+<!--      >-->
+<!--        <span>Explore</span>-->
+<!--      </div>-->
       <div
         @click="toggleCreator"
         class="menu-item menu-button noselect"

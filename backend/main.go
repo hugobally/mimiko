@@ -43,7 +43,7 @@ func initSharedServices() *shared.Services {
 func main() {
 	svcs := initSharedServices()
 
-  // TODO
+	// TODO
 	lf, err := os.OpenFile("server.log",
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -52,7 +52,7 @@ func main() {
 	defer lf.Close()
 	logger := log.New(io.MultiWriter(lf, os.Stdout), "backend ", log.LstdFlags|log.Lshortfile)
 	svcs.SetLogger(logger)
-  //
+	//
 
 	cfg := svcs.Config
 
@@ -66,8 +66,8 @@ func main() {
 	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)
 
 	svcs.Logger.Printf("server starting at %v", addr)
-	//err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
+	//err = srv.ListenAndServe()
 
 	if err != nil {
 		svcs.Logger.Fatalf("server failed to start: %v", err)

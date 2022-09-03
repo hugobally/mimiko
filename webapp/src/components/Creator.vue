@@ -16,25 +16,25 @@
         />
       </div>
       <!-- <GenreGrid class="genre-grid-layout" /> -->
-      <div class="discoverable-container noselect hidden">
-        <span class="discoverable-label">Map Discoverability</span>
-        <div class="discoverable-select-group">
-          <div
-            class="discoverable-select"
-            @click="isPublic = true"
-            :class="{ selected: isPublic }"
-          >
-            Public
-          </div>
-          <div
-            class="discoverable-select"
-            @click="isPublic = false"
-            :class="{ selected: !isPublic }"
-          >
-            Secret
-          </div>
-        </div>
-      </div>
+<!--      <div class="discoverable-container noselect hidden">-->
+<!--        <span class="discoverable-label">Map Discoverability</span>-->
+<!--        <div class="discoverable-select-group">-->
+<!--          <div-->
+<!--            class="discoverable-select"-->
+<!--            @click="isPublic = true"-->
+<!--            :class="{ selected: isPublic }"-->
+<!--          >-->
+<!--            Public-->
+<!--          </div>-->
+<!--          <div-->
+<!--            class="discoverable-select"-->
+<!--            @click="isPublic = false"-->
+<!--            :class="{ selected: !isPublic }"-->
+<!--          >-->
+<!--            Secret-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </template>

@@ -4,7 +4,7 @@
       <Menu />
       <Player v-if="logged" />
       <div class="filler" v-else></div>
-      <User />
+<!--      <User />-->
     </div>
   </footer>
 </template>
@@ -18,7 +18,7 @@ export default {
   components: {
     Menu,
     Player,
-    User,
+    // User,
   },
   computed: {
     logged() {

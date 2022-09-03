@@ -10,7 +10,41 @@ import (
 	"time"
 )
 
-func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) LoginSampleSession(w http.ResponseWriter, r *http.Request) {
+	if h.Config.Env == "DEV" {
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+	}
+
+	uuid, err := h.ParseRequest(w, r)
+	if err != nil {
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
+
+	token, err := h.Spotify.CreateClientCredentialsToken()
+	if err != nil {
+		h.UnprocessableResponse(w, err)
+		return
+	}
+
+	user, err := h.UpsertSampleSessionUser(uuid, token, r.Context())
+	if err != nil {
+		h.UnprocessableResponse(w, err)
+		return
+	}
+
+	err = h.SetLoginCookie(w, user)
+	if err != nil {
+		h.Logger.Println("error on jwt creation", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	h.Logger.Println("successful login for user", user.ID)
+}
+
+func (h *Handler) LoginAuthCode(w http.ResponseWriter, r *http.Request) {
 	if h.Config.Env == "DEV" {
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
@@ -27,7 +61,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := h.Spotify.CreateToken(*authCode)
+	token, err := h.Spotify.CreateAuthCodeToken(*authCode)
 	if err != nil {
 		h.UnprocessableResponse(w, err)
 		return
@@ -39,7 +73,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.UpsertUser(spotifyUser, token, r.Context())
+	user, err := h.UpsertSpotifyUser(spotifyUser, token, r.Context())
 	if err != nil {
 		h.UnprocessableResponse(w, err)
 		return
@@ -76,7 +110,7 @@ func (h *Handler) ParseRequest(w http.ResponseWriter, r *http.Request) (*string,
 }
 
 // Could not use actual UPSERT statement because (remote) UserId is not unique
-func (h *Handler) UpsertUser(u *spotify.UserResponse, d *spotify.TokenResponse, ctx context.Context) (*prisma.User, error) {
+func (h *Handler) UpsertSpotifyUser(u *spotify.UserResponse, d *spotify.TokenResponse, ctx context.Context) (*prisma.User, error) {
 	appType := prisma.AppTypeSpotify
 
 	apps, err := h.Prisma.LinkedApps(&prisma.LinkedAppsParams{
@@ -115,6 +149,58 @@ func (h *Handler) UpsertUser(u *spotify.UserResponse, d *spotify.TokenResponse, 
 				AccessToken:  &d.AccessToken,
 				TokenExpiry:  &expStr,
 				RefreshToken: &d.RefreshToken,
+			},
+			Where: prisma.LinkedAppWhereUniqueInput{
+				ID: &app.ID,
+			},
+		}).User().Exec(ctx)
+	}
+
+	if err != nil {
+		return nil, h.LogError("internal server error", err)
+	}
+
+	return newUser, nil
+}
+
+func (h *Handler) UpsertSampleSessionUser(uuid *string, d *spotify.TokenResponse, ctx context.Context) (*prisma.User, error) {
+	appType := prisma.AppTypeSpotify
+
+	apps, err := h.Prisma.LinkedApps(&prisma.LinkedAppsParams{
+		Where: &prisma.LinkedAppWhereInput{
+			Type:     &appType,
+			Username: uuid,
+		},
+	}).Exec(ctx)
+	if err != nil {
+		return nil, h.LogError("internal server error", err)
+	}
+
+	exp := time.Now().Add(time.Duration(d.ExpiresIn) * time.Second)
+	expStr := exp.Format(time.RFC3339)
+
+	newUser := &prisma.User{}
+
+	if len(apps) == 0 {
+		newUser, err = h.Prisma.CreateLinkedApp(prisma.LinkedAppCreateInput{
+			Username: uuid,
+			Type:     prisma.AppTypeSpotify,
+			User: prisma.UserCreateOneWithoutLinkedAppsInput{
+				Create: &prisma.UserCreateWithoutLinkedAppsInput{
+					Username: uuid,
+				},
+			},
+			AccessToken:  &d.AccessToken,
+			TokenExpiry:  &expStr,
+			RefreshToken: nil,
+		}).User().Exec(ctx)
+	} else {
+		app := apps[0]
+		newUser, err = h.Prisma.UpdateLinkedApp(prisma.LinkedAppUpdateParams{
+			Data: prisma.LinkedAppUpdateInput{
+				AccessToken:  &d.AccessToken,
+				TokenExpiry:  &expStr,
+				RefreshToken: nil,
 			},
 			Where: prisma.LinkedAppWhereUniqueInput{
 				ID: &app.ID,

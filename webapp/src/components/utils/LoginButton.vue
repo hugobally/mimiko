@@ -1,25 +1,47 @@
 <template>
-  <a class="login-button link" :href="url" @click="storeCurrentUrl">
-    <img
-      class="spotify-logo"
-      src="@/assets/svg/spotify-logo.svg"
-      alt="spotify-logo"
-    />
-    <slot></slot>
-  </a>
+  <div>
+    <a class="login-button link" :href="spotifyLoginUrl" @click="storeCurrentUrl">
+      <img
+          class="spotify-logo"
+          src="@/assets/svg/spotify-logo.svg"
+          alt="spotify-logo"
+      />
+      <slot></slot>
+    </a>
+    <button class="login-button link" @click="loginSampleSession">
+      DEBUG DEBUG DEBUG
+    </button>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      url: process.env.VUE_APP_BACKEND_URL + '/login',
+      spotifyLoginUrl: process.env.VUE_APP_BACKEND_URL + '/login_spotify',
+      sampleSessionLoginUrl: process.env.VUE_APP_BACKEND_URL + '/login_sample_session',
     }
   },
   methods: {
     storeCurrentUrl() {
       localStorage.setItem('path_before_login', this.$route.path)
     },
+    async loginSampleSession() {
+          // try {
+            await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_sample_session', crypto.randomUUID(), {
+              withCredentials: true,
+            })
+            await this.$store.dispatch('auth/whoami')
+            location.reload()
+          // } catch (error) {
+          //   await this.$store.dispatch('pushFlashQueue', {
+          //     content: 'Login failed',
+          //     type: 'error',
+          //   })
+          // }
+    }
   },
 }
 </script>

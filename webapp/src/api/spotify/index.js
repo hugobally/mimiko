@@ -19,7 +19,7 @@ export async function searchForTrack(searchString) {
     q: searchString,
     type: 'track',
     limit: 1,
-    market: 'from_token',
+    // market: 'from_token',
   }
   const data = await performGetRequest('search', params)
   return parseTracks([data.tracks.items[0]])
@@ -29,7 +29,7 @@ export async function autocomplete(searchString) {
   const params = {
     q: searchString,
     type: 'track',
-    market: 'from_token',
+    // market: 'from_token',
     limit: 10,
   }
   try {
@@ -56,7 +56,7 @@ export async function recoFromTrack(
   const params = {
     limit: Math.max(number, 10),
     seed_tracks: seeds.join(),
-    market: 'from_token',
+    // market: 'from_token',
   }
   const data = await performGetRequest('recommendations', params)
 

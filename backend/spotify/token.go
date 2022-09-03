@@ -18,7 +18,14 @@ type TokenResponse struct {
 	Error        string `json:"error"`
 }
 
-func (c *Client) CreateToken(authCode string) (*TokenResponse, error) {
+func (c *Client) CreateClientCredentialsToken() (*TokenResponse, error) {
+	v := url.Values{}
+	v.Add("grant_type", "client_credentials")
+
+	return c.performTokenRequest(v)
+}
+
+func (c *Client) CreateAuthCodeToken(authCode string) (*TokenResponse, error) {
 	v := url.Values{}
 	v.Add("grant_type", "authorization_code")
 	v.Add("code", authCode)

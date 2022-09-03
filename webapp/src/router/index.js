@@ -18,7 +18,7 @@ const routes = [
     path: '/welcome',
     name: 'welcome',
     component: () =>
-      import(/* webpackChunkName: "welcome" */ '@/views/Welcome'),
+        import(/* webpackChunkName: "welcome" */ '@/views/Welcome'),
   },
   {
     path: '/map/:id',
@@ -32,7 +32,7 @@ const routes = [
 
       const code = to.query.code
       try {
-        await axios.post(process.env.VUE_APP_BACKEND_URL + '/login', code, {
+        await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_spotify', code, {
           withCredentials: true,
         })
         await store.dispatch('auth/whoami')
@@ -46,6 +46,26 @@ const routes = [
       next(pathBeforeLogin || '/')
     },
   },
+  // {
+  //   path: '/login_sample_session',
+  //   beforeEnter: async (to, from, next) => {
+  //     const pathBeforeLogin = localStorage.getItem('path_before_login')
+  //
+  //     try {
+  //       await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_sample_session', Crypto.randomUUID(), {
+  //         withCredentials: true,
+  //       })
+  //       await this.$store.dispatch('auth/whoami')
+  //     } catch (error) {
+  //       await this.$store.dispatch('pushFlashQueue', {
+  //         content: 'Login failed',
+  //         type: 'error',
+  //       })
+  //     }
+  //
+  //     next(pathBeforeLogin || '/')
+  //   }
+  // },
   {
     path: '*',
     name: 'catchall',
@@ -64,8 +84,8 @@ router.beforeEach(async (to, from, next) => {
     next()
   } else {
     if (
-      store.state.auth.user.logged === false &&
-      !store.state.auth.relogAttempted
+        store.state.auth.user.logged === false &&
+        !store.state.auth.relogAttempted
     ) {
       try {
         await store.dispatch('auth/whoami')
