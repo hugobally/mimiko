@@ -3,5 +3,5 @@ config.yml
 mimiko-server
 backend
 server.log
-key.pem
-cert.pem
+localhost.pem
+localhost-key.pem
