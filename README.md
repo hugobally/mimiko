@@ -5,7 +5,7 @@ https://user-images.githubusercontent.com/41960941/157226859-1a73c5a3-9367-49d7-
 
 Using the Spotify recommendation API, you can start from a song you like and explore a graph of related songs. In short, it's a visualized playlist ! It is all persisted on the server, and you can explore other users' playlists.
 
-*This project is a prototype and is not currently maintained. However, you can launch it locally by cloning the repo. Don't hesitate to reach out if you encounter any issue*
+> **_NOTE:_** This project is a prototype and a learning experience, and is not currently maintained. However, you can launch it locally by cloning the repo. Don't hesitate to reach out if you encounter any issue
 
 ## Stack & Post-Mortem/Takeaways
 
