@@ -2,7 +2,7 @@
 
 0. Tools needed : docker, go, prisma (npm install prisma --global)
 
-1. Create config.yml in the backend folder with the following content
+1. Edit config.yml with the following content
 
 ```
   env: DEV
