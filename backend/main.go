@@ -66,7 +66,8 @@ func main() {
 	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)
 
 	svcs.Logger.Printf("server starting at %v", addr)
-	err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
+	//err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)
+	err = srv.ListenAndServe()
 
 	if err != nil {
 		svcs.Logger.Fatalf("server failed to start: %v", err)

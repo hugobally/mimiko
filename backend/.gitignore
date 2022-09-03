@@ -1,5 +1,7 @@
-#config.yml
+config.yml
 .idea
 mimiko-server
 backend
 server.log
+key.pem
+cert.pem
