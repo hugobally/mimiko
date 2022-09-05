@@ -19,19 +19,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('map', ['knots', 'hovered']),
-    trackTitle() {
-      if (!this.knot) return ''
-
-      return this.knot.track.artist + ' - ' + this.knot.track.title
-    },
-    knot() {
-      if (!this.hovered) return null
-
-      return this.knots[this.hovered]
+    ...mapState('map', ['knots', 'hovered', 'focused']),
+    knotToAttachTo() {
+      if (this.hovered) return this.knots[this.hovered]
+      return null
     },
     transformStr() {
-      const { x, y } = this.knot
+      const { x, y } = this.knotToAttachTo
       return `translate(${x} ${y})`
     },
   },

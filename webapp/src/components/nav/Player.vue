@@ -1,11 +1,11 @@
 <template>
   <div class="player-container">
-    <div class="track-title-container noselect" @click="focus(knot)">
-      <div class="track-title-text">
-        {{ trackTitleStr }}
-      </div>
-    </div>
-    <div class="action-button-group">
+<!--    <div class="track-title-container noselect" @click="focus(knot)">-->
+<!--      <div class="track-title-text">-->
+<!--        {{ trackTitleStr }}-->
+<!--      </div>-->
+<!--    </div>-->
+    <div v-if="!readOnly" class="action-button-group">
       <div class="button-wrapper like-button-group" @click="like">
         <img
           class="like-button-icon"
@@ -20,14 +20,14 @@
           alt="no-liked-icon"
         />
       </div>
-      <div v-if="!readOnly" class="add-button-wrapper" @click="add">
+      <div class="add-button-wrapper" @click="add">
         <img
           class="add-button"
           src="@/assets/svg/add-icon.svg"
           alt="add-track-icon"
         />
       </div>
-      <div class="button-wrapper" v-if="!readOnly" @click="dislike">
+      <div class="button-wrapper" @click="dislike">
         <img
           class="dislike-button"
           src="@/assets/svg/cross-icon.svg"
@@ -173,7 +173,11 @@ export default {
           time: 4000,
         })
       } catch (error) {
-        //TODO
+        this.$store.dispatch('pushFlashQueue', {
+          content: "Log in with your Spotify account in order to save tracks to a custom playlist !",
+          type: 'info',
+          time: 4000,
+        })
       }
     },
     // TODO Factorize
@@ -208,7 +212,7 @@ export default {
           })
           if (Object.values(this.$store.state.map.knots).length <= 5) {
             await new Promise(r => setTimeout(r, 200))
-            this.$store.dispatch('map/focus', 'ALL')
+            // this.$store.dispatch('map/focus', 'ALL')
           }
         }
       } catch (error) {
@@ -267,15 +271,15 @@ export default {
 
 .button-wrapper,
 .add-button-wrapper {
-  width: 100%;
-  height: 100%;
-
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 
   cursor: pointer;
+}
+
+.button-wrapper {
+  flex: 1;
 }
 
 .like-button-icon,
@@ -318,7 +322,7 @@ export default {
   justify-content: space-around;
   padding: 0px 10px;
 
-  background-color: $bg-primary;
+  background-color: $bg-secondary;
 
   & > div {
     margin: 0px 10px 0px 10px;
@@ -340,15 +344,16 @@ export default {
 
 .playback-group {
   flex: 1;
-  width: 100%;
+  width: 350px;
   height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: flex-start;
 
-  background-color: $bg-primary;
-  border-left: 1px solid black;
+  background-color: $bg-secondary;
+
+  border-radius: 0px 32px 32px 0px;
 
   .button-wrapper {
     width: 64px;
@@ -367,8 +372,7 @@ export default {
 
   cursor: pointer;
 
-  background-color: $bg-primary;
-  border-right: solid 1px black;
+  background-color: $bg-black;
 }
 
 .track-title-text {
@@ -382,7 +386,7 @@ export default {
 }
 
 .track-title-container:hover {
-  background-color: $bg-primary;
+  backdrop-filter: brightness(90%);
 }
 
 .filler {
@@ -398,15 +402,15 @@ export default {
 
 .add-button-wrapper {
   position: relative;
-  flex: 2;
+  //flex: 2;
+  width: 80px;
   height: 125%;
   bottom: 20%;
   background-color: $black;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 40px;
 }
 
 .add-button-wrapper:hover {
-  background-color: $black-lighter;
   transform: translateY(-3px);
 }
 

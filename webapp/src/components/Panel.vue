@@ -2,7 +2,7 @@
   <div @click.self="closePanel" class="panel-ext-container">
     <div class="panel-container">
       <div class="panel-header">
-        <h1 class="panel-title noselect">{{ titleStr }}</h1>
+<!--        <h1 class="panel-title noselect">{{ titleStr }}</h1>-->
         <img
           @click="closePanel"
           class="close-icon"

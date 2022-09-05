@@ -48,7 +48,7 @@ export default {
   right: 0px;
   height: 100%;
   margin-right: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 15px + $navbar-height + 30px;
   pointer-events: none;
 
   display: flex;
@@ -61,18 +61,20 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: $bg-primary;
+  border-radius: 5px;
 }
 
 .zoombar-container > img {
-  padding: 7px;
+  padding: 10px;
+  width: 50px;
+  height: 50px;
   pointer-events: auto;
   cursor: pointer;
-  border: solid 1px black;
 }
 
 .zoombar-container > img:hover {
-  background-color: $bg-secondary;
+  backdrop-filter: brightness(90%);
+  transition: backdrop-filter 100ms;
 }
 
 .zoom-button {

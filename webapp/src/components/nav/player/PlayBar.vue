@@ -127,7 +127,7 @@ export default {
 .playbar-timestamp,
 .playbar-title {
   color: white;
-  mix-blend-mode: difference;
+  mix-blend-mode: unset;
 
   white-space: nowrap;
 }

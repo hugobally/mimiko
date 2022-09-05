@@ -16,9 +16,9 @@ const routes = [
   },
   {
     path: '/welcome',
-    name: 'welcome',
-    component: () =>
-        import(/* webpackChunkName: "welcome" */ '@/views/Welcome'),
+    beforeEnter: (to, from, next) => {
+      next('/home#new')
+    }
   },
   {
     path: '/map/:id',

@@ -223,12 +223,10 @@ export default {
       }
     },
     async createLikedPlaylist({ commit }) {
-      try {
         const id = await createPlaylist()
+        if (!id) throw new Error
+
         commit('LIKED_PLAYLIST_INIT', { id: id, tracks: [] })
-      } catch (error) {
-        // TODO
-      }
     },
     async addToLikedPlaylist({ state, commit }, trackId) {
       if (!state.likedPlaylist.id) return

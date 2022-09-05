@@ -1,11 +1,13 @@
 <template>
   <footer>
-    <div class="nav-container">
-      <Menu />
-      <Player v-if="logged" />
-      <div class="filler" v-else></div>
-<!--      <User />-->
-    </div>
+    <div class="nav-center-container">
+      <div class="nav-container">
+        <Menu />
+        <Player v-if="logged" />
+<!--        <div class="filler" v-else></div>-->
+        <User />
+        </div>
+      </div>
   </footer>
 </template>
 
@@ -29,11 +31,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nav-center-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  //margin-left: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
 .nav-container {
   display: flex;
   height: 100%;
-  background-color: $bg-primary;
-  border-top: solid 2px $black;
+  //border: solid 2px $black;
 }
 
 .filler {

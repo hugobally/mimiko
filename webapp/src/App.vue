@@ -131,7 +131,7 @@ img,
 
 .nav-layout {
   position: fixed;
-  bottom: 0px;
+  bottom: 30px;
   width: 100%;
   height: $navbar-height;
 }
@@ -145,8 +145,7 @@ img,
 }
 
 .page-layout {
-  margin-bottom: $navbar-height;
   width: 100%;
-  height: calc(100vh - #{$navbar-height});
+  height: 100%;
 }
 </style>

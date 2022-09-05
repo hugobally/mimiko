@@ -134,29 +134,36 @@ export default {
 }
 
 .input-label {
-  font-size: 20px;
-  text-align: left;
-  margin-bottom: 5px;
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 60px;
   width: 100%;
   color: $text-primary;
 }
 
 .side-button {
-  border-radius: 0px 10px 10px 0px;
-  color: $text-highlight;
-  background: $black;
-  border: solid 1px $black;
+  border-radius: 10px;
+  background: $bg-secondary;
+  color: $text-primary;
+  border: none;
   cursor: pointer;
   text-decoration: none;
   font-size: 20px;
+  margin-left: 20px;
+}
+
+.side-button:hover {
+  scale: 90%;
+  transition: scale 200ms;
 }
 
 .text-input {
-  background-color: $bg-primary;
+  background-color: $bg-secondary;
   color: $text-primary;
   padding: 10px;
-  border: 1px solid black;
+  border: none;
   font-size: 20px;
+  border-radius: 20px;
 }
 
 .busy {

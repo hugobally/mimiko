@@ -31,33 +31,55 @@ func (r *Resolver) GetToken(ctx context.Context, appType prisma.AppType) (*prism
 	app := &apps[0]
 	exp, _ := time.Parse(time.RFC3339, *app.TokenExpiry)
 
-	if exp.Before(time.Now().Add(5 * time.Minute)) {
-		newToken, err := r.Spotify.RefreshToken(*app.RefreshToken)
-		if err != nil {
-			return nil, err
-		}
+	if exp.After(time.Now().Add(5 * time.Minute)) {
+		return app, nil
+	}
 
+	if app.RefreshToken == nil {
+		newToken, err := r.Spotify.CreateClientCredentialsToken()
 		expStr := time.Now().Add(time.Duration(newToken.ExpiresIn) * time.Second).Format(time.RFC3339)
-		var refreshToken *string
-		if newToken.RefreshToken != "" {
-			refreshToken = &newToken.RefreshToken
-		} else {
-			refreshToken = app.RefreshToken
-		}
-
 		app, err = r.Prisma.UpdateLinkedApp(prisma.LinkedAppUpdateParams{
 			Data: prisma.LinkedAppUpdateInput{
 				AccessToken:  &newToken.AccessToken,
 				TokenExpiry:  &expStr,
-				RefreshToken: refreshToken,
+				RefreshToken: nil,
 			},
 			Where: prisma.LinkedAppWhereUniqueInput{
 				ID: &app.ID,
 			},
 		}).Exec(ctx)
+
 		if err != nil {
 			return nil, err
 		}
+
+		return app, nil
 	}
+
+	newToken, err := r.Spotify.RefreshToken(*app.RefreshToken)
+
+	expStr := time.Now().Add(time.Duration(newToken.ExpiresIn) * time.Second).Format(time.RFC3339)
+	var refreshToken *string
+	if newToken.RefreshToken != "" {
+		refreshToken = &newToken.RefreshToken
+	} else {
+		refreshToken = app.RefreshToken
+	}
+
+	app, err = r.Prisma.UpdateLinkedApp(prisma.LinkedAppUpdateParams{
+		Data: prisma.LinkedAppUpdateInput{
+			AccessToken:  &newToken.AccessToken,
+			TokenExpiry:  &expStr,
+			RefreshToken: refreshToken,
+		},
+		Where: prisma.LinkedAppWhereUniqueInput{
+			ID: &app.ID,
+		},
+	}).Exec(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return app, nil
 }
