@@ -5,7 +5,7 @@
         <Menu />
         <Player v-if="logged" />
 <!--        <div class="filler" v-else></div>-->
-        <User />
+<!--        <User />-->
         </div>
       </div>
   </footer>

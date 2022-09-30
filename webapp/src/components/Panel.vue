@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="closePanel" class="panel-ext-container">
+  <div class="panel-ext-container">
     <div class="panel-container">
       <div class="panel-header">
 <!--        <h1 class="panel-title noselect">{{ titleStr }}</h1>-->
@@ -56,8 +56,10 @@ export default {
 <style lang="scss" scoped>
 .panel-ext-container {
   position: fixed;
+  display: flex;
 
   justify-content: center;
+  align-items: center;
   background-color: $bg-primary;
 }
 
@@ -65,7 +67,7 @@ export default {
   position: relative;
   left: 0px;
   height: 100%;
-  width: 100%;
+  width: 1000px;
   background-color: $bg-primary;
   display: flex;
   flex-direction: column;
@@ -86,11 +88,11 @@ export default {
 }
 
 .close-icon {
-  width: 50px;
-  height: 50px;
+  width: 25px;
+  height: 25px;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 35px;
+  right: 0px;
   cursor: pointer;
 }
 </style>

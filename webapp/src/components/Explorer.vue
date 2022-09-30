@@ -93,7 +93,7 @@ function mapMetadataIncludes(str, fields) {
   border: 0px;
   padding: 5px;
   font-size: 20px;
-  font-family: 'IBM Plex Sans', sans-serif;
+  //font-family: 'IBM Plex Sans', sans-serif;
   background-color: $bg-primary;
   border: 1px solid black;
   margin: 0px 10px 0px 10px;

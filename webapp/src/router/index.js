@@ -16,9 +16,9 @@ const routes = [
   },
   {
     path: '/welcome',
-    beforeEnter: (to, from, next) => {
-      next('/home#new')
-    }
+    // beforeEnter: (to, from, next) => {
+    //   next('/home#new')
+    // }
   },
   {
     path: '/map/:id',
@@ -46,26 +46,27 @@ const routes = [
       next(pathBeforeLogin || '/')
     },
   },
-  // {
-  //   path: '/login_sample_session',
-  //   beforeEnter: async (to, from, next) => {
-  //     const pathBeforeLogin = localStorage.getItem('path_before_login')
-  //
-  //     try {
-  //       await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_sample_session', Crypto.randomUUID(), {
-  //         withCredentials: true,
-  //       })
-  //       await this.$store.dispatch('auth/whoami')
-  //     } catch (error) {
-  //       await this.$store.dispatch('pushFlashQueue', {
-  //         content: 'Login failed',
-  //         type: 'error',
-  //       })
-  //     }
-  //
-  //     next(pathBeforeLogin || '/')
-  //   }
-  // },
+  {
+    path: '/login_sample_session',
+    beforeEnter: async (to, from, next) => {
+      const pathBeforeLogin = localStorage.getItem('path_before_login')
+
+      console.log('coucou')
+      // try {
+        await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_sample_session', crypto.randomUUID(), {
+          withCredentials: true,
+        })
+        await store.dispatch('auth/whoami')
+      // } catch (error) {
+      //   await store.dispatch('pushFlashQueue', {
+      //     content: 'Login failed',
+      //     type: 'error',
+      //   })
+      // }
+
+      next(pathBeforeLogin || '/')
+    }
+  },
   {
     path: '*',
     name: 'catchall',
@@ -80,7 +81,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.path.includes('callback')) {
+  if (to.path.includes('callback') || to.path.includes('login_sample_session')) {
     next()
   } else {
     if (

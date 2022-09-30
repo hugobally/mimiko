@@ -149,6 +149,7 @@ export default {
   cursor: pointer;
   text-decoration: none;
   font-size: 20px;
+  font-family: 'Abel', sans-serif;
   margin-left: 20px;
 }
 
@@ -162,6 +163,7 @@ export default {
   color: $text-primary;
   padding: 10px;
   border: none;
+  font-family: 'Abel', sans-serif;
   font-size: 20px;
   border-radius: 20px;
 }
