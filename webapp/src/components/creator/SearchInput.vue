@@ -144,7 +144,7 @@ export default {
 .side-button {
   border-radius: 10px;
   background: $bg-secondary;
-  color: $text-primary;
+  color: $text-highlight;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -160,7 +160,7 @@ export default {
 
 .text-input {
   background-color: $bg-secondary;
-  color: $text-primary;
+  color: $text-highlight;
   padding: 10px;
   border: none;
   font-family: 'Abel', sans-serif;

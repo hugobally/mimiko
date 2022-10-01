@@ -52,10 +52,10 @@ export default {
   },
   watch: {
     routePath(newVal) {
-      if (newVal.substr(0, 8) !== '/welcome') {
-        this.maskNav = false
-      } else {
+      if (newVal.includes('welcome')) {
         this.maskNav = true
+      } else {
+        this.maskNav = false
       }
     },
   },

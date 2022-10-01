@@ -4,29 +4,29 @@
     <h1 v-if="!userMaps || userMaps.length > 0" class="header noselect">
       Maps
     </h1>
-    <div v-else class="empty-text-centerer">
-      <div class="empty-text-container">
-<!--        <img-->
-<!--            width="100"-->
-<!--            height="100"-->
-<!--            src="@/assets/svg/favicon.svg"-->
-<!--            alt="mimiko-logo"-->
-<!--            class="mimiko-logo"-->
-<!--        />-->
-        <div class="empty-text">
-          <h1 class="empty-text-title">
-            Whoops, you have not created a map yet!
-          </h1>
-          <p class="empty-text-content">
-              Head over to the
-            <router-link to="/home#new" tag="a">
-              welcome page
-            </router-link>
-            to get started.
-          </p>
-        </div>
+    <div v-else >
+<!--      <div class="empty-text-container">-->
+<!--&lt;!&ndash;        <img&ndash;&gt;-->
+<!--&lt;!&ndash;            width="100"&ndash;&gt;-->
+<!--&lt;!&ndash;            height="100"&ndash;&gt;-->
+<!--&lt;!&ndash;            src="@/assets/svg/favicon.svg"&ndash;&gt;-->
+<!--&lt;!&ndash;            alt="mimiko-logo"&ndash;&gt;-->
+<!--&lt;!&ndash;            class="mimiko-logo"&ndash;&gt;-->
+<!--&lt;!&ndash;        />&ndash;&gt;-->
+<!--        <div class="empty-text">-->
+<!--          <h1 class="empty-text-title">-->
+<!--            Whoops, you have not created a map yet!-->
+<!--          </h1>-->
+<!--          <p class="empty-text-content">-->
+<!--              Head over to the-->
+<!--            <router-link to="/home#new" tag="a">-->
+<!--              welcome page-->
+<!--            </router-link>-->
+<!--            to get started.-->
+<!--          </p>-->
+<!--        </div>-->
+        <Creator/>
       </div>
-    </div>
     <MapList class="map-list" :readOnly="false" :maps="userMaps" />
   </div>
 </template>
@@ -34,9 +34,11 @@
 <script>
 import MapList from '@/components/explorer/MapList'
 import SearchTrack from "@/components/SearchTrack";
+import Creator from "@/components/Creator";
 
 export default {
   components: {
+    Creator,
     MapList,
   },
   data() {

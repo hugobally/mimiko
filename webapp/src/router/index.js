@@ -5,6 +5,7 @@ import Home from '@/views/Home'
 
 import store from '@/store'
 import axios from 'axios'
+import Welcome from "@/views/Welcome";
 
 Vue.use(VueRouter)
 
@@ -16,9 +17,8 @@ const routes = [
   },
   {
     path: '/welcome',
-    // beforeEnter: (to, from, next) => {
-    //   next('/home#new')
-    // }
+    name: 'welcome',
+    component: Welcome,
   },
   {
     path: '/map/:id',
@@ -97,8 +97,6 @@ router.beforeEach(async (to, from, next) => {
 
     if (!store.state.auth.user.logged && to.path !== '/welcome') {
       next('/welcome')
-    } else if (store.state.auth.user.logged && to.path === '/welcome') {
-      next('/home')
     } else {
       next()
     }

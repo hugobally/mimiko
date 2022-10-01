@@ -98,7 +98,9 @@ export default {
     ...mapState('player', ['sdk', 'track', 'knot', 'status', 'likedPlaylist']),
     ...mapState('map', ['readOnly', 'knots']),
     previewMode() {
-      return this.$store.state.player.previewMode
+      // Until spotify login is reimplemented we're always in preview mode
+      return true
+      // return this.$store.state.player.previewMode
     },
     trackTitleStr() {
       if (!this.track) return ''
@@ -406,8 +408,9 @@ export default {
   width: 80px;
   height: 125%;
   bottom: 20%;
-  background-color: $black;
+  background-color: white;
   border-radius: 40px;
+  border: solid 3px #3C3C3C;
 }
 
 .add-button-wrapper:hover {
@@ -415,7 +418,6 @@ export default {
 }
 
 .add-button-wrapper:hover:active {
-  background-color: $black;
   transform: translateY(3px);
 }
 
