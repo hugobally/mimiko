@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"encoding/base64"
-	jwtlib "github.com/dgrijalva/jwt-go"
+	jwtlib "github.com/golang-jwt/jwt/v4"
 	"github.com/hugobally/mimiko/backend/prisma"
 	"time"
 )

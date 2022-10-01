@@ -2,7 +2,7 @@ package auth
 
 import (
 	"context"
-	jwtlib "github.com/dgrijalva/jwt-go"
+	jwtlib "github.com/golang-jwt/jwt/v4"
 	"github.com/hugobally/mimiko/backend/shared"
 	"net/http"
 )
