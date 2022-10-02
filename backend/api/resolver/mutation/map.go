@@ -18,7 +18,7 @@ func validateMapTitle(title *string) error {
 	if err != nil {
 		return err
 	}
-	err = validation.AlphaNumSpace(*title)
+	err = validation.AlphaNumExtra(*title)
 	if err != nil {
 		return err
 	}

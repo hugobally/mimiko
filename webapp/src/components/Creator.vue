@@ -44,7 +44,6 @@ export default {
 <style lang="scss" scoped>
 .welcome-text-centerer {
   width: 100%;
-  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: center;

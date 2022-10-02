@@ -65,7 +65,7 @@ export default {
         await apiDeleteMap(this.map.id)
         this.$store.commit('maplist/USER_MAPS_REMOVE', this.map.id)
       } catch (error) {
-        this.$store.dispatch('pushFlashQueue', {
+        this.$store.dispatch('ui/pushFlashQueue', {
           content: 'Error when trying to delete the map, please retry.',
           type: 'error',
         })

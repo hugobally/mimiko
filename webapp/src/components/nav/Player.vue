@@ -6,20 +6,20 @@
 <!--      </div>-->
 <!--    </div>-->
     <div v-if="!readOnly" class="action-button-group">
-      <div class="button-wrapper like-button-group" @click="like">
-        <img
-          class="like-button-icon"
-          v-if="isLiked"
-          src="@/assets/svg/heart-icon-full.svg"
-          alt="full-liked-icon"
-        />
-        <img
-          class="like-button-icon"
-          v-else
-          src="@/assets/svg/heart-icon-empty.svg"
-          alt="no-liked-icon"
-        />
-      </div>
+<!--      <div class="button-wrapper like-button-group" @click="like">-->
+<!--        <img-->
+<!--          class="like-button-icon"-->
+<!--          v-if="isLiked"-->
+<!--          src="@/assets/svg/heart-icon-full.svg"-->
+<!--          alt="full-liked-icon"-->
+<!--        />-->
+<!--        <img-->
+<!--          class="like-button-icon"-->
+<!--          v-else-->
+<!--          src="@/assets/svg/heart-icon-empty.svg"-->
+<!--          alt="no-liked-icon"-->
+<!--        />-->
+<!--      </div>-->
       <div class="add-button-wrapper" @click="add">
         <img
           class="add-button"
@@ -53,7 +53,7 @@
       <PlayBar />
     </div>
     <div class="playback-group center" v-else>
-      <audio controls autoplay :src="track && track.previewURL"></audio>
+      <audio controls autoplay :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
     </div>
   </div>
 </template>
@@ -89,6 +89,14 @@ export default {
       window.addEventListener('keyup', e => {
         if (e.code === 'Space' && this.$route.hash === '') this.play()
         if (e.code === 'Equal' && this.$route.hash === '') this.add()
+      })
+
+      // For Sample Session mode
+      this.$refs.sampleSessionAudioControls.addEventListener('pause', () => {
+        this.$store.commit('player/STATUS_PAUSED')
+      })
+      this.$refs.sampleSessionAudioControls.addEventListener('play', () => {
+        this.$store.commit('player/STATUS_PLAYING')
       })
     } catch (error) {
       // TODO
@@ -127,6 +135,9 @@ export default {
 
       return this.likedPlaylist.tracks.includes(this.track.id)
     },
+    hasTrack() {
+      return Boolean(this.track)
+    }
   },
   methods: {
     ...mapActions('map', ['createKnots']),
@@ -156,7 +167,7 @@ export default {
             'player/removeFromLikedPlaylist',
             this.track.id,
           )
-          this.$store.dispatch('pushFlashQueue', {
+          this.$store.dispatch('ui/pushFlashQueue', {
             content:
               "Track removed from the Spotify playlist 'Liked from Mimiko'",
             type: 'info',
@@ -169,13 +180,13 @@ export default {
           await this.$store.dispatch('player/createLikedPlaylist')
         }
         await this.$store.dispatch('player/addToLikedPlaylist', this.track.id)
-        this.$store.dispatch('pushFlashQueue', {
+        this.$store.dispatch('ui/pushFlashQueue', {
           content: "Track added to the Spotify playlist 'Liked from Mimiko'",
           type: 'info',
           time: 4000,
         })
       } catch (error) {
-        this.$store.dispatch('pushFlashQueue', {
+        this.$store.dispatch('ui/pushFlashQueue', {
           content: "Log in with your Spotify account in order to save tracks to a custom playlist !",
           type: 'info',
           time: 4000,
@@ -242,7 +253,7 @@ export default {
       if (this.$store.state.player.previewMode) {
         this.$store.commit('player/STATUS_PLAYING')
         if (this.track && !this.track.previewURL) {
-          this.$store.dispatch('pushFlashQueue', {
+          this.$store.dispatch('ui/pushFlashQueue', {
             content:
               'No audio preview available for this track on Spotify Free.',
             type: 'error',
@@ -317,7 +328,6 @@ export default {
 
 .action-button-group {
   flex: initial;
-  width: 300px;
   height: 64px;
 
   display: flex;

@@ -1,16 +1,18 @@
 <template>
-  <div class="panel-ext-container">
+  <div class="panel-centerer" @click="closePanelOutsideClick" ref="panelCenterer">
     <div class="panel-container">
-      <div class="panel-header">
-<!--        <h1 class="panel-title noselect">{{ titleStr }}</h1>-->
-        <img
+      <img
           @click="closePanel"
           class="close-icon"
           src="@/assets/svg/close-icon.svg"
           alt="close-icon"
-        />
+      />
+      <div class="panel-header">
+        <!--        <h1 class="panel-title noselect">{{ titleStr }}</h1>-->
       </div>
-      <slot />
+      <div class="panel-content">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -42,33 +44,53 @@ export default {
     kbHandler(e) {
       if (e.key === 'Escape') this.closePanel()
     },
-    closePanel() {
+    closePanel(e) {
       this.$router.replace({
         path: this.$route.path,
         hash: '',
         query: this.$route.query,
       })
     },
+    closePanelOutsideClick(e) {
+      if (e.target !== this.$refs.panelCenterer) return
+
+      this.closePanel()
+    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.panel-ext-container {
+.panel-centerer {
   position: fixed;
   display: flex;
 
-  justify-content: center;
+  height: calc(100% - #{$navbar-height});
+  width: 100%;
+
   align-items: center;
-  background-color: $bg-primary;
+  flex-direction: column;
 }
 
 .panel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+
+  border-radius: 20px;
+  background-color: $bg-primary;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+  padding: 40px;
+  margin-top: 30px;
+}
+
+.panel-content {
   position: relative;
   left: 0px;
-  height: 100%;
-  width: 1000px;
-  background-color: $bg-primary;
+  //height: 100%;
+  //width: 1000px;
   display: flex;
   flex-direction: column;
 }
@@ -88,11 +110,13 @@ export default {
 }
 
 .close-icon {
-  width: 25px;
-  height: 25px;
+  width: 50px;
+  height: 50px;
   position: absolute;
-  top: 35px;
-  right: 0px;
+  top: 25px;
+  right: 25px;
   cursor: pointer;
+  z-index: 1;
+  padding: 18px;
 }
 </style>

@@ -77,7 +77,7 @@ export default {
       }
     },
     highlighted() {
-      const knot = this.$store.state.player.knot
+      const knot = this.$store.state.player.playedKnotId
 
       const onVisited = this.path.steps && this.path.steps.includes(knot)
       const onUnvisited =

@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     mapError() {
-      this.$store.dispatch('pushFlashQueue', {
+      this.$store.dispatch('ui/pushFlashQueue', {
         content: 'Whoops ! The map could not be loaded.',
         type: 'error',
       })

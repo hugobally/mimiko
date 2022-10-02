@@ -106,7 +106,7 @@ export default {
 }
 
 .highlighted-button {
-  backdrop-filter: brightness(200%);
+  backdrop-filter: brightness(220%);
   transition: backdrop-filter 200ms;
 }
 

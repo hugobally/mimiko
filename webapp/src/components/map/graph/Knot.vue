@@ -48,6 +48,9 @@ export default {
         track: this.knot.track,
       })
     },
+    selectThis() {
+      this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.id)
+    },
     setHovered(isHovered) {
       this.$store.commit('map/SET_HOVERED', isHovered ? this.id : null)
     },

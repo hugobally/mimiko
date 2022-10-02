@@ -15,7 +15,7 @@
       />
       <img
         class="zoom-button"
-        @click="focus($store.state.player.knot)"
+        @click="focus($store.state.player.playedKnotId)"
         src="@/assets/svg/locate.svg"
         alt="focus-playing"
       />
@@ -33,7 +33,7 @@
 export default {
   methods: {
     manualZoom(diff) {
-      this.$store.commit('PUSH_ZOOM_QUEUE', diff)
+      this.$store.commit('ui/PUSH_ZOOM_QUEUE', diff)
     },
     focus(target) {
       this.$store.dispatch('map/focus', target)

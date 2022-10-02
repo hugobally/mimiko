@@ -21,7 +21,7 @@ function initialBuffer() {
 function initialPlayer() {
   return {
     track: null,
-    knot: null,
+    playedKnotId: null,
 
     position: 0,
     duration: 0,
@@ -76,8 +76,8 @@ export default {
       state.previewMode = value
     },
 
-    SET_KNOT(state, knot) {
-      state.knot = knot
+    SET_PLAYED_KNOT_ID(state, knotId) {
+      state.playedKnotId = knotId
     },
 
     BUFFER_ROTATE(state) {
@@ -405,7 +405,7 @@ export default {
         }
       }
       commit('SET_TRACK', current.track)
-      commit('SET_KNOT', current.knot)
+      commit('SET_PLAYED_KNOT_ID', current.knot)
 
       try {
         await playTrack([current.track.id], state.deviceId)
@@ -413,7 +413,7 @@ export default {
         commit('SET_PREVIEW_MODE', true)
         if (!current.track.previewURL) {
           dispatch(
-            'pushFlashQueue',
+            'ui/pushFlashQueue',
             {
               content:
                 'No audio preview available for this track on Spotify Free.',

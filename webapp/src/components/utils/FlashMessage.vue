@@ -33,7 +33,7 @@ export default {
 
       this.message = queue[0]
       await new Promise(r => setTimeout(r, this.message.time || 3000))
-      this.$store.dispatch('shiftFlashQueue')
+      this.$store.dispatch('ui/shiftFlashQueue')
     },
   },
   mounted() {

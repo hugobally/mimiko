@@ -9,8 +9,8 @@ type Input struct {
 	Value string
 }
 
-func AlphaNumSpace(input string) error {
-	if !regexp.MustCompile(`^[\w ]`).MatchString(input) {
+func AlphaNumExtra(input string) error {
+	if !regexp.MustCompile(`^[\w -]`).MatchString(input) {
 		return errors.New("forbidden characters")
 	}
 

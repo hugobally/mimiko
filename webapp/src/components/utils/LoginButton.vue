@@ -36,7 +36,7 @@ export default {
             await this.$store.dispatch('auth/whoami')
             location.reload()
           // } catch (error) {
-          //   await this.$store.dispatch('pushFlashQueue', {
+          //   await this.$store.dispatch('ui/pushFlashQueue', {
           //     content: 'Login failed',
           //     type: 'error',
           //   })

@@ -10,7 +10,8 @@
     >
       <ZoomHandler id="zoomgroup" :viewport="viewportRef" :graph="graphRef">
         <!-- <CircleBackground /> -->
-        <PlayIndicator v-if="playing" :key="playing" />
+        <PlayIndicator v-if="currentPlayerKnot" :key="`play-indicator-${currentPlayerKnot}`" />
+        <SelectIndicator v-if="currentPlayerKnot" :key="`select-indicator-${currentPlayerKnot}`" />
         <Graph ref="graphComponent" />
         <HoverIndicator v-if="hovered" />
       </ZoomHandler>
@@ -26,6 +27,7 @@ import ZoomHandler from '@/components/map/viewport/ZoomHandler'
 import Filters from '@/components/map/viewport/Filters'
 // import CircleBackground from '@/components/map/viewport/CircleBackground'
 import PlayIndicator from '@/components/map/viewport/PlayIndicator'
+import SelectIndicator from '@/components/map/viewport/SelectIndicator'
 import HoverIndicator from '@/components/map/viewport/HoverIndicator'
 import Overlay from '@/components/map/viewport/Overlay'
 
@@ -44,6 +46,7 @@ export default {
     Filters,
     // CircleBackground,
     PlayIndicator,
+    SelectIndicator,
     HoverIndicator,
   },
   mounted() {
@@ -54,8 +57,8 @@ export default {
     hovered() {
       return this.$store.state.map.hovered
     },
-    playing() {
-      return this.$store.state.player.knot
+    currentPlayerKnot() {
+      return this.$store.state.player.playedKnotId
     },
     mapId() {
       return this.$store.state.map.id

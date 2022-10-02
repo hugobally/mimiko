@@ -1,9 +1,12 @@
 <template>
   <div id="app">
-    <router-view :key="routePath" class="page-layout" />
-    <Panel v-if="panelContent" class="page-layout">
+    <router-view :key="routePath" class="page-layout"/>
+
+    <div class="dimmer" v-if="panelContent"/>
+    <Panel v-if="panelContent">
       <component :is="panelContent" />
     </Panel>
+
     <Nav :class="{ hidden: maskNav && !logged }" class="nav-layout"> </Nav>
     <FlashMessage class="flash-layout" />
   </div>
@@ -36,6 +39,9 @@ export default {
     return {
       maskNav: true,
     }
+  },
+  mounted() {
+    if (!localStorage.getItem('tutorial_steps')) localStorage.setItem('tutorial_steps', ['play_knot', 'create_knot'])
   },
   computed: {
     panelContent() {
@@ -149,5 +155,16 @@ img,
 .page-layout {
   width: 100%;
   height: 100%;
+}
+
+.dimmer {
+  background: #000;
+  opacity: 0.75;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  //z-index: 100;
 }
 </style>

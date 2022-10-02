@@ -8,7 +8,7 @@ import (
 type Handler struct{ *shared.Services }
 
 func (h *Handler) SetupRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/login_spotify", h.LoginAuthCode)
+	//mux.HandleFunc("/login_spotify", h.LoginAuthCode)
 	mux.HandleFunc("/login_sample_session", h.LoginSampleSession)
 	mux.HandleFunc("/logout", h.Logout)
 }

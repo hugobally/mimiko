@@ -1,9 +1,29 @@
-export default {
-  state: {
+import {indexOf} from "core-js/internals/array-includes";
+
+function initialGlobalUI() {
+  return {
     flashQueue: [],
+  }
+}
+
+function initialMapUI() {
+  return {
     manualZoomQueue: [],
     zoomLevel: 1,
-  },
+    selectedKnotId: null,
+  }
+}
+
+function initialState() {
+  return {
+    ...initialGlobalUI(),
+    ...initialMapUI(),
+  }
+}
+
+export default {
+  namespaced: true,
+  state: initialState,
   mutations: {
     PUSH_FLASH_QUEUE(state, message) {
       state.flashQueue.push(message)
@@ -20,6 +40,15 @@ export default {
     SET_ZOOM_LEVEL(state, newVal) {
       state.zoomLevel = newVal
     },
+    SET_SELECTED_KNOT_ID(state, knotId) {
+      state.selectedKnotId = knotId
+    },
+    RESET_MAP_UI(state) {
+      Object.assign(state, {
+        ...state,
+        ...initialMapUI(),
+      })
+    }
   },
   actions: {
     // TODO unnecessary, use commit

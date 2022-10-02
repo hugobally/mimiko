@@ -44,51 +44,52 @@ func (h *Handler) LoginSampleSession(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Println("successful login for user", user.ID)
 }
 
-func (h *Handler) LoginAuthCode(w http.ResponseWriter, r *http.Request) {
-	if h.Config.Env == "DEV" {
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
-	}
-
-	if r.Method == http.MethodGet {
-		h.SpotifyRedirect(w, r)
-		return
-	}
-
-	authCode, err := h.ParseRequest(w, r)
-	if err != nil {
-		_, _ = w.Write([]byte(err.Error()))
-		return
-	}
-
-	token, err := h.Spotify.CreateAuthCodeToken(*authCode)
-	if err != nil {
-		h.UnprocessableResponse(w, err)
-		return
-	}
-
-	spotifyUser, err := h.Spotify.GetUser(token.AccessToken)
-	if err != nil {
-		h.UnprocessableResponse(w, err)
-		return
-	}
-
-	user, err := h.UpsertSpotifyUser(spotifyUser, token, r.Context())
-	if err != nil {
-		h.UnprocessableResponse(w, err)
-		return
-	}
-
-	err = h.SetLoginCookie(w, user)
-	if err != nil {
-		h.Logger.Println("error on jwt creation", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	h.Logger.Println("successful login for user", user.ID)
-}
-
+// Uncomment to re-enable spotify login -- also uncomment the refreshToken piece of code in mutation/token.go
+//
+//	func (h *Handler) LoginAuthCode(w http.ResponseWriter, r *http.Request) {
+//		if h.Config.Env == "DEV" {
+//			w.Header().Set("Access-Control-Allow-Credentials", "true")
+//			w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+//		}
+//
+//		if r.Method == http.MethodGet {
+//			h.SpotifyRedirect(w, r)
+//			return
+//		}
+//
+//		authCode, err := h.ParseRequest(w, r)
+//		if err != nil {
+//			_, _ = w.Write([]byte(err.Error()))
+//			return
+//		}
+//
+//		token, err := h.Spotify.CreateAuthCodeToken(*authCode)
+//		if err != nil {
+//			h.UnprocessableResponse(w, err)
+//			return
+//		}
+//
+//		spotifyUser, err := h.Spotify.GetUser(token.AccessToken)
+//		if err != nil {
+//			h.UnprocessableResponse(w, err)
+//			return
+//		}
+//
+//		user, err := h.UpsertSpotifyUser(spotifyUser, token, r.Context())
+//		if err != nil {
+//			h.UnprocessableResponse(w, err)
+//			return
+//		}
+//
+//		err = h.SetLoginCookie(w, user)
+//		if err != nil {
+//			h.Logger.Println("error on jwt creation", err)
+//			w.WriteHeader(http.StatusInternalServerError)
+//			return
+//		}
+//
+//		h.Logger.Println("successful login for user", user.ID)
+//	}
 func (h *Handler) ParseRequest(w http.ResponseWriter, r *http.Request) (*string, error) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)

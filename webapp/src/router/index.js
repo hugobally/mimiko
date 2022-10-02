@@ -37,7 +37,7 @@ const routes = [
         })
         await store.dispatch('auth/whoami')
       } catch (error) {
-        store.dispatch('pushFlashQueue', {
+        store.dispatch('ui/pushFlashQueue', {
           content: 'Login failed',
           type: 'error',
         })
@@ -51,18 +51,17 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const pathBeforeLogin = localStorage.getItem('path_before_login')
 
-      console.log('coucou')
-      // try {
+      try {
         await axios.post(process.env.VUE_APP_BACKEND_URL + '/login_sample_session', crypto.randomUUID(), {
           withCredentials: true,
         })
         await store.dispatch('auth/whoami')
-      // } catch (error) {
-      //   await store.dispatch('pushFlashQueue', {
-      //     content: 'Login failed',
-      //     type: 'error',
-      //   })
-      // }
+      } catch (error) {
+        await store.dispatch('ui/pushFlashQueue', {
+          content: 'Login failed',
+          type: 'error',
+        })
+      }
 
       next(pathBeforeLogin || '/')
     }
@@ -96,7 +95,8 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!store.state.auth.user.logged && to.path !== '/welcome') {
-      next('/welcome')
+      localStorage.setItem('path_before_login', to.path)
+      next('/login_sample_session')
     } else {
       next()
     }

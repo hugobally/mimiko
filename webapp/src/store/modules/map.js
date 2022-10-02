@@ -21,7 +21,7 @@ function initialState() {
     load: 0,
     freshCreated: false,
 
-    readOnly: true,
+    readOnly: false,
     editMode: false,
 
     knots: {},
@@ -115,6 +115,7 @@ export default {
 
       resetMap({ dispatch, commit }) {
         commit('player/RESET_PLAYER', null, { root: true })
+        commit('ui/RESET_MAP_UI', null, { root: true })
         dispatch('force/resetForce', null, { root: true })
         commit('MAP_RESET')
       },

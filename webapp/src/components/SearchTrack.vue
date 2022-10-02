@@ -84,8 +84,8 @@ export default {
         const tracks = await searchForTrack(value)
 
         if (tracks) this.flagship = tracks[0]
-        this.title = replaceSpecial(this.flagship.artist)
-        this.createMap(this.title)
+        this.title = replaceSpecial(`${this.flagship.artist} - ${this.flagship.title}`)
+        await this.createMap(this.title)
       } catch (error) {
         // TODO
       } finally {
@@ -108,7 +108,7 @@ export default {
           query: this.editMode ? { edit: true } : {},
         })
       } catch (error) {
-        this.$store.dispatch('pushFlashQueue', {
+        this.$store.dispatch('ui/pushFlashQueue', {
           content: 'Error when trying to create a new map, please retry.',
           type: 'error',
         })
@@ -135,7 +135,7 @@ function validateMapTitle(title) {
 }
 
 function replaceSpecial(str) {
-  return str.replace(/[\W]+/g, ' ').substring(0, 79)
+  return str.replace(/^\W-+/g, '').substring(0, 79)
 }
 </script>
 

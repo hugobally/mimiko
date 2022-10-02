@@ -57,7 +57,7 @@ export default {
         this.$store.commit('auth/SET_USERNAME', username)
         this.renameSuccess = true
       } catch (error) {
-        this.$store.dispatch('pushFlashQueue', {
+        this.$store.dispatch('ui/pushFlashQueue', {
           content: 'Your username could not be updated',
           type: 'error',
         })

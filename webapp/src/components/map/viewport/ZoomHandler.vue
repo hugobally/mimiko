@@ -57,14 +57,14 @@ export default {
       if (queue.length === 0) return
 
       const diff = queue[0]
-      this.$store.commit('SHIFT_ZOOM_QUEUE')
+      this.$store.commit('ui/SHIFT_ZOOM_QUEUE')
       this.manualZoom(diff, 300)
     },
   },
   methods: {
     async transformCallback() {
       this.transform = d3event.transform
-      this.$store.commit('SET_ZOOM_LEVEL', this.transform.k)
+      this.$store.commit('ui/SET_ZOOM_LEVEL', this.transform.k)
       const hovered = this.$store.state.map.hovered
       this.$store.commit('map/SET_HOVERED', null)
       this.$store.commit('map/SET_HOVERED', hovered)
