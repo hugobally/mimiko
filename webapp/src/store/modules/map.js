@@ -5,6 +5,7 @@ import processMap from '@/store/modules/map/processMap'
 import createKnots from '@/store/modules/map/createKnots'
 import deleteKnots from '@/store/modules/map/deleteKnots'
 import mutations from '@/store/modules/map/mutations'
+import { debounce } from '@/helpers'
 
 function initialState() {
   return {
@@ -19,7 +20,6 @@ function initialState() {
     },
 
     load: 0,
-    freshCreated: false,
 
     readOnly: false,
     editMode: false,
@@ -112,6 +112,10 @@ export default {
         await new Promise(r => setTimeout(r, 100))
         commit('SET_FOCUSED', target)
       },
+
+      knotHoverEvent: debounce(({ commit }, knotIdOrNull) => {
+        commit('SET_HOVERED', knotIdOrNull)
+      }, 50),
 
       resetMap({ dispatch, commit }) {
         commit('player/RESET_PLAYER', null, { root: true })

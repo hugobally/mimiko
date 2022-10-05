@@ -4,10 +4,9 @@
       :transform="transformStr"
   >
     <circle
-        class="animated-circle"
-        :class="{ 'animated-paused': paused }"
+        class="animated-circle animated-paused"
         fill="none"
-        stroke="#121212"
+        :stroke="$store.state.map.meta.color"
         stroke-width="2"
         :r="radius / 1.95"
     >
@@ -26,18 +25,11 @@ export default {
   },
   computed: {
     ...mapState('map', ['knots', 'hovered']),
-    ...mapState('player', ['status', 'playedKnotId']),
     ...mapState('ui', ['selectedKnotId']),
-    playing() {
-      return this.status === 'PLAYING'
-    },
-    paused() {
-      return this.status === 'PAUSED'
-    },
     knot() {
-      if (!this.playedKnotId) return null
+      if (!this.selectedKnotId) return null
 
-      return this.knots[this.playedKnotId]
+      return this.knots[this.selectedKnotId]
     },
     transformStr() {
       if (!this.knot) return
@@ -58,23 +50,19 @@ export default {
     transform: scale(2)
   }
 
-  83% {
-    transform: scale(2);
-  }
-
-  85% {
+  2% {
     transform: scale(2.1);
   }
 
-  87% {
+  4% {
     transform: scale(2);
   }
 
-  89% {
+  8% {
     transform: scale(1.9);
   }
 
-  91% {
+  10% {
     transform: scale(2);
   }
 

@@ -25,7 +25,7 @@
         class="animated-circle animated-circle-3"
         :class="{ 'hidden': paused, 'animated-playing': playing }"
         fill="none"
-        stroke="#121212"
+        :stroke="$store.state.map.meta.color"
         stroke-width="2"
         :r="radius / 1.95"
     >

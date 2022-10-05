@@ -63,7 +63,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['knot']),
+    ...mapState('player', ['playedKnotId']),
     ...mapState('map', ['knots']),
     formattedTitle() {
       if (!this.track) return ''

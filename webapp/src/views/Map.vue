@@ -1,8 +1,8 @@
 <template>
   <div class="map-container">
-    <Viewport :loaded="loaded" />
-    <ZoomBar />
-    <MapTitle />
+    <Viewport :loaded="loaded"/>
+    <ZoomBar/>
+    <MapTitle/>
     <span v-if="loading" class="loading">LOADING...</span>
   </div>
 </template>
@@ -12,7 +12,7 @@ import Viewport from '@/components/map/Viewport'
 import ZoomBar from '@/components/map/ui/ZoomBar'
 import MapTitle from '@/components/map/MapTitle'
 
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -43,11 +43,14 @@ export default {
     try {
       this.$store.commit('map/SET_EDIT_MODE', this.query.edit ? true : false)
       await this.$store.dispatch('map/fetchMap', this.id)
-      this.$store.dispatch('force/initForceLayout', null, { root: true })
+
+      await this.$store.dispatch('force/initForceLayout', null, {root: true})
       await this.$store.dispatch('map/populate')
 
       localStorage.setItem('last_visited', this.id)
-      if (Object.keys(this.knots).length === 1) this.freshMapInit()
+
+      // dirty sleep in order to let the force simulation tick, so that the zoom level is correct
+      await new Promise(r => setTimeout(r, 200))
 
       this.$store.commit('map/MAP_SET_LOAD', 100)
     } catch (error) {
@@ -68,14 +71,9 @@ export default {
         type: 'error',
       })
     },
-    async freshMapInit() {
-      this.$store.commit('map/MAP_SET_FRESH_CREATED', true)
-      await new Promise(r => setTimeout(r, 500))
-      this.$store.commit('map/MAP_SET_FRESH_CREATED', false)
-    },
   },
   watch: {
-    query: function() {
+    query: function () {
       this.$store.commit('map/SET_EDIT_MODE', this.query.edit ? true : false)
     },
   },

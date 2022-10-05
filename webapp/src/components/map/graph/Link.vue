@@ -2,38 +2,47 @@
   <g :opacity="highlighted ? 1 : 0.2">
     <transition name="link-path">
       <path
-        v-if="path.steps && path.steps.length > 0"
-        :key="path.steps.length"
-        :d="buildPath()"
-        :style="color"
+          v-if="path.steps && path.steps.length > 0"
+          :key="path.steps.length"
+          :d="buildPath()"
+          :style="style"
       />
     </transition>
     <path
-      v-if="path.unvisitedSteps && path.unvisitedSteps.length > 0"
-      :d="buildPathUnvisited()"
-      :style="color"
-      stroke-dasharray="10"
+        v-if="path.unvisitedSteps && path.unvisitedSteps.length > 0"
+        :d="buildPathUnvisited()"
+        :style="style"
+        stroke-dasharray="6"
     />
   </g>
 </template>
 
 <script>
-import { line as d3Line, curveNatural } from 'd3-shape'
-import { mapState } from 'vuex'
+import {line as d3Line, curveNatural} from 'd3-shape'
+import {mapState} from 'vuex'
 
 export default {
   props: ['link', 'id'],
+  data() {
+    return {
+      path: {steps: [], unvisitedSteps: []},
+    }
+  },
+  mounted() {
+    setTimeout(() => this.generatePath(), 100)
+  },
   computed: {
     ...mapState('map', ['knots', 'links', 'focused']),
     lineGenerator() {
       return d3Line()
-        .curve(curveNatural)
-        .x(id => this.knots[id].x)
-        .y(id => this.knots[id].y)
+          .curve(curveNatural)
+          .x(id => this.knots[id].x)
+          .y(id => this.knots[id].y)
     },
-    color() {
+    style() {
       return {
         stroke: this.$store.state.map.meta.color,
+        strokeWidth: 4,
       }
     },
     dashed() {
@@ -41,22 +50,35 @@ export default {
         strokeDasharray: this.path.hasUnvisited ? 10 : 0,
       }
     },
-    path() {
+    highlighted() {
+      const knot = this.$store.state.player.playedKnotId || this.$store.state.ui.selectedKnotId
+
+      const onVisited = this.path.steps && this.path.steps.includes(knot)
+      const onUnvisited =
+          this.path.unvisitedSteps && this.path.unvisitedSteps.includes(knot)
+
+      return knot && (onVisited || onUnvisited)
+    },
+  },
+  methods: {
+    buildPath() {
+      return this.lineGenerator(this.path.steps)
+    },
+    buildPathUnvisited() {
+      return this.lineGenerator(this.path.unvisitedSteps)
+    },
+    generatePath() {
       const target = this.knots[this.link.target]
       if (target.children.length !== 0) return {}
 
       const steps = []
       const unvisitedSteps = []
+
       let endUnvisited = false
-
-      let color = null
-
       let id = this.link.target
 
       while (id) {
         const obj = this.knots[id]
-
-        if (!color && obj.color) color = obj.color
 
         if (!endUnvisited && !obj.visited) {
           unvisitedSteps.push(id)
@@ -70,30 +92,18 @@ export default {
 
         id = obj.parent
       }
-      return {
+
+      this.path = {
         steps: steps.reverse(),
         unvisitedSteps: unvisitedSteps ? unvisitedSteps.reverse() : null,
-        color: color,
       }
-    },
-    highlighted() {
-      const knot = this.$store.state.player.playedKnotId
-
-      const onVisited = this.path.steps && this.path.steps.includes(knot)
-      const onUnvisited =
-        this.path.unvisitedSteps && this.path.unvisitedSteps.includes(knot)
-
-      return knot && (onVisited || onUnvisited)
-    },
+    }
   },
-  methods: {
-    buildPath() {
-      return this.lineGenerator(this.path.steps)
+  watch: {
+    knots: function () {
+      this.generatePath()
     },
-    buildPathUnvisited() {
-      return this.lineGenerator(this.path.unvisitedSteps)
-    },
-  },
+  }
 }
 </script>
 

@@ -17,7 +17,7 @@ import Nav from '@/components/Nav'
 import Panel from '@/components/Panel'
 import Explorer from '@/components/Explorer'
 import Creator from '@/components/Creator'
-import Add from '@/components/map/Add'
+// import Add from '@/components/map/Add'
 import MapSettings from '@/components/map/MapSettings'
 import Settings from '@/components/Settings'
 import FlashMessage from '@/components/utils/FlashMessage'
@@ -31,7 +31,7 @@ export default {
     Settings,
     explore: Explorer,
     new: Creator,
-    add: Add,
+    // add: Add,
     settings: Settings,
     'map-settings': MapSettings,
   },
@@ -167,4 +167,17 @@ img,
   height: 100%;
   //z-index: 100;
 }
+
+button {
+  border-radius: 10px;
+  background: $bg-secondary;
+  color: $text-highlight;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: 'Abel', sans-serif;
+  margin-left: 20px;
+}
+
 </style>

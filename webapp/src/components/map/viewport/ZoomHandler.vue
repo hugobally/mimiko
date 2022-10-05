@@ -10,7 +10,7 @@ import { select as d3select, event as d3event } from 'd3-selection'
 import { mapState } from 'vuex'
 
 export default {
-  props: ['viewport', 'graph'],
+  props: ['viewportRef', 'graphRef'],
   data() {
     return {
       transform: { x: 0, y: 0, k: 1 },
@@ -31,15 +31,15 @@ export default {
     },
   },
   watch: {
-    viewport: async function() {
-      if (this.viewport === undefined || this.d3Viewport !== null) return
+    viewportRef: async function() {
+      if (this.viewportRef === undefined || this.d3Viewport !== null) return
 
-      this.d3Viewport = d3select(this.viewport)
+      this.d3Viewport = d3select(this.viewportRef)
       this.d3ZoomObj = d3zoom
         .zoom()
         .scaleExtent([0.1, 20])
         .on('zoom', this.transformCallback)
-      this.d3Viewport.call(this.d3ZoomObj)
+      this.d3Viewport.call(this.d3ZoomObj).on("dblclick.zoom", null)
     },
     load: function(loadValue) {
       if (loadValue === 100) {
@@ -70,12 +70,12 @@ export default {
       this.$store.commit('map/SET_HOVERED', hovered)
     },
     async fit(transitionTime = null) {
-      const target = this.graph.$refs.graphGroup.getBBox()
+      const target = this.graphRef.getBBox()
 
-      const padding = this.freshCreated ? 0.5 : 0.8
+      const padding = Object.keys(this.knots).length === 1 ? 0.22 : 0.8
 
-      const width = this.viewport.clientWidth
-      const height = this.viewport.clientHeight
+      const width = this.viewportRef.clientWidth
+      const height = this.viewportRef.clientHeight
 
       const tgtWidth = target.width || 40
       const tgtHeight = target.height || 40

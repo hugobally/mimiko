@@ -1,10 +1,15 @@
+<!--
+ radius divider value if we want space between the knot and the hover circle : 1.5
+-->
+
 <template>
   <g class="hover-container" :transform="transformStr">
     <circle
-      stroke="#121212"
-      stroke-width="4"
+        class="animated-hover-circle"
+      :stroke="$store.state.map.meta.color"
+      stroke-width="8"
       fill-opacity="0"
-      :r="radius / 1.5"
+      :r="radius / 1.8"
     />
   </g>
 </template>
@@ -22,6 +27,7 @@ export default {
     ...mapState('map', ['knots', 'hovered', 'focused']),
     knotToAttachTo() {
       if (this.hovered) return this.knots[this.hovered]
+
       return null
     },
     transformStr() {
@@ -36,4 +42,20 @@ export default {
 .hover-container {
   pointer-events: none;
 }
+
+@keyframes circle-scale-animation {
+  0% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated-hover-circle {
+  animation-name: circle-scale-animation;
+  animation-duration: 200ms;
+}
+
 </style>

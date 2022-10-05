@@ -142,14 +142,6 @@ export default {
 }
 
 .side-button {
-  border-radius: 10px;
-  background: $bg-secondary;
-  color: $text-highlight;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 20px;
-  font-family: 'Abel', sans-serif;
   margin-left: 20px;
 }
 

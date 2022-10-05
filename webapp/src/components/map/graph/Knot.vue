@@ -2,9 +2,9 @@
   <g
     :id="id"
     :transform="transformStr"
-    @click="playThis"
-    @mouseover="setHovered(true)"
-    @mouseleave="setHovered(false)"
+    @click="selectThis() && playThis()"
+    @mouseover="onMouseOver()"
+    @mouseleave="onMouseLeave()"
   >
     <circle :r="radius / 1.9" :fill="color"> </circle>
     <image
@@ -51,8 +51,11 @@ export default {
     selectThis() {
       this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.id)
     },
-    setHovered(isHovered) {
-      this.$store.commit('map/SET_HOVERED', isHovered ? this.id : null)
+    onMouseOver(e) {
+      this.$store.dispatch('map/knotHoverEvent', this.id)
+    },
+    onMouseLeave() {
+      this.$store.dispatch('map/knotHoverEvent', null)
     },
   },
 }

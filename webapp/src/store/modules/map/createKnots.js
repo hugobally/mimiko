@@ -1,6 +1,16 @@
 import * as gql from '@/api/graphql'
 import * as spotify from '@/api/spotify'
 
+const rotateVector = (vec, ang) => {
+  ang = -ang * (Math.PI / 180)
+  const cos = Math.cos(ang)
+  const sin = Math.sin(ang)
+  return {
+    x: Math.round(10000 * (vec.x * cos - vec.y * sin)) / 10000,
+    y: Math.round(10000 * (vec.x * sin + vec.y * cos)) / 10000,
+  }
+}
+
 export default async function(
   { commit, state, rootState, dispatch },
   { sourceId, newTracks, number, visited },

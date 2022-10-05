@@ -64,8 +64,6 @@ export default {
       const token = getters.token('spotify')
       if (!token) throw new Error('No token found')
 
-      console.log(token.expiry)
-
       if (token.expiry.getTime() > Date.now() + 5 * 60000) return
 
       if (state.refreshAppTokenLock) return

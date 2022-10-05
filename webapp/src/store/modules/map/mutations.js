@@ -15,9 +15,6 @@ export default {
   MAP_SET_LOAD(state, val) {
     state.load = val
   },
-  MAP_SET_FRESH_CREATED(state, val) {
-    state.freshCreated = val
-  },
   MAP_ADD_KNOTS(state, knots) {
     for (const knot of knots) {
       Vue.set(state.knots, knot.id, {
@@ -27,7 +24,7 @@ export default {
         level: knot.level,
         parent: knot.parent || null,
         children: knot.children || [],
-        visited: knot.visited || false,
+        visited: knot.visited || true,
       })
     }
   },

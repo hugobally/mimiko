@@ -23,7 +23,7 @@
       <div class="add-button-wrapper" @click="add">
         <img
           class="add-button"
-          src="@/assets/svg/add-icon.svg"
+          src="@/assets/svg/add-icon-alternate.svg"
           alt="add-track-icon"
         />
       </div>
@@ -53,7 +53,7 @@
       <PlayBar />
     </div>
     <div class="playback-group center" v-else>
-      <audio controls autoplay :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
+      <audio controls :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
     </div>
   </div>
 </template>
@@ -103,8 +103,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('player', ['sdk', 'track', 'knot', 'status', 'likedPlaylist']),
+    ...mapState('player', ['sdk', 'track', 'playedKnotId', 'status', 'likedPlaylist']),
     ...mapState('map', ['readOnly', 'knots']),
+    ...mapState('ui', ['selectedKnotId']),
     previewMode() {
       // Until spotify login is reimplemented we're always in preview mode
       return true
@@ -117,15 +118,10 @@ export default {
       const artist = this.hardWrapText(this.track.artist)
       return `${artist} - ${title}`
     },
-    likeCount() {
-      if (!this.knot) return 0
-
-      return this.$store.state.map.knots[this.knot].children.length
-    },
     isSourceKnot() {
-      if (!this.knot) return false
+      if (!this.selectedKnotId) return false
 
-      return this.$store.state.map.knots[this.knot].level === 0
+      return this.$store.state.map.knots[this.selectedKnotId].level === 0
     },
     editMode() {
       return this.$store.state.map.editMode
@@ -220,23 +216,20 @@ export default {
         if (!this.readOnly) {
           const numNewKnots = 1
           await this.createKnots({
-            sourceId: this.knot,
+            sourceId: this.selectedKnotId,
             number: numNewKnots,
+            visited: false,
           })
-          if (Object.values(this.$store.state.map.knots).length <= 5) {
-            await new Promise(r => setTimeout(r, 200))
-            // this.$store.dispatch('map/focus', 'ALL')
-          }
         }
       } catch (error) {
         // TODO
       }
     },
     async dislike() {
-      if (!this.knot || this.isSourceKnot) return
+      if (!this.selectedKnotId || this.isSourceKnot) return
 
       this.blockDislike = true
-      this.$store.dispatch('map/deleteKnots', this.knot)
+      this.$store.dispatch('map/deleteKnots', this.selectedKnotId)
       this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
       this.blockDislike = false
@@ -299,7 +292,7 @@ export default {
 .add-button,
 .playback-button,
 .dislike-button {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .like-button:hover {
@@ -408,27 +401,37 @@ export default {
   background-color: $bg-primary;
 }
 
-.button-wrapper:hover {
+.button-wrapper {
+  transition: transform 100ms;
+}
+
+.button-wrapper:hover,
+.add-button-wrapper:hover {
   transform: scale(1.2);
+}
+
+.add-button-wrapper:hover:active {
+  transform: scale(1);
 }
 
 .add-button-wrapper {
   position: relative;
-  //flex: 2;
   width: 80px;
-  height: 125%;
+  height: 80px;
   bottom: 20%;
-  background-color: white;
-  border-radius: 40px;
-  border: solid 3px #3C3C3C;
+  background-color: $bg-secondary;
+  border-radius: 50%;
+  border: solid 3px $bg-primary;
+  transition: transform 100ms;
 }
 
-.add-button-wrapper:hover {
-  transform: translateY(-3px);
-}
-
-.add-button-wrapper:hover:active {
-  transform: translateY(3px);
+.add-button-wrapper:before {
+  content: " ";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 5px solid $bg-secondary;
 }
 
 .playback-button {
