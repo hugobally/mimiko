@@ -6,8 +6,6 @@ function initialState() {
     userMaps: [],
     userMapsLock: false,
 
-    localCreatedMaps: [],
-
     publicMaps: [],
     publicMapsLock: false,
   }
@@ -25,15 +23,9 @@ export default {
     },
     USER_MAPS_REMOVE(state, id) {
       state.userMaps = state.userMaps.filter(map => map.id !== id)
-      state.localCreatedMaps = state.localCreatedMaps.filter(
-        map => map.id !== id,
-      )
     },
     USER_MAPS_UPDATE(state, { id, newVal }) {
       let map = state.userMaps.find(map => map.id === id)
-      if (!map) {
-        map = state.localCreatedMaps.find(map => map.id === id)
-      }
 
       if (map) {
         map = newVal
@@ -53,16 +45,13 @@ export default {
   },
   getters: {
     userMaps: state => {
-      return state.userMaps.concat(state.localCreatedMaps).reverse()
+      return state.userMaps.reverse()
     },
     publicMaps: state => {
-      return state.localCreatedMaps
-        .filter(map => map.public)
-        .concat(state.publicMaps)
+      return state.publicMaps
     },
   },
   actions: {
-    // TODO For beta only -- implement infinite scroll/pages/..
     async fetchAllUserMaps({ state, rootState, commit }) {
       if (state.userMapsLock) return
 
@@ -78,7 +67,6 @@ export default {
         commit('SET_USER_MAPS_LOCK', false)
       }
     },
-    // TODO For beta only -- implement infinite scroll/pages/..
     async fetchAllPublicMaps({ state, commit }) {
       if (state.publicMapsLock) return
 

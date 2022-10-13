@@ -13,25 +13,6 @@
         />
       </div>
       <!-- <GenreGrid class="genre-grid-layout" /> -->
-      <!--      <div class="discoverable-container noselect hidden">-->
-      <!--        <span class="discoverable-label">Map Discoverability</span>-->
-      <!--        <div class="discoverable-select-group">-->
-      <!--          <div-->
-      <!--            class="discoverable-select"-->
-      <!--            @click="isPublic = true"-->
-      <!--            :class="{ selected: isPublic }"-->
-      <!--          >-->
-      <!--            Public-->
-      <!--          </div>-->
-      <!--          <div-->
-      <!--            class="discoverable-select"-->
-      <!--            @click="isPublic = false"-->
-      <!--            :class="{ selected: !isPublic }"-->
-      <!--          >-->
-      <!--            Secret-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
 </template>
 
 <script>
@@ -140,30 +121,5 @@ function replaceSpecial(str) {
 </script>
 
 <style lang="scss" scoped>
-.discoverable-container {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.discoverable-select-group {
-  display: flex;
-  color: $text-primary;
-}
-
-.discoverable-select {
-  padding: 5px;
-  margin: 0px 3px;
-  cursor: pointer;
-}
-
-.selected {
-  border: solid 1px $bg-secondary;
-}
-
-.genre-grid-layout {
-  width: 100%;
-}
 
 </style>

@@ -2,7 +2,12 @@
   <g
     :id="id"
     :transform="transformStr"
-    @click="selectThis() && playThis()"
+    @click="
+      () => {
+        selectThis()
+        // playThis()
+      }
+    "
     @mouseover="onMouseOver()"
     @mouseleave="onMouseLeave()"
   >

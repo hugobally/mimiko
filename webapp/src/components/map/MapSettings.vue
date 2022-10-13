@@ -10,25 +10,25 @@
       :busy="busy"
       :success="renameSuccess"
     />
-    <!-- <div class="editmode-container noselect">
-      <span class="editmode-label">Edit Mode</span>
-      <div class="editmode-select-group">
+    <div class="discoverable-container noselect">
+      <span class="discoverable-label">Map Discoverability</span>
+      <div class="discoverable-select-group">
         <div
-          class="editmode-select"
-          @click="editMode = true"
-          :class="{ selected: editMode }"
+          class="discoverable-select"
+          @click="setMapPublicStatus(true)"
+          :class="{ selected: meta.isPublic }"
         >
-          ON
+          Public
         </div>
         <div
-          class="editmode-select"
-          @click="editMode = false"
-          :class="{ selected: !editMode }"
+          class="discoverable-select"
+          @click="setMapPublicStatus(false)"
+          :class="{ selected: !meta.isPublic }"
         >
-          OFF
+          Not Public
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -48,14 +48,10 @@ export default {
       validTitle: false,
       renameRetry: false,
       renameSuccess: false,
-      editMode: false,
     }
   },
   computed: {
     ...mapState('map', ['id', 'meta']),
-  },
-  mounted() {
-    this.editMode = this.$store.state.map.editMode
   },
   methods: {
     async renameMap(title) {
@@ -97,15 +93,10 @@ export default {
         this.busy = false
       }
     },
-  },
-  watch: {
-    editMode: function(editMode) {
-      const newQuery = editMode ? { edit: true } : {}
-      this.$router.replace({
-        path: this.$route.path,
-        query: newQuery,
-        hash: this.$route.hash,
-      })
+    async setMapPublicStatus(isPublic) {
+      const map = await gqlUpdateMap(this.id, { public: isPublic })
+      if (!map) throw new Error()
+      this.$store.commit('map/MAP_SET_META', map)
     },
   },
 }
@@ -155,6 +146,25 @@ function validateMapTitle(title) {
 .selected {
   opacity: 1;
   background-color: $bg-secondary;
+  color: white;
   border: solid 1px $bg-primary;
+}
+
+.discoverable-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.discoverable-select-group {
+  display: flex;
+  color: $text-primary;
+}
+
+.discoverable-select {
+  padding: 5px;
+  margin: 0px 3px;
+  cursor: pointer;
 }
 </style>

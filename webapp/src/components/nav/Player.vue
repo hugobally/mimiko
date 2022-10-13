@@ -1,65 +1,65 @@
 <template>
   <div class="player-container">
-<!--    <div class="track-title-container noselect" @click="focus(knot)">-->
-<!--      <div class="track-title-text">-->
-<!--        {{ trackTitleStr }}-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="track-title-container noselect" @click="focus(knot)">-->
+    <!--      <div class="track-title-text">-->
+    <!--        {{ trackTitleStr }}-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div v-if="!readOnly" class="action-button-group">
-<!--      <div class="button-wrapper like-button-group" @click="like">-->
-<!--        <img-->
-<!--          class="like-button-icon"-->
-<!--          v-if="isLiked"-->
-<!--          src="@/assets/svg/heart-icon-full.svg"-->
-<!--          alt="full-liked-icon"-->
-<!--        />-->
-<!--        <img-->
-<!--          class="like-button-icon"-->
-<!--          v-else-->
-<!--          src="@/assets/svg/heart-icon-empty.svg"-->
-<!--          alt="no-liked-icon"-->
-<!--        />-->
-<!--      </div>-->
+      <!--      <div class="button-wrapper like-button-group" @click="like">-->
+      <!--        <img-->
+      <!--          class="like-button-icon"-->
+      <!--          v-if="isLiked"-->
+      <!--          src="@/assets/svg/heart-icon-full.svg"-->
+      <!--          alt="full-liked-icon"-->
+      <!--        />-->
+      <!--        <img-->
+      <!--          class="like-button-icon"-->
+      <!--          v-else-->
+      <!--          src="@/assets/svg/heart-icon-empty.svg"-->
+      <!--          alt="no-liked-icon"-->
+      <!--        />-->
+      <!--      </div>-->
       <div class="add-button-wrapper" @click="add">
         <img
-          class="add-button"
-          src="@/assets/svg/add-icon-alternate.svg"
-          alt="add-track-icon"
+            class="add-button"
+            src="@/assets/svg/add-icon-alternate.svg"
+            alt="add-track-icon"
         />
       </div>
       <div class="button-wrapper" @click="dislike">
         <img
-          class="dislike-button"
-          src="@/assets/svg/cross-icon.svg"
-          alt="remove-track-icon"
+            class="dislike-button"
+            src="@/assets/svg/cross-icon.svg"
+            alt="remove-track-icon"
         />
       </div>
     </div>
     <div class="playback-group" v-if="!previewMode">
       <div class="button-wrapper" @click="play">
         <img
-          class="playback-button"
-          v-if="status !== 'PLAYING'"
-          src="@/assets/svg/play-icon.svg"
-          alt="play-icon"
+            class="playback-button"
+            v-if="status !== 'PLAYING'"
+            src="@/assets/svg/play-icon.svg"
+            alt="play-icon"
         />
         <img
-          class="playback-button"
-          v-else
-          src="@/assets/svg/pause-icon.svg"
-          alt="pause-icon"
+            class="playback-button"
+            v-else
+            src="@/assets/svg/pause-icon.svg"
+            alt="pause-icon"
         />
       </div>
-      <PlayBar />
+      <PlayBar/>
     </div>
     <div class="playback-group center" v-else>
-      <audio controls :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
+      <audio controls autoplay :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import PlayBar from '@/components/nav/player/PlayBar'
 
 export default {
@@ -160,12 +160,12 @@ export default {
       try {
         if (this.isLiked) {
           await this.$store.dispatch(
-            'player/removeFromLikedPlaylist',
-            this.track.id,
+              'player/removeFromLikedPlaylist',
+              this.track.id,
           )
           this.$store.dispatch('ui/pushFlashQueue', {
             content:
-              "Track removed from the Spotify playlist 'Liked from Mimiko'",
+                "Track removed from the Spotify playlist 'Liked from Mimiko'",
             type: 'info',
             time: 4000,
           })
@@ -198,6 +198,11 @@ export default {
       })
     },
     async add() {
+      if (this.$route.path.includes('home')) {
+        this.$router.push({ path: this.$route.path, hash: '#new' })
+        return
+      }
+
       this.debounceLike.counter += 1
 
       if (!this.debounceLike.callbackId) {
@@ -239,7 +244,7 @@ export default {
     },
   },
   watch: {
-    track: function() {
+    track: function () {
       clearTimeout(this.debounceLike.callbackId)
       this.debounceLike.counter = 0
 
@@ -248,7 +253,7 @@ export default {
         if (this.track && !this.track.previewURL) {
           this.$store.dispatch('ui/pushFlashQueue', {
             content:
-              'No audio preview available for this track on Spotify Free.',
+                'No audio preview available for this track on Spotify Free.',
             type: 'error',
             time: 3000,
           })

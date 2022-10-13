@@ -57,6 +57,7 @@ export async function map(id) {
       map(mapId: $mapId) {
         id
         title
+        public
         author {
           id
           username

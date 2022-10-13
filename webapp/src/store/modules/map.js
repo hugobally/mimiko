@@ -17,6 +17,7 @@ function initialState() {
         username: '',
       },
       color: '#222222',
+      isPublic: false,
     },
 
     load: 0,

@@ -8,6 +8,7 @@ export default {
   MAP_SET_META(state, map) {
     state.meta.author = map.author
     state.meta.title = map.title
+    state.meta.isPublic = map.public
   },
   MAP_SET_READONLY(state, value) {
     state.readOnly = value

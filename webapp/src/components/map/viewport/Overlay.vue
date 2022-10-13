@@ -5,12 +5,11 @@
     <span class="track-title" :style="{ ...{}, ...reactiveFontSize}">
       {{ (hoveredKnot && hoveredKnot.track.artist) + ' - ' + (hoveredKnot && hoveredKnot.track.title) }}
     </span>
-      <button @click="$store.commit('map/KNOT_SET_VISITED', hovered)">visit</button>
     </div>
-    <div :style="{ ...leftAnchor}">
-<!--      <button class="play-this-button" :style="{ ...reactiveFontSize }">Play</button>-->
+        <div :style="{ ...leftAnchor}">
+          <button class="play-this-button" :style="{ ...reactiveFontSize }">Play</button>
 
-    </div>
+        </div>
     <!--    <div class="mouseover-backdrop"/>-->
   </div>
 </template>
@@ -112,7 +111,7 @@ export default {
   content: '';
   position: absolute;
   width: 110%;
-  height: 200%;
+  height: 110%;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
