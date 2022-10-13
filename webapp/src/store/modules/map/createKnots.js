@@ -51,6 +51,7 @@ export default async function(
       return
     }
   }
+
   // TODO Convoluted object -- Refactor
   const tracksInput = newTracks.reduce((acc, track) => {
     acc[track.id] = { track, x: newX, y: newY }

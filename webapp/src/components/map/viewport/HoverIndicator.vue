@@ -5,11 +5,13 @@
 <template>
   <g class="hover-container" :transform="transformStr">
     <circle
-        class="animated-hover-circle"
+      class="animated-hover-circle"
       :stroke="$store.state.map.meta.color"
       stroke-width="8"
       fill-opacity="0"
       :r="radius / 1.8"
+      @mouseover="onMouseOver()"
+      @mouseleave="onMouseLeave()"
     />
   </g>
 </template>
@@ -35,13 +37,18 @@ export default {
       return `translate(${x} ${y})`
     },
   },
+  methods: {
+    onMouseOver() {
+      this.$store.dispatch('map/knotHoverEvent', this.hovered)
+    },
+    onMouseLeave() {
+      this.$store.dispatch('map/knotHoverEvent', null)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.hover-container {
-  pointer-events: none;
-}
 
 @keyframes circle-scale-animation {
   0% {
@@ -57,5 +64,4 @@ export default {
   animation-name: circle-scale-animation;
   animation-duration: 200ms;
 }
-
 </style>

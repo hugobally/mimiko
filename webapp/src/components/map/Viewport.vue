@@ -10,7 +10,6 @@
     >
       <ZoomHandler id="zoomgroup" :viewportRef="$refs.viewport" :graphRef="$refs.graph">
         <PlayIndicator v-if="currentPlayerKnot" :key="`play-indicator-${currentPlayerKnot}`" />
-        <SelectIndicator v-if="currentSelectedKnot" :key="`select-indicator-${currentSelectedKnot}`" />
         <g ref="graph">
           <transition-group name="link-group" tag="g">
             <Link v-for="(link, key) in links" :key="key" :id="key" :link="link" />
@@ -20,6 +19,7 @@
             <Knot v-for="(knot, key) in knots" :key="key" :id="key" :knot="knot" />
           </transition-group>
         </g>
+        <SelectIndicator v-if="currentSelectedKnot" :key="`select-indicator-${currentSelectedKnot}`" />
       </ZoomHandler>
 
       <Filters radius="40"></Filters>

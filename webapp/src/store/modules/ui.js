@@ -10,6 +10,7 @@ function initialMapUI() {
   return {
     manualZoomQueue: [],
     zoomLevel: 1,
+    transform: { x: 0.0, y: 0.0 },
     selectedKnotId: null,
   }
 }
@@ -39,6 +40,9 @@ export default {
     },
     SET_ZOOM_LEVEL(state, newVal) {
       state.zoomLevel = newVal
+    },
+    SET_TRANSFORM(state, newVal) {
+      state.transform = newVal
     },
     SET_SELECTED_KNOT_ID(state, knotId) {
       state.selectedKnotId = knotId

@@ -47,12 +47,6 @@ export default {
     },
   },
   methods: {
-    playThis() {
-      this.$store.dispatch('player/playKnot', {
-        knot: this.id,
-        track: this.knot.track,
-      })
-    },
     selectThis() {
       this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.id)
     },

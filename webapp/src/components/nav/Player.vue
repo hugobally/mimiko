@@ -22,49 +22,54 @@
       <!--      </div>-->
       <div class="add-button-wrapper" @click="add">
         <img
-            class="add-button"
-            src="@/assets/svg/add-icon-alternate.svg"
-            alt="add-track-icon"
+          class="add-button"
+          src="@/assets/svg/add-icon-alternate.svg"
+          alt="add-track-icon"
         />
       </div>
       <div class="button-wrapper" @click="dislike">
         <img
-            class="dislike-button"
-            src="@/assets/svg/cross-icon.svg"
-            alt="remove-track-icon"
+          class="dislike-button"
+          src="@/assets/svg/cross-icon.svg"
+          alt="remove-track-icon"
         />
       </div>
     </div>
-    <div class="playback-group" v-if="!previewMode">
-      <div class="button-wrapper" @click="play">
-        <img
-            class="playback-button"
-            v-if="status !== 'PLAYING'"
-            src="@/assets/svg/play-icon.svg"
-            alt="play-icon"
-        />
-        <img
-            class="playback-button"
-            v-else
-            src="@/assets/svg/pause-icon.svg"
-            alt="pause-icon"
-        />
-      </div>
-      <PlayBar/>
-    </div>
-    <div class="playback-group center" v-else>
-      <audio controls autoplay :src="track && track.previewURL" ref="sampleSessionAudioControls"></audio>
+    <!--    TODO Only with Spotify Login -->
+    <!--    <div class="playback-group" v-if="!previewMode">-->
+    <!--      <div class="button-wrapper" @click="">-->
+    <!--        <img-->
+    <!--          class="playback-button"-->
+    <!--          v-if="status !== 'PLAYING'"-->
+    <!--          src="@/assets/svg/play-icon.svg"-->
+    <!--          alt="play-icon"-->
+    <!--        />-->
+    <!--        <img-->
+    <!--          class="playback-button"-->
+    <!--          v-else-->
+    <!--          src="@/assets/svg/pause-icon.svg"-->
+    <!--          alt="pause-icon"-->
+    <!--        />-->
+    <!--      </div>-->
+    <!--      <PlayBar />-->
+    <!--    </div>-->
+    <div class="playback-group center">
+      <audio
+        controls
+        :src="track && track.previewURL"
+        ref="sampleSessionAudioControls"
+      ></audio>
     </div>
   </div>
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import PlayBar from '@/components/nav/player/PlayBar'
+import { mapState, mapActions } from 'vuex'
+// import PlayBar from '@/components/nav/player/PlayBar'
 
 export default {
   components: {
-    PlayBar,
+    // PlayBar,
   },
   data() {
     return {
@@ -77,33 +82,52 @@ export default {
   },
   async mounted() {
     try {
-      if (this.$store.state.player.sdk === null) {
-        const sdkIsLoaded = this.$store.dispatch('player/loadSdk')
+      // TODO Only for Spotify login
+      // if (this.$store.state.player.sdk === null) {
+      // const sdkIsLoaded = this.$store.dispatch('player/loadSdk')
 
-        await sdkIsLoaded
-        if (this.$store.state.player.likedPlaylist.id === null) {
-          this.$store.dispatch('player/loadLikedPlaylist')
-        }
-      }
+      // await sdkIsLoaded
+      // if (this.$store.state.player.likedPlaylist.id === null) {
+      //   this.$store.dispatch('player/loadLikedPlaylist')
+      // }
+      // }
 
       window.addEventListener('keyup', e => {
-        if (e.code === 'Space' && this.$route.hash === '') this.play()
-        if (e.code === 'Equal' && this.$route.hash === '') this.add()
+        if (e.code === 'Space' && this.$route.hash === '')
+          this.playPauseToggle()
+        if (
+          this.$route.hash === '' &&
+          (e.code === 'Equal' || e.code === 'Enter')
+        )
+          this.add()
       })
 
       // For Sample Session mode
+      this.$store.commit(
+        'player/SET_AUDIO_ELEMENT_REF',
+        this.$refs.sampleSessionAudioControls,
+      )
       this.$refs.sampleSessionAudioControls.addEventListener('pause', () => {
         this.$store.commit('player/STATUS_PAUSED')
       })
       this.$refs.sampleSessionAudioControls.addEventListener('play', () => {
         this.$store.commit('player/STATUS_PLAYING')
       })
+      this.$refs.sampleSessionAudioControls.addEventListener('ended', async () => {
+        await this.$store.dispatch('player/bufferPlayNext')
+      })
     } catch (error) {
       // TODO
     }
   },
   computed: {
-    ...mapState('player', ['sdk', 'track', 'playedKnotId', 'status', 'likedPlaylist']),
+    ...mapState('player', [
+      'sdk',
+      'track',
+      'playedKnotId',
+      'status',
+      'likedPlaylist',
+    ]),
     ...mapState('map', ['readOnly', 'knots']),
     ...mapState('ui', ['selectedKnotId']),
     previewMode() {
@@ -133,7 +157,7 @@ export default {
     },
     hasTrack() {
       return Boolean(this.track)
-    }
+    },
   },
   methods: {
     ...mapActions('map', ['createKnots']),
@@ -143,16 +167,23 @@ export default {
         return text.substring(0, maxLength) + '..'
       } else return text
     },
-    play() {
+    playPauseToggle() {
       if (!this.track) return
 
-      if (this.status !== 'PLAYING') {
-        this.sdk.resume()
-        this.$store.commit('player/STATUS_PLAYING')
+      if (this.status === 'PLAYING') {
+        this.$store.dispatch('player/pausePlayback')
       } else {
-        this.sdk.pause()
-        this.$store.commit('player/STATUS_PAUSED')
+        this.$store.dispatch('player/resumePlayback')
       }
+
+      // TODO Only for Spotify login
+      // if (this.status !== 'PLAYING') {
+      //   this.sdk.resume()
+      //   this.$store.commit('player/STATUS_PLAYING')
+      // } else {
+      //   this.sdk.pause()
+      //   this.$store.commit('player/STATUS_PAUSED')
+      // }
     },
     async like() {
       if (!this.track) return
@@ -160,12 +191,12 @@ export default {
       try {
         if (this.isLiked) {
           await this.$store.dispatch(
-              'player/removeFromLikedPlaylist',
-              this.track.id,
+            'player/removeFromLikedPlaylist',
+            this.track.id,
           )
           this.$store.dispatch('ui/pushFlashQueue', {
             content:
-                "Track removed from the Spotify playlist 'Liked from Mimiko'",
+              "Track removed from the Spotify playlist 'Liked from Mimiko'",
             type: 'info',
             time: 4000,
           })
@@ -183,7 +214,8 @@ export default {
         })
       } catch (error) {
         this.$store.dispatch('ui/pushFlashQueue', {
-          content: "Log in with your Spotify account in order to save tracks to a custom playlist !",
+          content:
+            'Log in with your Spotify account in order to save tracks to a custom playlist !',
           type: 'info',
           time: 4000,
         })
@@ -219,10 +251,9 @@ export default {
       // with a click, lock further queries until promise.all is done
       try {
         if (!this.readOnly) {
-          const numNewKnots = 1
           await this.createKnots({
             sourceId: this.selectedKnotId,
-            number: numNewKnots,
+            number: 5,
             visited: false,
           })
         }
@@ -244,20 +275,16 @@ export default {
     },
   },
   watch: {
-    track: function () {
+    track: function() {
       clearTimeout(this.debounceLike.callbackId)
       this.debounceLike.counter = 0
 
-      if (this.$store.state.player.previewMode) {
-        this.$store.commit('player/STATUS_PLAYING')
-        if (this.track && !this.track.previewURL) {
-          this.$store.dispatch('ui/pushFlashQueue', {
-            content:
-                'No audio preview available for this track on Spotify Free.',
-            type: 'error',
-            time: 3000,
-          })
-        }
+      if (this.track && !this.track.previewURL) {
+        this.$store.dispatch('ui/pushFlashQueue', {
+          content: 'No audio preview available for this track on Spotify Free.',
+          type: 'error',
+          time: 3000,
+        })
       }
     },
   },
@@ -431,7 +458,7 @@ export default {
 }
 
 .add-button-wrapper:before {
-  content: " ";
+  content: ' ';
   position: absolute;
   width: 80px;
   height: 80px;

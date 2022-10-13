@@ -20,20 +20,19 @@ function initialBuffer() {
 
 function initialPlayer() {
   return {
+    audioElementRef: null,
     track: null,
     playedKnotId: null,
 
     position: 0,
     duration: 0,
 
+    playQueue: [],
     buffer: initialBuffer(),
     bufferBlock: false,
 
-    playQueue: [],
-
     status: 'IDLE',
-
-    previewMode: false,
+    previewMode: true,
   }
 }
 
@@ -62,7 +61,6 @@ export default {
     SET_DEVICE_ID(state, id) {
       state.deviceId = id
     },
-
     SET_TRACK(state, track) {
       state.track = track
     },
@@ -75,9 +73,11 @@ export default {
     SET_PREVIEW_MODE(state, value) {
       state.previewMode = value
     },
-
     SET_PLAYED_KNOT_ID(state, knotId) {
       state.playedKnotId = knotId
+    },
+    SET_AUDIO_ELEMENT_REF(state, ref) {
+      state.audioElementRef = ref
     },
 
     BUFFER_ROTATE(state) {
@@ -148,7 +148,7 @@ export default {
       })
     },
     DISCONNECT_SDK(state) {
-      state.sdk.disconnect()
+      state.sdk?.disconnect()
       state.sdk = null
     },
   },
@@ -223,10 +223,10 @@ export default {
       }
     },
     async createLikedPlaylist({ commit }) {
-        const id = await createPlaylist()
-        if (!id) throw new Error
+      const id = await createPlaylist()
+      if (!id) throw new Error()
 
-        commit('LIKED_PLAYLIST_INIT', { id: id, tracks: [] })
+      commit('LIKED_PLAYLIST_INIT', { id: id, tracks: [] })
     },
     async addToLikedPlaylist({ state, commit }, trackId) {
       if (!state.likedPlaylist.id) return
@@ -246,10 +246,16 @@ export default {
     playKnot({ commit, dispatch }, { track, knot }) {
       commit('PLAYQUEUE_RESET')
       commit('PLAYQUEUE_PUSH', { track: track, knot: knot })
-      dispatch('bufferPush')
+      dispatch('bufferForcePlay')
+    },
+    async pausePlayback({ state }) {
+      await state.audioElementRef.pause()
+    },
+    async resumePlayback({ state }) {
+      await state.audioElementRef.play()
     },
 
-    async bufferPush({ state, commit, dispatch }) {
+    async bufferForcePlay({ state, commit, dispatch }) {
       if (state.bufferBlock) return
       if (state.playQueue.length === 0) return
 
@@ -262,83 +268,66 @@ export default {
 
       try {
         await dispatch('bufferPlay')
-        await dispatch('bufferFindNext')
       } catch (error) {
         commit('STATUS_PAUSED')
       } finally {
         commit('BUFFER_UNBLOCK')
       }
     },
-    async bufferSync({ state, rootState, commit, dispatch }, remote) {
-      if (state.bufferBlock) return
-
-      const tracks = remote.track_window
-
-      const remoteCurrent = tracks.current_track
-
-      // TODO DISABLED -- Resetting the player is buggy
-      // If a track was not played from local player, reset local player
-      //
-      // const bufferCurrent = state.buffer.current
-      // if (bufferCurrent && remoteCurrent.id !== bufferCurrent.track.id) {
-      //   if (remoteCurrent.name !== bufferCurrent.track.title) {
-      //     const bufferPrevious = state.buffer.previous
-      //     if (!bufferPrevious) commit('RESET_PLAYER')
-      //     if (
-      //       bufferPrevious &&
-      //       remoteCurrent.name !== bufferPrevious.track.title
-      //     ) {
-      //       commit('RESET_PLAYER')
-      //     }
-      //   }
-      // }
-
-      const remotePrevious = tracks.previous_tracks[0]
-
-      if (
-        remote.position === 0 &&
-        remote.paused &&
-        remotePrevious &&
-        remotePrevious.id === remoteCurrent.id
-      ) {
-        commit('BUFFER_BLOCK')
-
-        commit('BUFFER_ROTATE')
-
-        const newCurrent = state.buffer.current
-        if (!newCurrent) return commit('BUFFER_UNBLOCK')
-
-        if (!newCurrent.knot) {
-          const parentId = state.buffer.previous.knot
-          const params = {
-            sourceId: parentId,
-            newTracks: [newCurrent.track],
-          }
-
-          await dispatch('map/createKnots', params, { root: true })
-
-          const knots = rootState.map.knots
-          for (const childId of knots[parentId].children) {
-            if (knots[childId].track.id === newCurrent.track.id) {
-              commit('BUFFER_UPDATE_CURRENT', {
-                ...newCurrent,
-                ...{ knot: childId },
-              })
-              break
-            }
-          }
-        }
-
-        await dispatch('bufferPlay')
-
-        dispatch('bufferFindNext')
-
-        await new Promise(r => setTimeout(r, 1000))
-
-        commit('map/SET_FOCUSED', state.buffer.current.knot, { root: true })
-        commit('BUFFER_UNBLOCK')
-      }
+    async bufferPlayNext({ dispatch, commit }) {
+      await dispatch('bufferFindNext')
+      commit('BUFFER_ROTATE')
+      dispatch('bufferPlay')
     },
+    // TODO Only for Spotify Login
+    // async bufferSync({ state, rootState, commit, dispatch }, remote) {
+    //   if (state.bufferBlock) return
+    //
+    //   const tracks = remote.track_window
+    //
+    //   const remoteCurrent = tracks.current_track
+    //
+    //   // TODO DISABLED -- Resetting the player is buggy
+    //   // If a track was not played from local player, reset local player
+    //   //
+    //   // const bufferCurrent = state.buffer.current
+    //   // if (bufferCurrent && remoteCurrent.id !== bufferCurrent.track.id) {
+    //   //   if (remoteCurrent.name !== bufferCurrent.track.title) {
+    //   //     const bufferPrevious = state.buffer.previous
+    //   //     if (!bufferPrevious) commit('RESET_PLAYER')
+    //   //     if (
+    //   //       bufferPrevious &&
+    //   //       remoteCurrent.name !== bufferPrevious.track.title
+    //   //     ) {
+    //   //       commit('RESET_PLAYER')
+    //   //     }
+    //   //   }
+    //   // }
+    //
+    //   const remotePrevious = tracks.previous_tracks[0]
+    //
+    //   if (
+    //     remote.position === 0 &&
+    //     remote.paused &&
+    //     remotePrevious &&
+    //     remotePrevious.id === remoteCurrent.id
+    //   ) {
+    //     commit('BUFFER_BLOCK')
+    //
+    //     commit('BUFFER_ROTATE')
+    //
+    //     if (!state.buffer.current) return commit('BUFFER_UNBLOCK')
+    //
+    //     await dispatch('bufferPlay')
+    //
+    //     dispatch('bufferFindNext')
+    //
+    //     await new Promise(r => setTimeout(r, 1000))
+    //
+    //     commit('map/SET_FOCUSED', state.buffer.current.knot, { root: true })
+    //     commit('BUFFER_UNBLOCK')
+    //   }
+    // },
     async bufferFindNext({ state, commit, rootState }) {
       if (!state.buffer.current || rootState.map.editMode) return
 
@@ -361,25 +350,30 @@ export default {
           }
           commit('PLAYQUEUE_SHIFT')
         } else if (!rootState.map.readOnly) {
-          let newTrack = null
-          try {
-            const seeds = [knots[current].track.id]
-            const existingTracks = Object.values(knots).map(
-              knot => knot.track.id,
-            )
-            const recos = await recoFromTrack(
-              seeds,
-              1,
-              existingTracks,
-              state.previewMode,
-            )
-            newTrack = recos[0]
-          } catch (error) {
-            // TODO
-          }
-          if (newTrack) {
-            commit('PLAYQUEUE_PUSH', { track: newTrack, knot: null })
-          }
+          // TODO
+          // let newTrack = null
+          // try {
+          //   const seeds = [knots[current].track.id]
+          //   const existingTracks = Object.values(knots).map(
+          //     knot => knot.track.id,
+          //   )
+          //   const recos = await recoFromTrack(
+          //     seeds,
+          //     5,
+          //     existingTracks,
+          //     state.previewMode,
+          //   )
+          //   newTrack = recos[0]
+          // } catch (error) {
+          //   // TODO
+          // }
+          // if (newTrack) {
+          //   commit('PLAYQUEUE_PUSH', {
+          //     track: newTrack,
+          //     knot: null,
+          //     attachTo: current,
+          //   })
+          // }
         }
       }
 
@@ -391,39 +385,68 @@ export default {
     },
     async bufferPlay({ state, rootState, commit, dispatch }) {
       const current = state.buffer.current
+      if (!current) return
 
-      if (
-        !rootState.map.knots[current.knot].visited &&
-        !rootState.map.editMode &&
-        !rootState.map.readOnly
-      ) {
-        try {
-          await updateKnot(current.knot, { visited: true })
-          commit('map/KNOT_SET_VISITED', current.knot, { root: true })
-        } catch (error) {
-          // TODO
+      // TODO Only for visited/not visited feature
+      // if (
+      //   !rootState.map.knots[current.knot].visited &&
+      //   !rootState.map.editMode &&
+      //   !rootState.map.readOnly
+      // ) {
+      //   try {
+      //     await updateKnot(current.knot, { visited: true })
+      //     commit('map/KNOT_SET_VISITED', current.knot, { root: true })
+      //   } catch (error) {
+      //     // TODO
+      //   }
+      // }
+
+      if (!current.knot) {
+        const parentId = current.attachTo
+        const params = {
+          sourceId: parentId,
+          newTracks: [current.track],
+        }
+
+        await dispatch('map/createKnots', params, { root: true })
+
+        // TODO Convoluted
+        const knots = rootState.map.knots
+        for (const childId of knots[parentId].children) {
+          if (knots[childId].track.id === current.track.id) {
+            commit('BUFFER_UPDATE_CURRENT', {
+              ...current,
+              ...{ knot: childId },
+            })
+            break
+          }
         }
       }
+
       commit('SET_TRACK', current.track)
       commit('SET_PLAYED_KNOT_ID', current.knot)
 
-      try {
-        await playTrack([current.track.id], state.deviceId)
-      } catch (error) {
-        commit('SET_PREVIEW_MODE', true)
-        if (!current.track.previewURL) {
-          dispatch(
-            'ui/pushFlashQueue',
-            {
-              content:
-                'No audio preview available for this track on Spotify Free.',
-              type: 'error',
-              time: 3000,
-            },
-            { root: true },
-          )
-        }
-      }
+      await new Promise(r => setTimeout(r, 100))
+      state.audioElementRef.play()
+
+      // TODO Only for spotify login
+      // try {
+      //   await playTrack([current.track.id], state.deviceId)
+      // } catch (error) {
+      //   commit('SET_PREVIEW_MODE', true)
+      //   if (!current.track.previewURL) {
+      //     dispatch(
+      //       'ui/pushFlashQueue',
+      //       {
+      //         content:
+      //           'No audio preview available for this track on Spotify Free.',
+      //         type: 'error',
+      //         time: 3000,
+      //       },
+      //       { root: true },
+      //     )
+      //   }
+      // }
     },
   },
 }

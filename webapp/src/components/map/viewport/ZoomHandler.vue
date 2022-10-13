@@ -37,7 +37,7 @@ export default {
       this.d3Viewport = d3select(this.viewportRef)
       this.d3ZoomObj = d3zoom
         .zoom()
-        .scaleExtent([0.1, 20])
+        .scaleExtent([1, 12])
         .on('zoom', this.transformCallback)
       this.d3Viewport.call(this.d3ZoomObj).on("dblclick.zoom", null)
     },
@@ -64,6 +64,7 @@ export default {
   methods: {
     async transformCallback() {
       this.transform = d3event.transform
+      this.$store.commit('ui/SET_TRANSFORM', { x: this.transform.x, y: this.transform.y })
       this.$store.commit('ui/SET_ZOOM_LEVEL', this.transform.k)
       const hovered = this.$store.state.map.hovered
       this.$store.commit('map/SET_HOVERED', null)

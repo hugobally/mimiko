@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <router-view :key="routePath" class="page-layout"/>
+    <router-view :key="routePath" class="page-layout" />
 
-    <div class="dimmer" v-if="panelContent"/>
+    <div class="dimmer" v-if="panelContent" />
     <Panel v-if="panelContent">
       <component :is="panelContent" />
     </Panel>
@@ -41,7 +41,8 @@ export default {
     }
   },
   mounted() {
-    if (!localStorage.getItem('tutorial_steps')) localStorage.setItem('tutorial_steps', ['play_knot', 'create_knot'])
+    if (!localStorage.getItem('tutorial_steps'))
+      localStorage.setItem('tutorial_steps', ['play_knot', 'create_knot'])
   },
   computed: {
     panelContent() {
@@ -168,7 +169,8 @@ img,
   //z-index: 100;
 }
 
-button {
+button,
+a {
   border-radius: 10px;
   background: $bg-secondary;
   color: $text-highlight;
@@ -179,5 +181,4 @@ button {
   font-family: 'Abel', sans-serif;
   margin-left: 20px;
 }
-
 </style>
