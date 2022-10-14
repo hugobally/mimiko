@@ -24,14 +24,14 @@
       <div class="add-button-wrapper" @click="add">
         <img
           class="add-button"
-          src="@/assets/svg/add-icon-alternate.svg"
+          src="@/assets/svg/add-icon.svg"
           alt="add-track-icon"
         />
       </div>
       <div class="button-wrapper" @click="dislike">
         <img
           class="dislike-button"
-          src="@/assets/svg/cross-icon.svg"
+          src="@/assets/svg/dislike.svg"
           alt="remove-track-icon"
         />
       </div>
@@ -287,7 +287,7 @@ export default {
       if (!this.selectedKnotId || this.isSourceKnot) return
 
       this.blockDislike = true
-      this.$store.dispatch('map/deleteKnots', this.selectedKnotId)
+      await this.$store.dispatch('map/deleteKnots', this.selectedKnotId)
       // this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
       this.blockDislike = false
@@ -386,6 +386,7 @@ export default {
   padding: 0px 10px;
 
   background-color: $bg-secondary;
+  border-radius: 5px;
 
   & > div {
     margin: 0px 10px 0px 10px;
@@ -415,7 +416,8 @@ export default {
 
   background-color: $bg-secondary;
 
-  border-radius: 0px 32px 32px 0px;
+  margin-left: 10px;
+  border-radius: 5px;
 
   .button-wrapper {
     width: 64px;
@@ -478,7 +480,7 @@ export default {
   bottom: 20%;
   background-color: $bg-secondary;
   border-radius: 50%;
-  border: solid 3px $bg-primary;
+  border: solid 1px $bg-primary;
   transition: transform 100ms;
 }
 
@@ -488,7 +490,7 @@ export default {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 5px solid $bg-secondary;
+  border: 2px solid $bg-primary;
 }
 
 .playback-button {

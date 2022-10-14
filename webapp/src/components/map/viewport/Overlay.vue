@@ -253,6 +253,10 @@ export default {
 }
 
 .track-title-and-link {
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
   width: max-content;
   transform: translateX(-50%);
 

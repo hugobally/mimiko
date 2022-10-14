@@ -169,8 +169,7 @@ img,
   //z-index: 100;
 }
 
-button,
-a {
+button {
   border-radius: 10px;
   background: $bg-secondary;
   color: $text-highlight;

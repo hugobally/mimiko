@@ -43,6 +43,7 @@ export default {
 .nav-container {
   display: flex;
   height: 100%;
+  gap: 10px;
   //border: solid 2px $black;
 }
 

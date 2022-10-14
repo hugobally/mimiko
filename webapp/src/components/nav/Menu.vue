@@ -62,7 +62,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
   background-color: $bg-secondary;
-  border-radius: 32px 0px 0px 32px;
+  border-radius: 5px;
 }
 
 .logo-container {
@@ -111,7 +111,7 @@ export default {
 }
 
 .leftmost-menu-button {
-  border-radius: 32px 0px 0px 32px;
+  border-radius: 5px 0px 0px 5px;
 }
 
 </style>

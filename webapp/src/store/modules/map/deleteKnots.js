@@ -35,22 +35,18 @@ export default async function({ commit, dispatch, state, rootState }, knotId) {
     }
   }
 
-  try {
-    // TODO Handle desynchronization errors
-    await rootState.player.sdk.nextTrack().catch(() => {})
-    commit('player/RESET_PLAYER', null, { root: true })
+  // TODO Only spotify login || Handle desynchronization errors
+  // await rootState.player.sdk.nextTrack()
+  commit('player/RESET_PLAYER', null, { root: true })
 
-    await gql.deleteLinks(state.id, linksToDelete)
-    await gql.deleteKnots(state.id, knotsToDelete)
+  await gql.deleteLinks(state.id, linksToDelete)
+  await gql.deleteKnots(state.id, knotsToDelete)
 
-    dispatch('removeLinks', linksToDelete)
-    dispatch('removeKnots', knotsToDelete)
+  dispatch('removeLinks', linksToDelete)
+  dispatch('removeKnots', knotsToDelete)
 
-    commit('KNOT_REMOVE_CHILDREN', {
-      id: state.links[parentLinkId].source,
-      childrenToRemove: knotId,
-    })
-  } catch (error) {
-    //
-  }
+  commit('KNOT_REMOVE_CHILDREN', {
+    id: state.links[parentLinkId].source,
+    childrenToRemove: knotId,
+  })
 }
