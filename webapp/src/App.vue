@@ -179,6 +179,5 @@ a {
   text-decoration: none;
   font-size: 20px;
   font-family: 'Abel', sans-serif;
-  margin-left: 20px;
 }
 </style>

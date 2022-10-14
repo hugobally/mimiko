@@ -20,7 +20,6 @@ function initialBuffer() {
 
 function initialPlayer() {
   return {
-    audioElementRef: null,
     track: null,
     playedKnotId: null,
 
@@ -30,9 +29,10 @@ function initialPlayer() {
     playQueue: [],
     buffer: initialBuffer(),
     bufferBlock: false,
-
     status: 'IDLE',
+
     previewMode: true,
+    autoplay: true,
   }
 }
 
@@ -70,14 +70,11 @@ export default {
         state.duration = playerState.duration
       }
     },
-    SET_PREVIEW_MODE(state, value) {
-      state.previewMode = value
-    },
     SET_PLAYED_KNOT_ID(state, knotId) {
       state.playedKnotId = knotId
     },
-    SET_AUDIO_ELEMENT_REF(state, ref) {
-      state.audioElementRef = ref
+    SET_AUTOPLAY(state, newVal) {
+      state.autoplay = newVal
     },
 
     BUFFER_ROTATE(state) {
@@ -144,6 +141,7 @@ export default {
           sdk: state.sdk,
           deviceId: state.deviceId,
           likedPlaylist: state.likedPlaylist,
+          autoplay: state.autoplay,
         },
       })
     },
@@ -248,11 +246,11 @@ export default {
       commit('PLAYQUEUE_PUSH', { track: track, knot: knot })
       dispatch('bufferForcePlay')
     },
-    async pausePlayback({ state }) {
-      await state.audioElementRef.pause()
+    async pausePlayback({ commit }) {
+      commit('STATUS_PAUSED')
     },
-    async resumePlayback({ state }) {
-      await state.audioElementRef.play()
+    async resumePlayback({ commit }) {
+      commit('STATUS_PLAYING')
     },
 
     async bufferForcePlay({ state, commit, dispatch }) {
@@ -350,30 +348,29 @@ export default {
           }
           commit('PLAYQUEUE_SHIFT')
         } else if (!rootState.map.readOnly) {
-          // TODO
-          // let newTrack = null
-          // try {
-          //   const seeds = [knots[current].track.id]
-          //   const existingTracks = Object.values(knots).map(
-          //     knot => knot.track.id,
-          //   )
-          //   const recos = await recoFromTrack(
-          //     seeds,
-          //     5,
-          //     existingTracks,
-          //     state.previewMode,
-          //   )
-          //   newTrack = recos[0]
-          // } catch (error) {
-          //   // TODO
-          // }
-          // if (newTrack) {
-          //   commit('PLAYQUEUE_PUSH', {
-          //     track: newTrack,
-          //     knot: null,
-          //     attachTo: current,
-          //   })
-          // }
+          let newTrack = null
+          try {
+            const seeds = [knots[current].track.id]
+            const existingTracks = Object.values(knots).map(
+              knot => knot.track.id,
+            )
+            const recos = await recoFromTrack(
+              seeds,
+              5,
+              existingTracks,
+              state.previewMode,
+            )
+            newTrack = recos[0]
+          } catch (error) {
+            // TODO
+          }
+          if (newTrack) {
+            commit('PLAYQUEUE_PUSH', {
+              track: newTrack,
+              knot: null,
+              attachTo: current,
+            })
+          }
         }
       }
 
@@ -427,7 +424,6 @@ export default {
       commit('SET_PLAYED_KNOT_ID', current.knot)
 
       await new Promise(r => setTimeout(r, 100))
-      state.audioElementRef.play()
 
       // TODO Only for spotify login
       // try {

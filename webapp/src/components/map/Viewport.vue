@@ -51,10 +51,7 @@ export default {
     Link,
   },
   computed: {
-    ...mapState('map', ['knots', 'links']),
-    hovered() {
-      return this.$store.state.map.hovered
-    },
+    ...mapState('map', ['knots', 'links', 'hovered']),
     currentPlayerKnot() {
       return this.$store.state.player.playedKnotId
     },

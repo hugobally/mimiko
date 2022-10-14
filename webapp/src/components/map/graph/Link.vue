@@ -41,7 +41,7 @@ export default {
     },
     style() {
       return {
-        stroke: this.$store.state.map.meta.color,
+        stroke: this.highlighted ? '#797979' : '#111111',
         strokeWidth: 4,
       }
     },

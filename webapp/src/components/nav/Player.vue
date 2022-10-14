@@ -6,6 +6,7 @@
     <!--      </div>-->
     <!--    </div>-->
     <div v-if="!readOnly" class="action-button-group">
+      <!--    TODO Only with Spotify Login -->
       <!--      <div class="button-wrapper like-button-group" @click="like">-->
       <!--        <img-->
       <!--          class="like-button-icon"-->
@@ -55,10 +56,12 @@
     <!--    </div>-->
     <div class="playback-group center">
       <audio
+        autoplay
         controls
         :src="track && track.previewURL"
         ref="sampleSessionAudioControls"
-      ></audio>
+      />
+      <button @click="autoplayToggle" class="autoplay-toggle">autoplay: {{ autoplay ? 'ON' : 'OFF'}} </button>
     </div>
   </div>
 </template>
@@ -103,19 +106,21 @@ export default {
       })
 
       // For Sample Session mode
-      this.$store.commit(
-        'player/SET_AUDIO_ELEMENT_REF',
-        this.$refs.sampleSessionAudioControls,
-      )
       this.$refs.sampleSessionAudioControls.addEventListener('pause', () => {
         this.$store.commit('player/STATUS_PAUSED')
       })
       this.$refs.sampleSessionAudioControls.addEventListener('play', () => {
         this.$store.commit('player/STATUS_PLAYING')
       })
-      this.$refs.sampleSessionAudioControls.addEventListener('ended', async () => {
-        await this.$store.dispatch('player/bufferPlayNext')
-      })
+      this.$refs.sampleSessionAudioControls.addEventListener(
+        'ended',
+        async () => {
+          if (this.autoplay) {
+            await new Promise(r => setTimeout(r, 1000))
+            await this.$store.dispatch('player/bufferPlayNext')
+          }
+        },
+      )
     } catch (error) {
       // TODO
     }
@@ -127,6 +132,7 @@ export default {
       'playedKnotId',
       'status',
       'likedPlaylist',
+      'autoplay',
     ]),
     ...mapState('map', ['readOnly', 'knots']),
     ...mapState('ui', ['selectedKnotId']),
@@ -158,6 +164,9 @@ export default {
     hasTrack() {
       return Boolean(this.track)
     },
+    audioEl() {
+      return this.$refs.sampleSessionAudioControls
+    },
   },
   methods: {
     ...mapActions('map', ['createKnots']),
@@ -184,6 +193,9 @@ export default {
       //   this.sdk.pause()
       //   this.$store.commit('player/STATUS_PAUSED')
       // }
+    },
+    autoplayToggle() {
+      this.$store.commit('player/SET_AUTOPLAY', !this.autoplay)
     },
     async like() {
       if (!this.track) return
@@ -249,16 +261,26 @@ export default {
       // TODO Better pattern to prevent duplicate queries if response is slow and
       // the button is spammed : Promise.all on all async operations associated
       // with a click, lock further queries until promise.all is done
-      try {
-        if (!this.readOnly) {
-          await this.createKnots({
-            sourceId: this.selectedKnotId,
-            number: 5,
-            visited: false,
+      // TODO Factorize with Overlay.vue
+      if (!this.readOnly) {
+        const newKnots = await this.createKnots({
+          sourceId: this.selectedKnotId,
+          number: 5,
+          visited: false,
+        })
+        newKnots.forEach(knot =>
+          this.$store.commit('player/PLAYQUEUE_SHIFT', {
+            track: knot.track,
+            knot: knot.id,
+          }),
+        )
+        this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
+        if (this.status !== 'PLAYING') {
+          await this.$store.dispatch('player/playKnot', {
+            knot: newKnots[0].id,
+            track: newKnots[0].track,
           })
         }
-      } catch (error) {
-        // TODO
       }
     },
     async dislike() {
@@ -266,7 +288,7 @@ export default {
 
       this.blockDislike = true
       this.$store.dispatch('map/deleteKnots', this.selectedKnotId)
-      this.sdk.pause()
+      // this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
       this.blockDislike = false
     },
@@ -286,6 +308,10 @@ export default {
           time: 3000,
         })
       }
+    },
+    status: function(newStatus) {
+      if (newStatus === 'PLAYING') this.audioEl.play()
+      if (newStatus === 'PAUSED') this.audioEl.pause()
     },
   },
   async destroyed() {
@@ -328,7 +354,7 @@ export default {
 }
 
 .like-button:hover {
-  transition: scale(1.3);
+  transform: scale(1.3);
 }
 
 .like-button-icon {
@@ -381,7 +407,6 @@ export default {
 
 .playback-group {
   flex: 1;
-  width: 350px;
   height: 100%;
 
   display: flex;
@@ -472,5 +497,9 @@ export default {
 
 .center {
   justify-content: center;
+}
+
+.autoplay-toggle {
+  margin: 0px 30px 0px 10px;
 }
 </style>

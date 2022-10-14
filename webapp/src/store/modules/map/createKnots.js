@@ -83,4 +83,6 @@ export default async function(
   commit('force/RESTART_SIM', null, { root: true })
   commit('player/PLAYQUEUE_RESET', null, { root: true })
   dispatch('player/bufferFindNext', null, { root: true })
+
+  return newKnots
 }

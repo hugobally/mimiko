@@ -5,10 +5,24 @@
     @mouseleave="onMouseLeave()"
     :class="{ hidden: !hoveredKnot }"
   >
+    <div :style="{ ...topEdge }">
+      <div class="top-edge-container">
+        <div :style="{ ...reactiveSize }" class="top-edge-backdrop" />
+      </div>
+    </div>
     <div :style="{ ...bottomEdge }" class="bottom-edge">
-      <span class="track-title " :style="{ ...{}, ...reactiveFontSize }">
-        {{ (knot && knot.track.artist) + ' - ' + (knot && knot.track.title) }}
-      </span>
+      <div class="bottom-edge-container">
+        <div :style="{ ...reactiveSize }" class="bottom-edge-backdrop" />
+        <a
+          class="track-title-and-link"
+          :href="moreInfoLink"
+          target="_blank"
+          :style="{ ...reactiveFontSize }"
+        >
+          {{ (knot && knot.track.artist) + ' - ' + (knot && knot.track.title) }}
+          <img src="@/assets/svg/more-info.svg" alt="more info icon" />
+        </a>
+      </div>
     </div>
     <div :style="{ ...leftEdge }">
       <div class="left-edge-container">
@@ -32,13 +46,13 @@
     <div :style="{ ...rightEdge }">
       <div class="right-edge-container">
         <div :style="{ ...reactiveSize }" class="right-edge-backdrop" />
-        <a class="more-info-link" :href="moreInfoLink" target="_blank">
+        <button class="add-button" @click="add">
           <img
             :style="{ ...reactiveSize }"
-            src="@/assets/svg/more-info.svg"
-            alt="more info icon"
+            src="@/assets/svg/add-icon.svg"
+            alt="add icon"
           />
-        </a>
+        </button>
       </div>
     </div>
   </div>
@@ -50,6 +64,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
+      topEdge: null,
       bottomEdge: null,
       leftEdge: null,
       rightEdge: null,
@@ -57,7 +72,7 @@ export default {
   },
   props: ['viewport'],
   computed: {
-    ...mapState('map', ['knots', 'hovered', 'selected']),
+    ...mapState('map', ['knots', 'hovered', 'selected', 'readOnly']),
     ...mapState('ui', ['zoomLevel', 'transform', 'selectedKnotId']),
     ...mapState('player', ['status', 'playedKnotId']),
     hoveredKnot() {
@@ -75,7 +90,7 @@ export default {
     },
     reactiveFontSize() {
       let fontSize = this.$store.state.ui.zoomLevel * 20
-      fontSize = Math.min(Math.max(fontSize, 20), 40)
+      fontSize = Math.min(Math.max(fontSize, 15), 18)
       return {
         fontSize: `${fontSize}px`,
       }
@@ -130,13 +145,13 @@ export default {
         }
       }
 
-      const verticalOffset = 41
-      const horizontalOffset = 20
+      const circleRadius = 20
 
-      this.bottomEdge = transform(knot.x, knot.y + verticalOffset)
+      this.topEdge = transform(knot.x, knot.y - circleRadius)
+      this.bottomEdge = transform(knot.x, knot.y + circleRadius)
 
-      this.leftEdge = transform(knot.x - horizontalOffset, knot.y)
-      this.rightEdge = transform(knot.x + horizontalOffset, knot.y)
+      this.leftEdge = transform(knot.x - circleRadius, knot.y)
+      this.rightEdge = transform(knot.x + circleRadius, knot.y)
     },
     playOrPauseSelected() {
       if (this.playedKnotId === this.hovered) {
@@ -154,6 +169,30 @@ export default {
         knot: this.hovered,
         track: this.hoveredKnot.track,
       })
+      this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.hovered)
+    },
+    // TODO Factorize w/ Player.vue
+    async add() {
+      if (!this.readOnly) {
+        const newKnots = await this.$store.dispatch('map/createKnots', {
+          sourceId: this.hovered,
+          number: 5,
+          visited: false,
+        })
+        this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
+        newKnots.forEach(knot =>
+          this.$store.commit('player/PLAYQUEUE_SHIFT', {
+            track: knot.track,
+            knot: knot.id,
+          }),
+        )
+        if (this.status !== 'PLAYING') {
+          await this.$store.dispatch('player/playKnot', {
+            knot: newKnots[0].id,
+            track: newKnots[0].track,
+          })
+        }
+      }
     },
   },
 }
@@ -165,51 +204,72 @@ export default {
 }
 
 .play-this-button,
+.add-button {
+  transform: translate(0, -50%);
+  padding: 10px;
+  border-radius: 100%;
+}
 .more-info-link {
   display: block;
-  transform: translate(0, -50%);
+}
+//.more-info-link {
+//  padding: 10px;
+//  transform: translate(-50%, 0);
+//}
 
-  padding: 10px;
-  margin-left: 0px;
+//.bottom-edge::before {
+//  content: '';
+//  position: absolute;
+//  width: 130%;
+//  height: 110%;
+//  left: 50%;
+//  top: 50%;
+//  transform: translate(-50%, -50%);
+//}
+
+.right-edge-container,
+.left-edge-container,
+.top-edge-container,
+.bottom-edge-container {
+  position: absolute;
+  display: flex;
+}
+.left-edge-container {
+  flex-direction: row;
+  right: 0px;
+}
+.right-edge-container {
+  flex-direction: row;
+  left: 0px;
+}
+.top-edge-container {
+  flex-direction: column;
+  bottom: 0px;
+}
+.bottom-edge-container {
+  display: flex;
+  flex-direction: column;
+  top: 0px;
 }
 
-.track-title {
+.track-title-and-link {
+  width: max-content;
+  transform: translateX(-50%);
+
   background-color: $black-lighter;
   color: $text-highlight;
   padding: 5px;
   border-radius: 5px;
-}
 
-.bottom-edge {
-  transition: transform 100ms ease-out;
-}
-
-.bottom-edge::before {
-  content: '';
-  position: absolute;
-  width: 130%;
-  height: 110%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.right-edge-container,
-.left-edge-container {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-}
-.left-edge-container {
-  right: 0px;
-}
-
-.right-edge-container {
-  left: 0px;
+  text-wrap: none;
 }
 
 .left-edge-backdrop,
 .right-edge-backdrop {
-  transform: scaleY(4);
+  transform: scaleY(2);
+}
+.top-edge-backdrop,
+.bottom-edge-backdrop {
+  transform: scaleX(4);
 }
 </style>

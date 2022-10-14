@@ -1,14 +1,11 @@
 <template>
-  <g
-      class="select-indicator-container"
-      :transform="transformStr"
-  >
+  <g class="select-indicator-container" :transform="transformStr">
     <circle
-        class="animated-circle animated-paused"
-        fill="none"
-        :stroke="$store.state.map.meta.color"
-        stroke-width="2"
-        :r="radius / 1.95"
+      class="animated-circle animated-paused"
+      fill="none"
+      :stroke="$store.state.map.meta.color"
+      stroke-width="2"
+      :r="radius / 1.95"
     >
     </circle>
   </g>
@@ -24,7 +21,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('map', ['knots', 'hovered']),
+    ...mapState('map', ['knots']),
     ...mapState('ui', ['selectedKnotId']),
     knot() {
       if (!this.selectedKnotId) return null
@@ -33,6 +30,7 @@ export default {
     },
     transformStr() {
       if (!this.knot) return
+
       const { x, y } = this.knot
       return `translate(${x} ${y})`
     },
@@ -47,7 +45,7 @@ export default {
 
 @keyframes circle-scale-animation-paused {
   0% {
-    transform: scale(2)
+    transform: scale(2);
   }
 
   2% {
@@ -72,16 +70,16 @@ export default {
 }
 
 .animated-circle {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 1000ms;
+  transform: scale(2);
 }
 
 .animated-paused {
   opacity: 1;
   animation-name: circle-scale-animation-paused;
-  animation-iteration-count: infinite;
+  animation-iteration-count: 1;
   animation-timing-function: ease-out;
   animation-duration: 5s;
 }
-
 </style>

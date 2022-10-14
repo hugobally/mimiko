@@ -81,7 +81,7 @@ export default {
           commit('SET_SIM_OVER', true)
         })
         .on('tick', handleTick)
-        .alphaDecay(0.05)
+        .alphaDecay(0.001)
 
       commit('SET_SIM', simulation)
     },

@@ -39,7 +39,7 @@ export async function autocomplete(searchString) {
     if (results.length < 1) return null
 
     return results.map(track => {
-      return track.name + ' - ' + artistNamesToString(track.artists)
+      return `${artistNamesToString(track.artists)} - ${track.name}`
     })
   } catch (error) {
     //TODO
