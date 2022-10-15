@@ -274,7 +274,7 @@ export default {
             knot: knot.id,
           }),
         )
-        this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
+        // this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
         if (this.status !== 'PLAYING') {
           await this.$store.dispatch('player/playKnot', {
             knot: newKnots[0].id,

@@ -1,25 +1,24 @@
 <template>
   <div class="explorer-container disable-scrollbar">
-    <input
-      class="explorer-searchbar"
-      placeholder="Search for songs, artists, maps"
-      v-model="searchString"
-    />
+    <SearchTrack class="search-track-container" />
+    <div>or</div>
     <MapList
-      v-if="!noSearchResult"
       :readOnly="true"
       :maps="filteredMaps || publicMaps"
+      :onItemClick="createMapFromTemplate"
     />
-    <div class="no-result" v-else>No result. Add yours to the list ! ;)</div>
   </div>
 </template>
 
 <script>
 import MapList from '@/components/explorer/MapList'
+import SearchTrack from '@/components/SearchTrack'
+import { createMap as gqlCreateMap } from '@/api/graphql'
 
 export default {
   components: {
     MapList,
+    SearchTrack,
   },
   data() {
     return {
@@ -58,6 +57,27 @@ export default {
           map.flagship && map.flagship.title,
         ])
       })
+    },
+    // TODO Factorize with SearchTrack
+    async createMapFromTemplate(mapTemplate) {
+      try {
+        const map = await gqlCreateMap({
+          title: mapTemplate.title,
+          flagshipId: mapTemplate.flagship.id,
+          public: false,
+        })
+        map.flagship = mapTemplate.flagship
+        this.$store.commit('maplist/USER_MAPS_PUSH', map)
+        this.$router.push({
+          path: `/map/${map.id}?template=${mapTemplate.id}`,
+        })
+      } catch (error) {
+        console.log(error)
+        this.$store.dispatch('ui/pushFlashQueue', {
+          content: 'Error when trying to create a new map, please retry.',
+          type: 'error',
+        })
+      }
     },
   },
   watch: {

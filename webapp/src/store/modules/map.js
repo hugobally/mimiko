@@ -52,12 +52,48 @@ export default {
       deleteKnots,
     },
     ...{
-      async fetchMap({ commit, dispatch, rootState }, id) {
-        const rawMap = await gql.map(id)
+      async fetchAndProcessMap(
+        { commit, dispatch, rootState },
+        { id, templateId },
+      ) {
+        let rawMap = await gql.map(id)
+
+        if (templateId && rawMap.knots.length === 1) {
+          const templateMap = await gql.map(templateId)
+
+          console.log(templateMap.knots)
+          // TODO Gross -- refactor when the backend is fixed
+          const knots = (
+            await Promise.all(
+              templateMap.knots.map(knot =>
+                gql.createKnots(id, [knot.trackId], knot.level, false),
+              ),
+            )
+          ).map(({ knots }) => knots[0])
+          console.log(knots)
+          const linksToCreate = templateMap.links.map(({ source, target }) => ({
+            source: knots.find(
+              ({ trackId }) =>
+                trackId ===
+                templateMap.knots.find(({ id }) => id === source).trackId,
+            ).id,
+            target: knots.find(
+              ({ trackId }) =>
+                trackId ===
+                templateMap.knots.find(({ id }) => id === target).trackId,
+            ).id,
+          }))
+          console.log(linksToCreate)
+          await Promise.all(
+            linksToCreate.map(({ source, target }) =>
+              gql.createLinks(id, source, [target]),
+            ),
+          )
+          rawMap = await gql.map(id)
+        }
 
         commit('MAP_SET_ID', id)
         commit('MAP_SET_META', rawMap)
-
         commit('MAP_SET_READONLY', rawMap.author.id !== rootState.auth.user.id)
         commit('MAP_SET_LOAD', 1)
 

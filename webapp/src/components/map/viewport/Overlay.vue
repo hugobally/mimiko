@@ -8,6 +8,8 @@
     <div :style="{ ...topEdge }">
       <div class="top-edge-container">
         <div :style="{ ...reactiveSize }" class="top-edge-backdrop" />
+        <input v-model="inputTrackId" />
+        <button @click="updateTrackId">update</button>
       </div>
     </div>
     <div :style="{ ...bottomEdge }" class="bottom-edge">
@@ -60,6 +62,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getTracks } from '@/api/spotify'
+import { updateKnot } from '@/api/graphql'
 
 export default {
   data() {
@@ -68,6 +72,7 @@ export default {
       bottomEdge: null,
       leftEdge: null,
       rightEdge: null,
+      inputTrackId: '',
     }
   },
   props: ['viewport'],
@@ -179,7 +184,7 @@ export default {
           number: 5,
           visited: false,
         })
-        this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
+        // this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
         newKnots.forEach(knot =>
           this.$store.commit('player/PLAYQUEUE_SHIFT', {
             track: knot.track,
@@ -193,6 +198,13 @@ export default {
           })
         }
       }
+    },
+    async updateTrackId() {
+      const track = (await getTracks(this.inputTrackId))[0]
+      console.log(track)
+      await updateKnot(this.hovered, { trackId: track.id })
+      console.log('t')
+      this.$store.commit('map/KNOT_SET_TRACK', { knots: [this.hovered], track })
     },
   },
 }

@@ -1,40 +1,26 @@
 <template>
-  <div class="home-container">
-    <h1 class="header noselect">
-      Maps
-    </h1>
-    <div v-if="userMaps && userMaps.length === 0" >
-      <div class="empty-text-container">
-<!--        <img-->
-<!--            width="100"-->
-<!--            height="100"-->
-<!--            src="@/assets/svg/favicon.svg"-->
-<!--            alt="mimiko-logo"-->
-<!--            class="mimiko-logo"-->
-<!--        />-->
-        <div class="empty-text">
-          <h1 class="empty-text-title">
-            Whoops, you have not created a map yet!
-              Head
-            <router-link to="/home#new" tag="a">
-              over here
-            </router-link>
-            to get started.
-          </h1>
-        </div>
+  <div class="home-centerer">
+    <div class="home-container">
+      <div v-if="userMaps && userMaps.length === 0">
+        <Creator />
+      </div>
+      <div v-if="userMaps && userMaps.length !== 0">
+        <h1 class="header noselect">
+          Maps
+        </h1>
+        <MapList class="map-list" :readOnly="false" :maps="userMaps" />
       </div>
     </div>
-    <MapList class="map-list" :readOnly="false" :maps="userMaps" />
   </div>
 </template>
 
 <script>
 import MapList from '@/components/explorer/MapList'
-import SearchTrack from "@/components/SearchTrack";
-import Creator from "@/components/Creator";
+import Creator from '@/components/Creator'
 
 export default {
   components: {
+    Creator,
     MapList,
   },
   data() {
@@ -52,9 +38,6 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('maplist/fetchAllUserMaps')
-    // if (this.userMaps.length === 0) {
-    //   this.$router.push({ path: this.$route.path, hash: '#new' })
-    // }
     this.lastVisited = localStorage.getItem('last_visited')
     await this.$store.dispatch('map/resetMap')
   },
@@ -62,11 +45,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home-container {
+.home-centerer {
   position: fixed;
   overflow-y: scroll;
 
+  display: flex;
+  justify-content: center;
+
   background-color: $bg-primary;
+}
+
+.home-container {
+  width: 1000px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
 }
 
 .text-logo {
@@ -103,8 +96,6 @@ export default {
 .header {
   padding: 20px 10px;
   width: 100%;
-  background-color: $bg-primary-shade;
-  border-bottom: solid $bg-primary;
   font-size: 50px;
   text-align: left;
 }
@@ -142,5 +133,4 @@ export default {
 .empty-text > * {
   margin-top: 20px;
 }
-
 </style>

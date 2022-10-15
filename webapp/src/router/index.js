@@ -5,7 +5,6 @@ import Home from '@/views/Home'
 
 import store from '@/store'
 import axios from 'axios'
-import Welcome from "@/views/Welcome";
 
 Vue.use(VueRouter)
 
@@ -14,11 +13,6 @@ const routes = [
     path: '/home',
     name: 'home',
     component: Home,
-  },
-  {
-    path: '/welcome',
-    name: 'welcome',
-    component: Welcome,
   },
   {
     path: '/map/:id',

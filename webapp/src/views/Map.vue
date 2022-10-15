@@ -1,8 +1,8 @@
 <template>
   <div class="map-container">
-    <Viewport :loaded="loaded"/>
-    <ZoomBar/>
-    <MapTitle/>
+    <Viewport :loaded="loaded" />
+    <ZoomBar />
+    <MapTitle />
     <span v-if="loading" class="loading">LOADING...</span>
   </div>
 </template>
@@ -12,7 +12,7 @@ import Viewport from '@/components/map/Viewport'
 import ZoomBar from '@/components/map/ui/ZoomBar'
 import MapTitle from '@/components/map/MapTitle'
 
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -41,10 +41,11 @@ export default {
   },
   async mounted() {
     try {
-      this.$store.commit('map/SET_EDIT_MODE', this.query.edit ? true : false)
-      await this.$store.dispatch('map/fetchMap', this.id)
-
-      await this.$store.dispatch('force/initForceLayout', null, {root: true})
+      await this.$store.dispatch('map/fetchAndProcessMap', {
+        id: this.id,
+        templateId: this.$route.query.template,
+      })
+      await this.$store.dispatch('force/initForceLayout', null, { root: true })
       await this.$store.dispatch('map/populate')
 
       localStorage.setItem('last_visited', this.id)
@@ -54,6 +55,7 @@ export default {
 
       this.$store.commit('map/MAP_SET_LOAD', 100)
     } catch (error) {
+      console.log(error)
       this.mapError()
       if (this.load !== 100) this.$store.commit('map/MAP_SET_LOAD', 0)
       return
@@ -73,7 +75,7 @@ export default {
     },
   },
   watch: {
-    query: function () {
+    query: function() {
       this.$store.commit('map/SET_EDIT_MODE', this.query.edit ? true : false)
     },
   },

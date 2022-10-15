@@ -56,6 +56,7 @@ func (r *Resolver) UpdateKnot(ctx context.Context, knotId string, input models.K
 	return r.Prisma.UpdateKnot(prisma.KnotUpdateParams{
 		Data: prisma.KnotUpdateInput{
 			Visited: input.Visited,
+			TrackId: input.TrackId,
 		},
 		Where: prisma.KnotWhereUniqueInput{
 			ID: &knotId,

@@ -37,7 +37,7 @@ export default {
       this.d3Viewport = d3select(this.viewportRef)
       this.d3ZoomObj = d3zoom
         .zoom()
-        .scaleExtent([1, 12])
+        .scaleExtent([0.3, 12])
         .on('zoom', this.transformCallback)
       this.d3Viewport.call(this.d3ZoomObj).on("dblclick.zoom", null)
     },

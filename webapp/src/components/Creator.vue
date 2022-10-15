@@ -1,9 +1,4 @@
 <template>
-  <!--  <div class="creator-container disable-scrollbar">-->
-  <!--    <div class="form-container">-->
-  <!--      <SearchTrack label="Choose a song to start from"/>-->
-  <!--      </div>-->
-  <!--  </div>-->
   <div class="welcome-text-container">
     <img
         width="100"
@@ -25,17 +20,18 @@
           github</a> or <a href="mailto:bally.hugo@gmail.com">send me an email</a>.
         </p>
       </div>
-      <SearchTrack class="search-track-container"/>
+      <Explorer/>
     </div>
   </div>
 </template>
 
 <script>
-import SearchTrack from "@/components/SearchTrack";
+// import SearchTrack from "@/components/SearchTrack";
+import Explorer from "@/components/Explorer";
 
 export default {
   components: {
-    SearchTrack,
+    Explorer,
   },
 }
 </script>

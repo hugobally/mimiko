@@ -5,6 +5,7 @@
       v-for="map in maps"
       :key="map.id"
       :map="map"
+      :onItemClick="onItemClick"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@
 import MapListItem from './MapListItem'
 
 export default {
-  props: ['maps', 'readOnly'],
+  props: ['maps', 'readOnly', 'onItemClick'],
   components: {
     MapListItem,
   },

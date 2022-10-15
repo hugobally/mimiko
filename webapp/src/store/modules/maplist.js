@@ -3,7 +3,7 @@ import { getTracks as spotifyGetTracks } from '@/api/spotify'
 
 function initialState() {
   return {
-    userMaps: [],
+    userMaps: null,
     userMapsLock: false,
 
     publicMaps: [],
@@ -16,7 +16,7 @@ export default {
   state: initialState,
   mutations: {
     USER_MAPS_CONCAT(state, maps) {
-      state.userMaps = state.userMaps.concat(maps)
+      state.userMaps = state.userMaps ? state.userMaps.concat(maps) : maps
     },
     USER_MAPS_PUSH(state, map) {
       state.userMaps.push(map)
@@ -45,7 +45,7 @@ export default {
   },
   getters: {
     userMaps: state => {
-      return state.userMaps.reverse()
+      return state.userMaps?.reverse()
     },
     publicMaps: state => {
       return state.publicMaps
@@ -57,13 +57,16 @@ export default {
 
       commit('SET_USER_MAPS_LOCK', true)
       try {
-        if (state.userMaps.length > 0) return
+        if (state.userMaps?.length > 0) return
 
         const user = rootState.auth.user
         if (!user.logged) return
 
         await fetchMaps(commit, 'USER_MAPS_CONCAT', { userId: user.id })
       } finally {
+        if (!state.userMaps) {
+          commit('USER_MAPS_CONCAT', [])
+        }
         commit('SET_USER_MAPS_LOCK', false)
       }
     },
@@ -85,6 +88,7 @@ export default {
 async function fetchMaps(commit, mutation, filter) {
   filter = { ...filter, ...{ offset: 0, limit: 50 } }
 
+  // TODO Convoluted
   let resultLength = 1
   while (resultLength > 0) {
     const maps = await gql.maps(filter)
@@ -92,20 +96,16 @@ async function fetchMaps(commit, mutation, filter) {
     resultLength = maps.length
     if (resultLength === 0) return
 
-    try {
-      const tracks = await spotifyGetTracks(
-        maps
-          .reduce((acc, map) => {
-            if (map.flagshipId) acc.push(map.flagshipId)
-            return acc
-          }, [])
-          .join(),
-      )
-      for (const map of maps) {
-        map.flagship = tracks.find(track => track.id === map.flagshipId)
-      }
-    } catch (error) {
-      // TODO
+    const tracks = await spotifyGetTracks(
+      maps
+        .reduce((acc, map) => {
+          if (map.flagshipId) acc.push(map.flagshipId)
+          return acc
+        }, [])
+        .join(),
+    )
+    for (const map of maps) {
+      map.flagship = tracks.find(track => track.id === map.flagshipId)
     }
     commit(mutation, maps)
 

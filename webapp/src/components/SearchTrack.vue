@@ -81,14 +81,13 @@ export default {
           public: this.isPublic,
           flagshipId: this.flagship.id,
         })
-        if (!map) throw new Error()
         map.flagship = this.flagship
         this.$store.commit('maplist/USER_MAPS_PUSH', map)
         this.$router.push({
           path: `/map/${map.id}`,
-          query: this.editMode ? { edit: true } : {},
         })
       } catch (error) {
+        console.log(error)
         this.$store.dispatch('ui/pushFlashQueue', {
           content: 'Error when trying to create a new map, please retry.',
           type: 'error',
