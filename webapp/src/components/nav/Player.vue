@@ -21,7 +21,17 @@
       <!--          alt="no-liked-icon"-->
       <!--        />-->
       <!--      </div>-->
-      <div class="add-button-wrapper" @click="add">
+      <div
+        class="add-button-wrapper"
+        :class="{
+          'add-button-tutorial':
+            $route.path.includes('map') &&
+            tutorialSteps.includes('add_knot') &&
+            !tutorialSteps.includes('select_knot') &&
+            selectedKnotId,
+        }"
+        @click="add"
+      >
         <img
           class="add-button"
           src="@/assets/svg/add-icon.svg"
@@ -36,44 +46,32 @@
         />
       </div>
     </div>
-    <!--    TODO Only with Spotify Login -->
-    <!--    <div class="playback-group" v-if="!previewMode">-->
-    <!--      <div class="button-wrapper" @click="">-->
-    <!--        <img-->
-    <!--          class="playback-button"-->
-    <!--          v-if="status !== 'PLAYING'"-->
-    <!--          src="@/assets/svg/play-icon.svg"-->
-    <!--          alt="play-icon"-->
-    <!--        />-->
-    <!--        <img-->
-    <!--          class="playback-button"-->
-    <!--          v-else-->
-    <!--          src="@/assets/svg/pause-icon.svg"-->
-    <!--          alt="pause-icon"-->
-    <!--        />-->
-    <!--      </div>-->
-    <!--      <PlayBar />-->
-    <!--    </div>-->
     <div class="playback-group center">
+      <div class="button-wrapper" @click="next">
+        <img
+          class="playback-button"
+          src="@/assets/svg/next-icon.svg"
+          alt="next icon"
+        />
+      </div>
       <audio
         autoplay
-        controls
         :src="track && track.previewURL"
         ref="sampleSessionAudioControls"
+        controls
       />
-      <button @click="autoplayToggle" class="autoplay-toggle">autoplay: {{ autoplay ? 'ON' : 'OFF'}} </button>
+      <button @click="autoplayToggle" class="autoplay-toggle">
+        autoplay: {{ autoplay ? 'ON' : 'OFF' }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-// import PlayBar from '@/components/nav/player/PlayBar'
 
 export default {
-  components: {
-    // PlayBar,
-  },
+  components: {},
   data() {
     return {
       debounceLike: {
@@ -135,7 +133,7 @@ export default {
       'autoplay',
     ]),
     ...mapState('map', ['readOnly', 'knots']),
-    ...mapState('ui', ['selectedKnotId']),
+    ...mapState('ui', ['selectedKnotId', 'tutorialSteps']),
     previewMode() {
       // Until spotify login is reimplemented we're always in preview mode
       return true
@@ -247,6 +245,13 @@ export default {
         return
       }
 
+      if (
+        this.$route.path.includes('map') &&
+        this.tutorialSteps.includes('add_knot')
+      ) {
+        this.$store.dispatch('ui/setTutorialStepDone', 'add_knot')
+      }
+
       this.debounceLike.counter += 1
 
       if (!this.debounceLike.callbackId) {
@@ -274,7 +279,6 @@ export default {
             knot: knot.id,
           }),
         )
-        // this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
         if (this.status !== 'PLAYING') {
           await this.$store.dispatch('player/playKnot', {
             knot: newKnots[0].id,
@@ -291,6 +295,9 @@ export default {
       // this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
       this.blockDislike = false
+    },
+    next() {
+      this.$store.dispatch('player/bufferPlayNext')
     },
     focus(target) {
       this.$store.dispatch('map/focus', target)
@@ -480,7 +487,7 @@ export default {
   bottom: 20%;
   background-color: $bg-secondary;
   border-radius: 50%;
-  border: solid 1px $bg-primary;
+  border: solid 3px $bg-primary;
   transition: transform 100ms;
 }
 
@@ -503,5 +510,32 @@ export default {
 
 .autoplay-toggle {
   margin: 0px 30px 0px 10px;
+}
+
+.add-button-tutorial::before {
+  content: 'Click here to add a new song to the map !';
+  position: absolute;
+  height: auto;
+  bottom: calc(100% + 50px);
+  border-radius: 5px;
+  background-color: white;
+  font-size: 25px;
+  padding: 10px;
+  width: max-content;
+  pointer-events: none;
+  //text-wrap: none;
+}
+
+.add-button-tutorial::after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  width: 1px;
+  height: 50px;
+  border: solid black;
+  border-width: 0 0 0 5px;
+  transform: rotate(30deg);
+  margin-left: 30px;
+  pointer-events: none;
 }
 </style>

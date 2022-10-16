@@ -1,4 +1,4 @@
-import {indexOf} from "core-js/internals/array-includes";
+const TUTORIAL_STEPS = ['select_knot', 'add_knot', 'play_knot', 'home']
 
 function initialGlobalUI() {
   return {
@@ -12,6 +12,7 @@ function initialMapUI() {
     zoomLevel: 1,
     transform: { x: 0.0, y: 0.0 },
     selectedKnotId: null,
+    tutorialSteps: TUTORIAL_STEPS.filter(step => !localStorage.getItem(step)),
   }
 }
 
@@ -52,7 +53,12 @@ export default {
         ...state,
         ...initialMapUI(),
       })
-    }
+    },
+    REMOVE_TUTORIAL_STEP(state, stepToRemove) {
+      state.tutorialSteps = state.tutorialSteps.filter(
+        step => step !== stepToRemove,
+      )
+    },
   },
   actions: {
     // TODO unnecessary, use commit
@@ -61,6 +67,16 @@ export default {
     },
     shiftFlashQueue({ commit }) {
       commit('SHIFT_FLASH_QUEUE')
+    },
+    setTutorialStepDone({ commit }, step) {
+      localStorage.setItem(step, 'done')
+      commit('REMOVE_TUTORIAL_STEP', step)
+    },
+    selectKnot({ state, commit, dispatch }, id) {
+      commit('SET_SELECTED_KNOT_ID', id)
+      if (state.tutorialSteps.includes('select_knot')) {
+        dispatch('setTutorialStepDone', 'select_knot')
+      }
     },
   },
 }

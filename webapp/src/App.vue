@@ -16,8 +16,6 @@
 import Nav from '@/components/Nav'
 import Panel from '@/components/Panel'
 import Explorer from '@/components/Explorer'
-import Creator from '@/components/Creator'
-// import Add from '@/components/map/Add'
 import MapSettings from '@/components/map/MapSettings'
 import Settings from '@/components/Settings'
 import FlashMessage from '@/components/utils/FlashMessage'
@@ -37,10 +35,6 @@ export default {
     return {
       maskNav: true,
     }
-  },
-  mounted() {
-    if (!localStorage.getItem('tutorial_steps'))
-      localStorage.setItem('tutorial_steps', ['play_knot', 'create_knot'])
   },
   computed: {
     panelContent() {
@@ -68,7 +62,6 @@ export default {
 </script>
 
 <style lang="scss">
-//@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Abel&display=swap');
 
 * {

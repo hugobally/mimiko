@@ -32,7 +32,7 @@ function initialPlayer() {
     status: 'IDLE',
 
     previewMode: true,
-    autoplay: true,
+    autoplay: false,
   }
 }
 

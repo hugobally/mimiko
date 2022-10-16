@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     selectThis() {
-      this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.id)
+      this.$store.dispatch('ui/selectKnot', this.id)
     },
     onMouseOver(e) {
       this.$store.dispatch('map/knotHoverEvent', this.id)

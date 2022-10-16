@@ -16,6 +16,9 @@ export default {
   MAP_SET_LOAD(state, val) {
     state.load = val
   },
+  SET_ROOT_KNOT_ID(state, id) {
+    state.rootKnotId = id
+  },
   MAP_ADD_KNOTS(state, knots) {
     for (const knot of knots) {
       Vue.set(state.knots, knot.id, {

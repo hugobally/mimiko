@@ -25,6 +25,7 @@ function initialState() {
     readOnly: false,
     editMode: false,
 
+    rootKnotId: null,
     knots: {},
     links: {},
 
@@ -61,7 +62,6 @@ export default {
         if (templateId && rawMap.knots.length === 1) {
           const templateMap = await gql.map(templateId)
 
-          console.log(templateMap.knots)
           // TODO Gross -- refactor when the backend is fixed
           const knots = (
             await Promise.all(
@@ -70,7 +70,6 @@ export default {
               ),
             )
           ).map(({ knots }) => knots[0])
-          console.log(knots)
           const linksToCreate = templateMap.links.map(({ source, target }) => ({
             source: knots.find(
               ({ trackId }) =>
@@ -83,7 +82,6 @@ export default {
                 templateMap.knots.find(({ id }) => id === target).trackId,
             ).id,
           }))
-          console.log(linksToCreate)
           await Promise.all(
             linksToCreate.map(({ source, target }) =>
               gql.createLinks(id, source, [target]),
@@ -96,6 +94,10 @@ export default {
         commit('MAP_SET_META', rawMap)
         commit('MAP_SET_READONLY', rawMap.author.id !== rootState.auth.user.id)
         commit('MAP_SET_LOAD', 1)
+        commit(
+          'SET_ROOT_KNOT_ID',
+          rawMap.knots.find(knot => knot.level === 0).id,
+        )
 
         dispatch('processMap', rawMap)
       },

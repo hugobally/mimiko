@@ -3,16 +3,23 @@
     class="overlay-group"
     @mouseover="onMouseOver()"
     @mouseleave="onMouseLeave()"
-    :class="{ hidden: !hoveredKnot }"
   >
-    <div :style="{ ...topEdge }">
+    <div :style="{ ...topEdge }" v-if="tutorialKnot">
       <div class="top-edge-container">
-        <div :style="{ ...reactiveSize }" class="top-edge-backdrop" />
-        <input v-model="inputTrackId" />
-        <button @click="updateTrackId">update</button>
+<!--        <div :style="{ ...reactiveSize }" class="top-edge-backdrop" />-->
+        <!--        <input v-model="inputTrackId" />-->
+        <!--        <button @click="updateTrackId">update</button>-->
+        <span class="select-knot-tutorial tutorial-bubble">
+          1. Click on a song to select it !
+        </span>
+        <div class="tutorial-arrow"></div>
       </div>
     </div>
-    <div :style="{ ...bottomEdge }" class="bottom-edge">
+    <div
+      :style="{ ...bottomEdge }"
+      class="bottom-edge"
+      :class="{ hidden: !hoveredKnot }"
+    >
       <div class="bottom-edge-container">
         <div :style="{ ...reactiveSize }" class="bottom-edge-backdrop" />
         <a
@@ -26,7 +33,7 @@
         </a>
       </div>
     </div>
-    <div :style="{ ...leftEdge }">
+    <div :style="{ ...leftEdge }" :class="{ hidden: !hoveredKnot }">
       <div class="left-edge-container">
         <button class="play-this-button" @click="playOrPauseSelected">
           <img
@@ -45,7 +52,7 @@
         <div :style="{ ...reactiveSize }" class="left-edge-backdrop" />
       </div>
     </div>
-    <div :style="{ ...rightEdge }">
+    <div :style="{ ...rightEdge }" :class="{ hidden: !hoveredKnot }">
       <div class="right-edge-container">
         <div :style="{ ...reactiveSize }" class="right-edge-backdrop" />
         <button class="add-button" @click="add">
@@ -77,25 +84,36 @@ export default {
   },
   props: ['viewport'],
   computed: {
-    ...mapState('map', ['knots', 'hovered', 'selected', 'readOnly']),
-    ...mapState('ui', ['zoomLevel', 'transform', 'selectedKnotId']),
+    ...mapState('map', [
+      'knots',
+      'hovered',
+      'selected',
+      'readOnly',
+      'rootKnotId',
+    ]),
+    ...mapState('ui', [
+      'zoomLevel',
+      'transform',
+      'selectedKnotId',
+      'tutorialSteps',
+    ]),
     ...mapState('player', ['status', 'playedKnotId']),
     hoveredKnot() {
       if (!this.hovered) return null
 
       return this.knots[this.hovered]
     },
-    selectedKnot() {
-      if (!this.selectedKnotId) return null
+    tutorialKnot() {
+      if (!this.tutorialSteps.includes('select_knot')) return null
 
-      return this.knots[this.selectedKnotId]
+      return this.knots[this.rootKnotId]
     },
     knot() {
-      return this.hoveredKnot
+      return this.hoveredKnot || this.tutorialKnot
     },
     reactiveFontSize() {
       let fontSize = this.$store.state.ui.zoomLevel * 20
-      fontSize = Math.min(Math.max(fontSize, 15), 18)
+      fontSize = Math.min(Math.max(fontSize, 20), 25)
       return {
         fontSize: `${fontSize}px`,
       }
@@ -108,17 +126,14 @@ export default {
       }
     },
     moreInfoLink() {
-      if (!this.hoveredKnot) return ''
+      if (!this.knot) return ''
 
-      return `https://open.spotify.com/track/${this.hoveredKnot.track.id}`
+      return `https://open.spotify.com/track/${this.knot.track.id}`
     },
   },
   watch: {
     // TODO DRY
-    hoveredKnot: function() {
-      this.setAnchorPositions()
-    },
-    selectedKnot: function() {
+    knot: function() {
       this.setAnchorPositions()
     },
     transform: function() {
@@ -136,8 +151,7 @@ export default {
       this.$store.dispatch('map/knotHoverEvent', null)
     },
     setAnchorPositions() {
-      const knot = this.hoveredKnot
-      if (!knot) return
+      if (!this.knot) return
 
       const zoomGroup = document.getElementById('zoomgroup')
       const matrix = zoomGroup.getCTM()
@@ -152,11 +166,11 @@ export default {
 
       const circleRadius = 20
 
-      this.topEdge = transform(knot.x, knot.y - circleRadius)
-      this.bottomEdge = transform(knot.x, knot.y + circleRadius)
+      this.topEdge = transform(this.knot.x, this.knot.y - circleRadius)
+      this.bottomEdge = transform(this.knot.x, this.knot.y + circleRadius)
 
-      this.leftEdge = transform(knot.x - circleRadius, knot.y)
-      this.rightEdge = transform(knot.x + circleRadius, knot.y)
+      this.leftEdge = transform(this.knot.x - circleRadius, this.knot.y)
+      this.rightEdge = transform(this.knot.x + circleRadius, this.knot.y)
     },
     playOrPauseSelected() {
       if (this.playedKnotId === this.hovered) {
@@ -174,7 +188,7 @@ export default {
         knot: this.hovered,
         track: this.hoveredKnot.track,
       })
-      this.$store.commit('ui/SET_SELECTED_KNOT_ID', this.hovered)
+      this.$store.dispatch('ui/selectKnot', this.hovered)
     },
     // TODO Factorize w/ Player.vue
     async add() {
@@ -184,7 +198,6 @@ export default {
           number: 5,
           visited: false,
         })
-        // this.$store.commit('ui/SET_SELECTED_KNOT_ID', newKnots[0].id)
         newKnots.forEach(knot =>
           this.$store.commit('player/PLAYQUEUE_SHIFT', {
             track: knot.track,
@@ -201,9 +214,7 @@ export default {
     },
     async updateTrackId() {
       const track = (await getTracks(this.inputTrackId))[0]
-      console.log(track)
       await updateKnot(this.hovered, { trackId: track.id })
-      console.log('t')
       this.$store.commit('map/KNOT_SET_TRACK', { knots: [this.hovered], track })
     },
   },
@@ -219,7 +230,7 @@ export default {
 .add-button {
   transform: translate(0, -50%);
   padding: 10px;
-  border-radius: 100%;
+  border-radius: 0px;
 }
 .more-info-link {
   display: block;
@@ -288,4 +299,23 @@ export default {
 .bottom-edge-backdrop {
   transform: scaleX(4);
 }
+
+.tutorial-bubble {
+  border-radius: 5px;
+  background-color: white;
+  font-size: 25px;
+  padding: 10px;
+  width: max-content;
+  text-wrap: none;
+}
+
+.tutorial-arrow {
+  height: 50px;
+  width: 0px;
+  border: solid black;
+  border-width: 0 0 0 5px;
+  transform: rotate(30deg);
+  margin-left: 30px;
+}
+
 </style>
