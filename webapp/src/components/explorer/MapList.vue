@@ -25,5 +25,6 @@ export default {
 .map-list-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 </style>

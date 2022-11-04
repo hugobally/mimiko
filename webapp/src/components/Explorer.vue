@@ -1,7 +1,7 @@
 <template>
   <div class="explorer-container disable-scrollbar">
     <SearchTrack class="search-track-container" />
-    <div>or</div>
+    <div>- or start from a Starter Map -</div>
     <MapList
       :readOnly="true"
       :maps="filteredMaps || publicMaps"

@@ -101,7 +101,7 @@ export default {
   flex: 2;
 
   margin-left: 10px;
-  font-size: 20px;
+  font-size: 40px;
 
   text-align: left;
 

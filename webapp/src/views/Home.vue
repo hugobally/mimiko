@@ -8,7 +8,7 @@
         <h1 class="header noselect">
           Maps
         </h1>
-        <RouterLink to="#new">create a new map</RouterLink>
+        <RouterLink to="#new" class="button">create a new map</RouterLink>
         <MapList class="map-list" :readOnly="false" :maps="userMaps" />
       </div>
     </div>
@@ -57,10 +57,14 @@ export default {
 }
 
 .home-container {
-  width: 1000px;
+  width: 800px;
   background-color: white;
   display: flex;
   justify-content: center;
+}
+
+.home-container > * {
+  min-width: 80%;
 }
 
 .text-logo {
@@ -98,7 +102,7 @@ export default {
   padding: 20px 10px;
   width: 100%;
   font-size: 50px;
-  text-align: left;
+  text-align: center;
 }
 
 .user-maps-header {

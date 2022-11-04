@@ -21,9 +21,9 @@
       :class="{ hidden: !hoveredKnot }"
     >
       <div class="bottom-edge-container">
-        <div :style="{ ...reactiveSize }" class="bottom-edge-backdrop" />
+<!--        <div :style="{ ...reactiveSize }" class="bottom-edge-backdrop" />-->
         <a
-          class="track-title-and-link"
+          class="track-title-and-link shadow entrance-animation"
           :href="moreInfoLink"
           target="_blank"
           :style="{ ...reactiveFontSize }"
@@ -41,25 +41,28 @@
             v-if="status === 'PLAYING' && playedKnotId === hovered"
             src="@/assets/svg/pause-icon.svg"
             alt="play icon"
+            class="play-button-img shadow entrance-animation"
           />
           <img
             :style="{ ...reactiveSize }"
             v-else
             src="@/assets/svg/play-icon.svg"
             alt="pause icon"
+            class="play-button-img shadow entrance-animation"
           />
         </button>
-        <div :style="{ ...reactiveSize }" class="left-edge-backdrop" />
+<!--        <div :style="{ ...reactiveSize }" class="left-edge-backdrop" />-->
       </div>
     </div>
     <div :style="{ ...rightEdge }" :class="{ hidden: !hoveredKnot }">
       <div class="right-edge-container">
-        <div :style="{ ...reactiveSize }" class="right-edge-backdrop" />
+<!--        <div :style="{ ...reactiveSize }" class="right-edge-backdrop" />-->
         <button class="add-button" @click="add">
           <img
             :style="{ ...reactiveSize }"
-            src="@/assets/svg/add-icon.svg"
+            src="@/assets/svg/add-icon-alternate.svg"
             alt="add icon"
+            class="play-button-img shadow entrance-animation"
           />
         </button>
       </div>
@@ -119,7 +122,7 @@ export default {
       }
     },
     reactiveSize() {
-      const sideLength = Math.max(10 * this.$store.state.ui.zoomLevel, 25)
+      const sideLength = Math.max(10 * this.$store.state.ui.zoomLevel, 70)
       return {
         width: `${sideLength}px`,
         height: `${sideLength}px`,
@@ -130,6 +133,9 @@ export default {
 
       return `https://open.spotify.com/track/${this.knot.track.id}`
     },
+  },
+  mounted() {
+    this.setAnchorPositions()
   },
   watch: {
     // TODO DRY
@@ -167,10 +173,10 @@ export default {
       const circleRadius = 20
 
       this.topEdge = transform(this.knot.x, this.knot.y - circleRadius)
-      this.bottomEdge = transform(this.knot.x, this.knot.y + circleRadius)
+      this.bottomEdge = transform(this.knot.x, this.knot.y + circleRadius * 2)
 
-      this.leftEdge = transform(this.knot.x - circleRadius, this.knot.y)
-      this.rightEdge = transform(this.knot.x + circleRadius, this.knot.y)
+      this.leftEdge = transform(this.knot.x - circleRadius * 2, this.knot.y)
+      this.rightEdge = transform(this.knot.x + circleRadius * 2, this.knot.y)
     },
     playOrPauseSelected() {
       if (this.playedKnotId === this.hovered) {
@@ -198,17 +204,18 @@ export default {
           number: 5,
           visited: false,
         })
-        newKnots.forEach(knot =>
-          this.$store.commit('player/PLAYQUEUE_SHIFT', {
-            track: knot.track,
-            knot: knot.id,
-          }),
-        )
         if (this.status !== 'PLAYING') {
           await this.$store.dispatch('player/playKnot', {
             knot: newKnots[0].id,
             track: newKnots[0].track,
           })
+        } else {
+          newKnots.forEach(knot =>
+            this.$store.commit('player/PLAYQUEUE_SHIFT', {
+              track: knot.track,
+              knot: knot.id,
+            }),
+          )
         }
       }
     },
@@ -229,26 +236,18 @@ export default {
 .play-this-button,
 .add-button {
   transform: translate(0, -50%);
-  padding: 10px;
-  border-radius: 0px;
+  background-color: rgba(0, 0 ,0, 0);
+  transition: all 100ms ease-in-out;
 }
+
+.add-button:hover,
+.play-this-button:hover {
+  transform: translate(0, -50%) scale(1.2);
+}
+
 .more-info-link {
   display: block;
 }
-//.more-info-link {
-//  padding: 10px;
-//  transform: translate(-50%, 0);
-//}
-
-//.bottom-edge::before {
-//  content: '';
-//  position: absolute;
-//  width: 130%;
-//  height: 110%;
-//  left: 50%;
-//  top: 50%;
-//  transform: translate(-50%, -50%);
-//}
 
 .right-edge-container,
 .left-edge-container,
@@ -272,6 +271,7 @@ export default {
 .bottom-edge-container {
   display: flex;
   flex-direction: column;
+  transform: translateX(-50%);
   top: 0px;
 }
 
@@ -281,10 +281,9 @@ export default {
   text-decoration: none;
 
   width: max-content;
-  transform: translateX(-50%);
 
-  background-color: $black-lighter;
-  color: $text-highlight;
+  background-color: white;
+  color: $text-primary;
   padding: 5px;
   border-radius: 5px;
 
@@ -297,7 +296,7 @@ export default {
 }
 .top-edge-backdrop,
 .bottom-edge-backdrop {
-  transform: scaleX(4);
+  transform: scaleX(2);
 }
 
 .tutorial-bubble {
@@ -316,6 +315,42 @@ export default {
   border-width: 0 0 0 5px;
   transform: rotate(30deg);
   margin-left: 30px;
+}
+
+.play-button-img {
+  border-radius: 9999px;
+  background-color: white;
+}
+
+.entrance-animation {
+  animation: entrance-animation 0.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-11-4 17:9:46
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-in-blurred-right
+ * ----------------------------------------
+ */
+@keyframes entrance-animation {
+  0% {
+    transform: translateX(200px) scaleX(2.5) scaleY(0.2);
+    transform-origin: 0% 50%;
+    filter: blur(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scaleY(1) scaleX(1);
+    transform-origin: 50% 50%;
+    filter: blur(0);
+    opacity: 1;
+  }
 }
 
 </style>

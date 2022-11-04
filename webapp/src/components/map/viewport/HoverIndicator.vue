@@ -13,6 +13,14 @@
       @mouseover="onMouseOver()"
       @mouseleave="onMouseLeave()"
     />
+    <circle
+      class="animated-hover-circle"
+      :fill="$store.state.map.meta.color"
+      fill-opacity="0"
+      :r="radius / 0.5"
+      @mouseover="onMouseOver()"
+      @mouseleave="onMouseLeave()"
+    />
   </g>
 </template>
 

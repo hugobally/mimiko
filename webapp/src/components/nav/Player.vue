@@ -108,6 +108,12 @@ export default {
         this.$store.commit('player/STATUS_PAUSED')
       })
       this.$refs.sampleSessionAudioControls.addEventListener('play', () => {
+        if (!this.track && this.selectedKnotId) {
+          this.$store.dispatch('player/playKnot', {
+            knot: this.selectedKnotId,
+            track: this.knots[this.selectedKnotId].track,
+          })
+        }
         this.$store.commit('player/STATUS_PLAYING')
       })
       this.$refs.sampleSessionAudioControls.addEventListener(
@@ -291,9 +297,13 @@ export default {
       if (!this.selectedKnotId || this.isSourceKnot) return
 
       this.blockDislike = true
+
+      if (this.selectedKnotId === this.playedKnotId) {
+        await this.$store.commit('player/RESET_PLAYER', null)
+      }
       await this.$store.dispatch('map/deleteKnots', this.selectedKnotId)
-      // this.sdk.pause()
       if (this.$route.hash === '#add') this.switchHash('')
+
       this.blockDislike = false
     },
     next() {
@@ -317,8 +327,11 @@ export default {
       }
     },
     status: function(newStatus) {
-      if (newStatus === 'PLAYING') this.audioEl.play()
-      if (newStatus === 'PAUSED') this.audioEl.pause()
+      if (newStatus === 'PLAYING') {
+        this.audioEl.play()
+      } else {
+        this.audioEl.pause()
+      }
     },
   },
   async destroyed() {

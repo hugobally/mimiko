@@ -39,6 +39,7 @@ export default {
 <style lang="scss" scoped>
 .welcome-text-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: left;
 }
@@ -62,15 +63,4 @@ export default {
 .mimiko-logo {
   border-radius: 50px;
 }
-
-.start-button {
-  border-radius: 10px;
-  background: $bg-secondary;
-  color: $text-primary;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 20px;
-}
-
 </style>

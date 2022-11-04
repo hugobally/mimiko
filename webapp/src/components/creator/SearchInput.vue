@@ -151,13 +151,13 @@ export default {
 }
 
 .text-input {
-  background-color: $bg-secondary;
-  color: $text-highlight;
+  //background-color: $bg-secondary;
+  //color: $text-highlight;
   padding: 10px;
-  border: none;
+  border: 1px solid black;
   font-family: 'Abel', sans-serif;
   font-size: 20px;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .busy {

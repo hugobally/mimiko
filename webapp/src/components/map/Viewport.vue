@@ -1,6 +1,6 @@
 <template>
   <div class="viewport-container">
-    <Overlay :viewport="$refs.viewport" />
+    <Overlay :key="hovered" :viewport="$refs.viewport" />
     <svg
       ref="viewport"
       width="100%"
@@ -14,12 +14,12 @@
           <transition-group name="link-group" tag="g">
             <Link v-for="(link, key) in links" :key="key" :id="key" :link="link" />
           </transition-group>
-          <HoverIndicator v-if="hovered" />
+          <HoverIndicator :key="hovered" v-if="hovered" />
+          <SelectIndicator v-if="currentSelectedKnot" :key="`select-indicator-${currentSelectedKnot}`" />
           <transition-group name="knot-group" tag="g">
             <Knot v-for="(knot, key) in knots" :key="key" :id="key" :knot="knot" />
           </transition-group>
         </g>
-        <SelectIndicator v-if="currentSelectedKnot" :key="`select-indicator-${currentSelectedKnot}`" />
       </ZoomHandler>
 
       <Filters radius="40"></Filters>
