@@ -1,0 +1,6 @@
+[submodule "mimiko_web_client"]
+	path = mimiko_web_client
+	url = git@github.com:hugobally/mimiko_web_client.git
+[submodule "mimiko_api"]
+	path = mimiko_api
+	url = git@github.com:hugobally/mimiko_api.git
