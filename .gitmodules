@@ -1,8 +1,0 @@
-[submodule "mimiko-api"]
-	path = mimiko-api
-	url = git@github.com:hugobally/mimiko-api.git
-	branch = main
-[submodule "mimiko-client-web"]
-	path = mimiko-client-web
-	url = git@github.com:hugobally/mimiko-client-web.git
-	branch = main
