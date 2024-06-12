@@ -7,7 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/vektah/gqlparser/v2 v2.5.1
+	github.com/vektah/gqlparser/v2 v2.5.14
 	gopkg.in/yaml.v2 v2.4.0
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.1
