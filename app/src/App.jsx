@@ -1,8 +1,8 @@
-import { Stage, Container, Graphics } from '@pixi/react';
+import { Stage, Container, Graphics } from "@pixi/react";
 
 function App() {
   return (
-    <Stage width={800} height={600} options={{ backgroundColor: 0xFFFFFF }}>
+    <Stage width={800} height={600} options={{ backgroundColor: 0xffffff }}>
       <Container>
         <Graphics
           draw={(g) => {
