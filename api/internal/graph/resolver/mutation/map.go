@@ -2,11 +2,12 @@ package mutation
 
 import (
 	"context"
-	"github.com/hugobally/mimiko_api/internal/authentication"
-	"github.com/hugobally/mimiko_api/internal/authorization"
-	"github.com/hugobally/mimiko_api/internal/db/models"
-	"github.com/hugobally/mimiko_api/internal/graph/gqltypes"
-	"github.com/hugobally/mimiko_api/internal/validation"
+
+	"github.com/hugobally/mimiko/api/internal/authentication"
+	"github.com/hugobally/mimiko/api/internal/authorization"
+	"github.com/hugobally/mimiko/api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/graph/gqltypes"
+	"github.com/hugobally/mimiko/api/internal/validation"
 )
 
 func validateMapTitle(title *string) error {
@@ -23,8 +24,7 @@ func validateMapTitle(title *string) error {
 }
 
 func (r *MutationResolver) CreateMap(ctx context.Context, mapInput gqltypes.MapInput) (*models.Map, error) {
-	err := validateMapTitle(mapInput.Title)
-	if err != nil {
+	if err := validateMapTitle(mapInput.Title); err != nil {
 		return nil, err
 	}
 
@@ -34,25 +34,28 @@ func (r *MutationResolver) CreateMap(ctx context.Context, mapInput gqltypes.MapI
 	}
 
 	if mapInput.Public {
-		err := authorization.CreatePublicMaps(r.Database, u)
-		if err != nil {
+		if err := authorization.CreatePublicMaps(r.Database, u); err != nil {
 			return nil, err
 		}
 	}
 
-	m := models.Map{
-		Title:      *mapInput.Title,
-		FlagshipID: *mapInput.FlagshipID,
-		AuthorID:   u,
-		Public:     mapInput.Public,
-		Knots: []models.Knot{
-			{TrackID: *mapInput.FlagshipID},
-		},
+	title := "Untitled Map"
+	if mapInput.Title != nil {
+		title = *mapInput.Title
 	}
 
-	res := r.Database.Create(&m)
-	if res.Error != nil {
-		return nil, res.Error
+	m := models.Map{
+		Title:    title,
+		AuthorID: u,
+		Public:   mapInput.Public,
+	}
+
+	if mapInput.FlagshipID != nil {
+		m.FlagshipID = *mapInput.FlagshipID
+	}
+
+	if err := r.Database.Create(&m).Error; err != nil {
+		return nil, err
 	}
 
 	return &m, nil

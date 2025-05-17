@@ -3,9 +3,9 @@ package authorization
 import (
 	"context"
 	"errors"
-	"github.com/hugobally/mimiko_api/internal/authentication"
-	"github.com/hugobally/mimiko_api/internal/db"
-	"github.com/hugobally/mimiko_api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/authentication"
+	"github.com/hugobally/mimiko/api/internal/db"
+	"github.com/hugobally/mimiko/api/internal/db/models"
 )
 
 func ReadUserData(ctx context.Context, userID uint) error {

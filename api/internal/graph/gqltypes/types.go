@@ -3,25 +3,31 @@
 package gqltypes
 
 type KnotInput struct {
-	TrackID  *string `json:"trackId"`
-	Level    *int    `json:"level"`
-	Visited  *bool   `json:"visited"`
-	SourceID *uint   `json:"sourceId"`
+	TrackID  *string `json:"trackId,omitempty"`
+	Level    *int    `json:"level,omitempty"`
+	Visited  *bool   `json:"visited,omitempty"`
+	SourceID *uint   `json:"sourceId,omitempty"`
 }
 
 type MapInput struct {
-	Title      *string `json:"title"`
+	Title      *string `json:"title,omitempty"`
 	Public     bool    `json:"public"`
-	FlagshipID *string `json:"flagshipID"`
+	FlagshipID *string `json:"flagshipID,omitempty"`
 }
 
 type MapsFilter struct {
-	Author *uint `json:"author"`
+	Author *uint `json:"author,omitempty"`
+}
+
+type Mutation struct {
 }
 
 type MutationResult struct {
 	Success bool `json:"success"`
 	Count   int  `json:"count"`
+}
+
+type Query struct {
 }
 
 type SpotifyAuthToken struct {

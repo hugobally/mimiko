@@ -2,9 +2,9 @@ package mutation
 
 import (
 	"context"
-	"github.com/hugobally/mimiko_api/internal/authorization"
-	"github.com/hugobally/mimiko_api/internal/db/models"
-	"github.com/hugobally/mimiko_api/internal/graph/gqltypes"
+	"github.com/hugobally/mimiko/api/internal/authorization"
+	"github.com/hugobally/mimiko/api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/graph/gqltypes"
 )
 
 func (r *MutationResolver) CreateKnot(ctx context.Context, mapID uint, input gqltypes.KnotInput) (*models.Knot, error) {

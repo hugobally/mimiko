@@ -42,7 +42,7 @@ model:
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
 autobind:
-  - "github.com/hugobally/mimiko_api/internal/db/models"
+  - "github.com/hugobally/mimiko/api/internal/db/models"
 
 # This section declares type mapping between the GraphQL and go type systems
 #

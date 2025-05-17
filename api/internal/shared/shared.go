@@ -1,10 +1,10 @@
 package shared
 
 import (
-	"github.com/hugobally/mimiko_api/internal/authentication/jwt"
-	"github.com/hugobally/mimiko_api/internal/authentication/spotify"
-	"github.com/hugobally/mimiko_api/internal/config"
-	"github.com/hugobally/mimiko_api/internal/db"
+	"github.com/hugobally/mimiko/api/internal/authentication/jwt"
+	"github.com/hugobally/mimiko/api/internal/authentication/spotify"
+	"github.com/hugobally/mimiko/api/internal/config"
+	"github.com/hugobally/mimiko/api/internal/db"
 	"log"
 	"net/http"
 )

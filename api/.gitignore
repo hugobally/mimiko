@@ -1,8 +1,7 @@
 configs/config.yml
+configs/certs/*.pem
 .idea
 server.log
-localhost.pem
-localhost-key.pem
 
-#tmp
+# temp files
 test.db

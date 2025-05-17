@@ -1,7 +1,7 @@
 package spotify
 
 import (
-	"github.com/hugobally/mimiko_api/internal/config"
+	"github.com/hugobally/mimiko/api/internal/config"
 	"net/http"
 )
 

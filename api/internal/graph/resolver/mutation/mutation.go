@@ -1,7 +1,7 @@
 package mutation
 
 import (
-	"github.com/hugobally/mimiko_api/internal/shared"
+	"github.com/hugobally/mimiko/api/internal/shared"
 )
 
 type MutationResolver struct {
