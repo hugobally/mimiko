@@ -6,13 +6,12 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
-	"github.com/99designs/gqlgen/graphql/handler/lru"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/hugobally/mimiko_api/internal/authentication"
-	"github.com/hugobally/mimiko_api/internal/graph/generated"
-	"github.com/hugobally/mimiko_api/internal/graph/resolver"
-	"github.com/hugobally/mimiko_api/internal/shared"
+	"github.com/hugobally/mimiko/api/internal/authentication"
+	"github.com/hugobally/mimiko/api/internal/graph/generated"
+	"github.com/hugobally/mimiko/api/internal/graph/resolver"
+	"github.com/hugobally/mimiko/api/internal/shared"
 	"net/http"
 )
 
@@ -25,11 +24,6 @@ func (h *Handler) SetupRoutes(mux *http.ServeMux) {
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.POST{})
-
-	srv.SetQueryCache(lru.New(1000))
-	srv.Use(extension.AutomaticPersistedQuery{
-		Cache: lru.New(100),
-	})
 
 	if h.Config.Env == "DEV" {
 		srv.Use(extension.Introspection{})

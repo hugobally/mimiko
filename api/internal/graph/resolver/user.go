@@ -2,8 +2,8 @@ package resolver
 
 import (
 	"context"
-	"github.com/hugobally/mimiko_api/internal/authorization"
-	"github.com/hugobally/mimiko_api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/authorization"
+	"github.com/hugobally/mimiko/api/internal/db/models"
 )
 
 type UserResolver struct{ *Root }

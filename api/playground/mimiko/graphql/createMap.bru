@@ -1,0 +1,24 @@
+meta {
+  name: createMap
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query {
+    me {
+      id
+      username
+      maps {
+        id
+      }
+    }
+  }
+  
+}

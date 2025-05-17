@@ -3,7 +3,7 @@ package authentication
 import (
 	"context"
 	jwtlib "github.com/golang-jwt/jwt/v4"
-	"github.com/hugobally/mimiko_api/internal/shared"
+	"github.com/hugobally/mimiko/api/internal/shared"
 	"net/http"
 )
 

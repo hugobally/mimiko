@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/hugobally/mimiko_api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/db/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

@@ -3,7 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
-	"github.com/hugobally/mimiko_api/internal/graph/gqltypes"
+	"github.com/hugobally/mimiko/api/internal/graph/gqltypes"
 	"time"
 )
 

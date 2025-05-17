@@ -2,20 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/hugobally/mimiko_api/internal/authentication/jwt"
-	"github.com/hugobally/mimiko_api/internal/authentication/login"
-	"github.com/hugobally/mimiko_api/internal/authentication/spotify"
-	"github.com/hugobally/mimiko_api/internal/config"
-	"github.com/hugobally/mimiko_api/internal/db"
-	"github.com/hugobally/mimiko_api/internal/graph"
-	"github.com/hugobally/mimiko_api/internal/server"
-	"github.com/hugobally/mimiko_api/internal/shared"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/gorilla/handlers"
+	"github.com/hugobally/mimiko/api/internal/authentication/jwt"
+	"github.com/hugobally/mimiko/api/internal/authentication/login"
+	"github.com/hugobally/mimiko/api/internal/authentication/spotify"
+	"github.com/hugobally/mimiko/api/internal/cert"
+	"github.com/hugobally/mimiko/api/internal/config"
+	"github.com/hugobally/mimiko/api/internal/db"
+	"github.com/hugobally/mimiko/api/internal/graph"
+	"github.com/hugobally/mimiko/api/internal/server"
+	"github.com/hugobally/mimiko/api/internal/shared"
 )
 
 func initSharedServices() *shared.Services {
@@ -56,6 +58,13 @@ func main() {
 
 	addr := fmt.Sprintf("%v:%d", cfg.Server.Host, cfg.Server.Port)
 	srv := server.New(handlers.LoggingHandler(os.Stdout, mux), addr)
+
+	if cfg.Env == "DEV" {
+		err = cert.GenerateSelfSignedCert(cfg.Tls.Cert, cfg.Tls.Key)
+		if err != nil {
+			services.Logger.Fatalf("failed to generate certificates: %v", err)
+		}
+	}
 
 	services.Logger.Printf("server starting at %v", addr)
 	err = srv.ListenAndServeTLS(cfg.Tls.Cert, cfg.Tls.Key)

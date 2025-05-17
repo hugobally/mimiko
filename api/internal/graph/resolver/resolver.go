@@ -3,10 +3,10 @@ package resolver
 //go:generate go run github.com/99designs/gqlgen generate
 
 import (
-	"github.com/hugobally/mimiko_api/internal/graph/generated"
-	"github.com/hugobally/mimiko_api/internal/graph/resolver/mutation"
-	"github.com/hugobally/mimiko_api/internal/graph/resolver/query"
-	"github.com/hugobally/mimiko_api/internal/shared"
+	"github.com/hugobally/mimiko/api/internal/graph/generated"
+	"github.com/hugobally/mimiko/api/internal/graph/resolver/mutation"
+	"github.com/hugobally/mimiko/api/internal/graph/resolver/query"
+	"github.com/hugobally/mimiko/api/internal/shared"
 )
 
 type Root struct {

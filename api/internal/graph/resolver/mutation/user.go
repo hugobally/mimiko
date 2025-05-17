@@ -2,7 +2,7 @@ package mutation
 
 import (
 	"context"
-	"github.com/hugobally/mimiko_api/internal/db/models"
+	"github.com/hugobally/mimiko/api/internal/db/models"
 )
 
 // TODO Unique usernames
